@@ -1,0 +1,16 @@
+C:\Users\user\Desktop\Quality_Inspection_of_Overall_Planning_Results\QI_ClassLibrary\obj\Debug\QI_ClassLibrary.csproj.ResolveComReference.cache
+C:\Users\user\Desktop\Quality_Inspection_of_Overall_Planning_Results\QI_ClassLibrary\bin\Debug\QI_ClassLibrary.dll
+C:\Users\user\Desktop\Quality_Inspection_of_Overall_Planning_Results\QI_ClassLibrary\bin\Debug\QI_ClassLibrary.pdb
+C:\Users\user\Desktop\Quality_Inspection_of_Overall_Planning_Results\QI_ClassLibrary\obj\Debug\QI_ClassLibrary.dll
+C:\Users\user\Desktop\Quality_Inspection_of_Overall_Planning_Results\QI_ClassLibrary\obj\Debug\QI_ClassLibrary.pdb
+C:\Users\user\Desktop\Quality_Inspection_of_Overall_Planning_Results\QI_ClassLibrary\obj\Debug\QI_ClassLibrary.csprojResolveAssemblyReference.cache
+C:\Users\user\Desktop\Quality_Inspection_of_Overall_Planning_Results\QI_ClassLibrary\bin\Debug\ESRI.ArcGIS.ADF.dll
+C:\Users\user\Desktop\Quality_Inspection_of_Overall_Planning_Results\QI_ClassLibrary\bin\Debug\ESRI.ArcGIS.ADF.xml
+C:\Users\user\Desktop\备份\Quality_Inspection_of_Overall_Planning_Results\QI_ClassLibrary\bin\Debug\QI_ClassLibrary.dll
+C:\Users\user\Desktop\备份\Quality_Inspection_of_Overall_Planning_Results\QI_ClassLibrary\bin\Debug\QI_ClassLibrary.pdb
+C:\Users\user\Desktop\备份\Quality_Inspection_of_Overall_Planning_Results\QI_ClassLibrary\bin\Debug\ESRI.ArcGIS.ADF.dll
+C:\Users\user\Desktop\备份\Quality_Inspection_of_Overall_Planning_Results\QI_ClassLibrary\bin\Debug\ESRI.ArcGIS.ADF.xml
+C:\Users\user\Desktop\备份\Quality_Inspection_of_Overall_Planning_Results\QI_ClassLibrary\obj\Debug\QI_ClassLibrary.csproj.ResolveComReference.cache
+C:\Users\user\Desktop\备份\Quality_Inspection_of_Overall_Planning_Results\QI_ClassLibrary\obj\Debug\QI_ClassLibrary.dll
+C:\Users\user\Desktop\备份\Quality_Inspection_of_Overall_Planning_Results\QI_ClassLibrary\obj\Debug\QI_ClassLibrary.pdb
+C:\Users\user\Desktop\备份\Quality_Inspection_of_Overall_Planning_Results\QI_ClassLibrary\obj\Debug\QI_ClassLibrary.csprojResolveAssemblyReference.cache
