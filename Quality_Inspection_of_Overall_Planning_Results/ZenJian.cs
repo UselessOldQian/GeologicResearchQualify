@@ -1750,7 +1750,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             dgvStastic.DataSource = bind;
             this.Invoke(myDelegateUpdateUiStatus, new object[] { "建设用地简化量规模统计完毕" });
             this.Invoke(myDelegateAppendTextInfo, new object[] { "\r\n建设用地简化量规模统计完成\r\n完成时间:" + DateTime.Now.ToString() + "\r\n" });
-            this.uiTab1.SelectedTab = this.uiTab1.TabPages[2];
+            this.TableList.SelectedTab = this.TableList.TabPages[2];
             this.Invoke(myDelegateUpdateBarValue, new object[] { 0 });
         }
 
@@ -3310,6 +3310,32 @@ namespace Quality_Inspection_of_Overall_Planning_Results
                 this.Invoke(myDelegateAppendTextInfo, new object[] { "\r\n导出成功，路径为" + filePath + "\r\n" });
             }
             else { return; }
+        }
+
+        private void btnPreview1_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
+        {
+            DataTable pDataTable1 = new DataTable();//建立一个table
+            string[] FieldName = new string[] { "Index", "District", "RegionName", "RegionIndex", "AdmitedTime", "ImplementSpan", "ProcessState" };
+            for (int i = 0; i < FieldName.Length; i++)
+            {
+                pDataTable1.Columns.Add(FieldName[i]);
+            }
+
+            for (int i = 0; i < pDT.Rows.Count; i++)
+            {
+                DataRow pRow = pDataTable1.NewRow();
+                string[] StrRow = new string[7];
+                StrRow[0] = (i + 1).ToString();
+                StrRow[1] = pDT.Rows[i]["区名"].ToString();
+                StrRow[2] = pDT.Rows[i]["XMMC"].ToString();
+                StrRow[3] = pDT.Rows[i]["XMBH"].ToString();
+                StrRow[4] = pDT.Rows[i]["项目批复时间"].ToString();
+                StrRow[5] = pDT.Rows[i]["实施期限"].ToString();
+                StrRow[6] = pDT.Rows[i]["项目进度概况"].ToString();
+                pRow.ItemArray = StrRow;
+                pDataTable1.Rows.Add(pRow);
+            }
+            dgv_Table1.DataSource = pDataTable1;
         }
     }
 }

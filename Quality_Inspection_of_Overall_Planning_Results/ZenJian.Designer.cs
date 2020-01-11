@@ -102,6 +102,9 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.cbcActivateAlter = new Janus.Windows.Ribbon.CheckBoxCommand();
             this.btnadd = new Janus.Windows.Ribbon.ButtonCommand();
             this.btnSave = new Janus.Windows.Ribbon.ButtonCommand();
+            this.ribbonGroup11 = new Janus.Windows.Ribbon.RibbonGroup();
+            this.btnPreview1 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.btnExport1 = new Janus.Windows.Ribbon.ButtonCommand();
             this.ribbonTab3 = new Janus.Windows.Ribbon.RibbonTab();
             this.ribbonGroup8 = new Janus.Windows.Ribbon.RibbonGroup();
             this.cbIsClear = new Janus.Windows.Ribbon.CheckBoxCommand();
@@ -112,7 +115,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.buttonGroup2 = new Janus.Windows.Ribbon.ButtonGroup();
             this.buttonGroup3 = new Janus.Windows.Ribbon.ButtonGroup();
             this.uiStatusBar1 = new Janus.Windows.UI.StatusBar.UIStatusBar();
-            this.uiTab1 = new Janus.Windows.UI.Tab.UITab();
+            this.TableList = new Janus.Windows.UI.Tab.UITab();
             this.uiTabPage1 = new Janus.Windows.UI.Tab.UITabPage();
             this.InformationBox = new System.Windows.Forms.TextBox();
             this.uiTabPage2 = new Janus.Windows.UI.Tab.UITabPage();
@@ -132,6 +135,19 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.IndicatorArea = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MeasurementArea = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DiffArea = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Table1 = new Janus.Windows.UI.Tab.UITabPage();
+            this.dgv_Table1 = new System.Windows.Forms.DataGridView();
+            this.Index = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.District = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RegionName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RegionIndex = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AdmitedTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ImplementSpan = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ProcessState = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Table2 = new Janus.Windows.UI.Tab.UITabPage();
+            this.Table3 = new Janus.Windows.UI.Tab.UITabPage();
+            this.Table4 = new Janus.Windows.UI.Tab.UITabPage();
+            this.Table5 = new Janus.Windows.UI.Tab.UITabPage();
             this.progressBar1 = new Janus.Windows.EditControls.UIProgressBar();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.uiTab2 = new Janus.Windows.UI.Tab.UITab();
@@ -160,11 +176,9 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.btnColorRander = new System.Windows.Forms.ToolStripMenuItem();
             this.checkBoxCommand1 = new Janus.Windows.Ribbon.CheckBoxCommand();
             this.checkBoxCommand2 = new Janus.Windows.Ribbon.CheckBoxCommand();
-            this.ribbonGroup11 = new Janus.Windows.Ribbon.RibbonGroup();
-            this.buttonCommand1 = new Janus.Windows.Ribbon.ButtonCommand();
             ((System.ComponentModel.ISupportInitialize)(this.ribbon1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.uiTab1)).BeginInit();
-            this.uiTab1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TableList)).BeginInit();
+            this.TableList.SuspendLayout();
             this.uiTabPage1.SuspendLayout();
             this.uiTabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
@@ -174,6 +188,8 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             ((System.ComponentModel.ISupportInitialize)(this.dgvError)).BeginInit();
             this.uiTabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStastic)).BeginInit();
+            this.Table1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_Table1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -568,6 +584,30 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.btnSave.Text = "保存";
             this.btnSave.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.btnSave_Click);
             // 
+            // ribbonGroup11
+            // 
+            this.ribbonGroup11.Commands.AddRange(new Janus.Windows.Ribbon.CommandBase[] {
+            this.btnPreview1,
+            this.btnExport1});
+            this.ribbonGroup11.DialogButtonSuperTipSettings.ImageListProvider = this.ribbonGroup11;
+            this.ribbonGroup11.Key = "ribbonGroup11";
+            this.ribbonGroup11.Name = "ribbonGroup11";
+            this.ribbonGroup11.Text = "Group 5";
+            // 
+            // btnPreview1
+            // 
+            this.btnPreview1.Key = "buttonCommand2";
+            this.btnPreview1.Name = "btnPreview1";
+            this.btnPreview1.Text = "预览附表1";
+            this.btnPreview1.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.btnPreview1_Click);
+            // 
+            // btnExport1
+            // 
+            this.btnExport1.Key = "buttonCommand1";
+            this.btnExport1.Name = "btnExport1";
+            this.btnExport1.Text = "导出附表1";
+            this.btnExport1.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.buttonCommand1_Click_2);
+            // 
             // ribbonTab3
             // 
             this.ribbonTab3.Groups.AddRange(new Janus.Windows.Ribbon.RibbonGroup[] {
@@ -663,22 +703,27 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.uiStatusBar1.TabIndex = 6;
             this.uiStatusBar1.VisualStyle = Janus.Windows.UI.VisualStyle.Office2007;
             // 
-            // uiTab1
+            // TableList
             // 
-            this.uiTab1.BackColor = System.Drawing.Color.Transparent;
-            this.uiTab1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.uiTab1.FirstTabOffset = 3;
-            this.uiTab1.Location = new System.Drawing.Point(0, 0);
-            this.uiTab1.Name = "uiTab1";
-            this.uiTab1.Size = new System.Drawing.Size(1250, 312);
-            this.uiTab1.TabIndex = 8;
-            this.uiTab1.TabPages.AddRange(new Janus.Windows.UI.Tab.UITabPage[] {
+            this.TableList.BackColor = System.Drawing.Color.Transparent;
+            this.TableList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TableList.FirstTabOffset = 3;
+            this.TableList.Location = new System.Drawing.Point(0, 0);
+            this.TableList.Name = "TableList";
+            this.TableList.Size = new System.Drawing.Size(1250, 312);
+            this.TableList.TabIndex = 8;
+            this.TableList.TabPages.AddRange(new Janus.Windows.UI.Tab.UITabPage[] {
             this.uiTabPage1,
             this.uiTabPage2,
-            this.uiTabPage5});
-            this.uiTab1.TabStripAlignment = Janus.Windows.UI.Tab.TabStripAlignment.Bottom;
-            this.uiTab1.TextOrientation = Janus.Windows.UI.Tab.TextOrientation.Horizontal;
-            this.uiTab1.VisualStyle = Janus.Windows.UI.Tab.TabVisualStyle.Office2003;
+            this.uiTabPage5,
+            this.Table1,
+            this.Table2,
+            this.Table3,
+            this.Table4,
+            this.Table5});
+            this.TableList.TabStripAlignment = Janus.Windows.UI.Tab.TabStripAlignment.Bottom;
+            this.TableList.TextOrientation = Janus.Windows.UI.Tab.TextOrientation.Horizontal;
+            this.TableList.VisualStyle = Janus.Windows.UI.Tab.TabVisualStyle.Office2003;
             // 
             // uiTabPage1
             // 
@@ -903,6 +948,116 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.DiffArea.DataPropertyName = "DiffArea";
             this.DiffArea.HeaderText = "差值";
             this.DiffArea.Name = "DiffArea";
+            // 
+            // Table1
+            // 
+            this.Table1.Controls.Add(this.dgv_Table1);
+            this.Table1.Location = new System.Drawing.Point(1, 1);
+            this.Table1.Name = "Table1";
+            this.Table1.Size = new System.Drawing.Size(1248, 291);
+            this.Table1.TabStop = true;
+            this.Table1.Text = "附表1";
+            // 
+            // dgv_Table1
+            // 
+            this.dgv_Table1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgv_Table1.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
+            this.dgv_Table1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_Table1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Index,
+            this.District,
+            this.RegionName,
+            this.RegionIndex,
+            this.AdmitedTime,
+            this.ImplementSpan,
+            this.ProcessState});
+            this.dgv_Table1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_Table1.Location = new System.Drawing.Point(0, 0);
+            this.dgv_Table1.Name = "dgv_Table1";
+            this.dgv_Table1.RowTemplate.Height = 23;
+            this.dgv_Table1.Size = new System.Drawing.Size(1248, 291);
+            this.dgv_Table1.TabIndex = 0;
+            // 
+            // Index
+            // 
+            this.Index.DataPropertyName = "Index";
+            this.Index.FillWeight = 35.53299F;
+            this.Index.HeaderText = "序号";
+            this.Index.Name = "Index";
+            // 
+            // District
+            // 
+            this.District.DataPropertyName = "District";
+            this.District.FillWeight = 47.46219F;
+            this.District.HeaderText = "区名";
+            this.District.Name = "District";
+            // 
+            // RegionName
+            // 
+            this.RegionName.DataPropertyName = "RegionName";
+            this.RegionName.FillWeight = 177.5086F;
+            this.RegionName.HeaderText = "项目区名称";
+            this.RegionName.Name = "RegionName";
+            // 
+            // RegionIndex
+            // 
+            this.RegionIndex.DataPropertyName = "RegionIndex";
+            this.RegionIndex.FillWeight = 85.59283F;
+            this.RegionIndex.HeaderText = "项目区编号";
+            this.RegionIndex.Name = "RegionIndex";
+            // 
+            // AdmitedTime
+            // 
+            this.AdmitedTime.DataPropertyName = "AdmitedTime";
+            this.AdmitedTime.FillWeight = 75.20687F;
+            this.AdmitedTime.HeaderText = "项目批复时间";
+            this.AdmitedTime.Name = "AdmitedTime";
+            // 
+            // ImplementSpan
+            // 
+            this.ImplementSpan.DataPropertyName = "ImplementSpan";
+            this.ImplementSpan.FillWeight = 101.1879F;
+            this.ImplementSpan.HeaderText = "实施期限";
+            this.ImplementSpan.Name = "ImplementSpan";
+            // 
+            // ProcessState
+            // 
+            this.ProcessState.DataPropertyName = "ProcessState";
+            this.ProcessState.FillWeight = 177.5086F;
+            this.ProcessState.HeaderText = "项目进度概况";
+            this.ProcessState.Name = "ProcessState";
+            // 
+            // Table2
+            // 
+            this.Table2.Location = new System.Drawing.Point(1, 1);
+            this.Table2.Name = "Table2";
+            this.Table2.Size = new System.Drawing.Size(1248, 291);
+            this.Table2.TabStop = true;
+            this.Table2.Text = "附表2";
+            // 
+            // Table3
+            // 
+            this.Table3.Location = new System.Drawing.Point(1, 1);
+            this.Table3.Name = "Table3";
+            this.Table3.Size = new System.Drawing.Size(1248, 291);
+            this.Table3.TabStop = true;
+            this.Table3.Text = "附表3";
+            // 
+            // Table4
+            // 
+            this.Table4.Location = new System.Drawing.Point(1, 1);
+            this.Table4.Name = "Table4";
+            this.Table4.Size = new System.Drawing.Size(1248, 291);
+            this.Table4.TabStop = true;
+            this.Table4.Text = "附表4";
+            // 
+            // Table5
+            // 
+            this.Table5.Location = new System.Drawing.Point(1, 1);
+            this.Table5.Name = "Table5";
+            this.Table5.Size = new System.Drawing.Size(1248, 291);
+            this.Table5.TabStop = true;
+            this.Table5.Text = "附表5";
             // 
             // progressBar1
             // 
@@ -1139,7 +1294,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.uiTab1);
+            this.panel2.Controls.Add(this.TableList);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
@@ -1225,22 +1380,6 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.checkBoxCommand2.Name = "cbIsClear";
             this.checkBoxCommand2.Text = "是否清除上一步检查的错误";
             // 
-            // ribbonGroup11
-            // 
-            this.ribbonGroup11.Commands.AddRange(new Janus.Windows.Ribbon.CommandBase[] {
-            this.buttonCommand1});
-            this.ribbonGroup11.DialogButtonSuperTipSettings.ImageListProvider = this.ribbonGroup11;
-            this.ribbonGroup11.Key = "ribbonGroup11";
-            this.ribbonGroup11.Name = "ribbonGroup11";
-            this.ribbonGroup11.Text = "Group 5";
-            // 
-            // buttonCommand1
-            // 
-            this.buttonCommand1.Key = "buttonCommand1";
-            this.buttonCommand1.Name = "buttonCommand1";
-            this.buttonCommand1.Text = "导出附表1";
-            this.buttonCommand1.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.buttonCommand1_Click_2);
-            // 
             // ZenJian
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1255,8 +1394,8 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.Text = "增减挂钩质检";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)(this.ribbon1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.uiTab1)).EndInit();
-            this.uiTab1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.TableList)).EndInit();
+            this.TableList.ResumeLayout(false);
             this.uiTabPage1.ResumeLayout(false);
             this.uiTabPage1.PerformLayout();
             this.uiTabPage2.ResumeLayout(false);
@@ -1267,6 +1406,8 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             ((System.ComponentModel.ISupportInitialize)(this.dgvError)).EndInit();
             this.uiTabPage5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvStastic)).EndInit();
+            this.Table1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_Table1)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -1347,7 +1488,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         private Janus.Windows.Ribbon.RibbonGroup ribbonGroup4;
         private Janus.Windows.Ribbon.ButtonCommand buttonCommand6;
         public Janus.Windows.UI.StatusBar.UIStatusBar uiStatusBar1;
-        public Janus.Windows.UI.Tab.UITab uiTab1;
+        public Janus.Windows.UI.Tab.UITab TableList;
         public Janus.Windows.EditControls.UIProgressBar progressBar1;
         private Janus.Windows.Ribbon.RibbonGroup ribbonGroup5;
         private Janus.Windows.Ribbon.ButtonCommand btnErrorExport;
@@ -1400,7 +1541,21 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         public System.Windows.Forms.DataGridView dgvTable;
         private Janus.Windows.Ribbon.ButtonCommand btnadd;
         private Janus.Windows.Ribbon.RibbonGroup ribbonGroup11;
-        private Janus.Windows.Ribbon.ButtonCommand buttonCommand1;
+        private Janus.Windows.Ribbon.ButtonCommand btnExport1;
+        private Janus.Windows.UI.Tab.UITabPage Table1;
+        private System.Windows.Forms.DataGridView dgv_Table1;
+        private Janus.Windows.Ribbon.ButtonCommand btnPreview1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Index;
+        private System.Windows.Forms.DataGridViewTextBoxColumn District;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RegionName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RegionIndex;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AdmitedTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ImplementSpan;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ProcessState;
+        private Janus.Windows.UI.Tab.UITabPage Table2;
+        private Janus.Windows.UI.Tab.UITabPage Table3;
+        private Janus.Windows.UI.Tab.UITabPage Table4;
+        private Janus.Windows.UI.Tab.UITabPage Table5;
     }
 }
 
