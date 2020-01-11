@@ -3316,6 +3316,12 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         {
             DataTable pDataTable1 = new DataTable();//建立一个table
             string[] FieldName = new string[] { "Index", "District", "RegionName", "RegionIndex", "AdmitedTime", "ImplementSpan", "ProcessState" };
+            //表格2 string[] FieldName = new string[] { "Index2", "RegionName2", "RegionIndex2", "SetupRegion_new", "Area_new", "OutRegion_new", "OutArea","OutTarget","OldRegion_old","OldArea","InvolveFarmers","ApprovalTime","ApprovalIndex","Deadline","BuildingArea","Plough" };
+
+            //表格3 string[] FieldName = new string[] { "RegionName3", "RegionIndex3", "InvolvedTown", "PlanuseBuilding_all", "PlanusePlough_all", "RealuseBuilding_all", "RealusePlough_all", "PlanuseBuilding_setup", "PlanusePlough_setup", "RealuseBuilding_setup", "RealusePlough_setup", "PlanuseBuilding_out", "PlanusePlough_out", "RealuseBuilding_out", "RealusePlough_out","Planreturnbuildingarea","Planreturnplough","Realreturnbuildingarea","Realreturnplough" };
+            //string[] FieldName = new string[] { "Index", "District", "RegionName", "RegionIndex", "AdmitedTime", "ImplementSpan", "ProcessState" };
+            //string[] FieldName = new string[] { "Index", "District", "RegionName", "RegionIndex", "AdmitedTime", "ImplementSpan", "ProcessState" };
+
             for (int i = 0; i < FieldName.Length; i++)
             {
                 pDataTable1.Columns.Add(FieldName[i]);
@@ -3339,6 +3345,11 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         }
 
         private void ribbonGroup2_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
+        {
+
+        }
+
+        private void dgv_Table2_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }

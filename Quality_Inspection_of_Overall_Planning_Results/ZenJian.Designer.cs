@@ -84,20 +84,32 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.btnStatisticExport = new Janus.Windows.Ribbon.ButtonCommand();
             this.ribbonTab2 = new Janus.Windows.Ribbon.RibbonTab();
             this.ribbonGroup2 = new Janus.Windows.Ribbon.RibbonGroup();
+            this.btnSearch = new Janus.Windows.Ribbon.ButtonCommand();
+            this.separatorCommand3 = new Janus.Windows.Ribbon.SeparatorCommand();
+            this.btnPreview1 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.btnExport1 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.separatorCommand4 = new Janus.Windows.Ribbon.SeparatorCommand();
+            this.btnPreview2 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.btnExport2 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.separatorCommand5 = new Janus.Windows.Ribbon.SeparatorCommand();
+            this.btnPreview3 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.btnExport3 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.separatorCommand6 = new Janus.Windows.Ribbon.SeparatorCommand();
+            this.btnPreview4 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.btnExport4 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.separatorCommand7 = new Janus.Windows.Ribbon.SeparatorCommand();
+            this.btnPreview5 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.btnExport5 = new Janus.Windows.Ribbon.ButtonCommand();
             this.ribbonGroup4 = new Janus.Windows.Ribbon.RibbonGroup();
             this.buttonCommand6 = new Janus.Windows.Ribbon.ButtonCommand();
             this.btnTextAuxiliaryCheck = new Janus.Windows.Ribbon.ButtonCommand();
             this.ribbonGroup7 = new Janus.Windows.Ribbon.RibbonGroup();
-            this.LineExtract = new Janus.Windows.Ribbon.ButtonCommand();
             this.ribbonGroup9 = new Janus.Windows.Ribbon.RibbonGroup();
-            this.btnSearch = new Janus.Windows.Ribbon.ButtonCommand();
             this.ribbonGroup10 = new Janus.Windows.Ribbon.RibbonGroup();
             this.cbcActivateAlter = new Janus.Windows.Ribbon.CheckBoxCommand();
             this.btnadd = new Janus.Windows.Ribbon.ButtonCommand();
             this.btnSave = new Janus.Windows.Ribbon.ButtonCommand();
             this.ribbonGroup11 = new Janus.Windows.Ribbon.RibbonGroup();
-            this.btnPreview1 = new Janus.Windows.Ribbon.ButtonCommand();
-            this.btnExport1 = new Janus.Windows.Ribbon.ButtonCommand();
             this.ribbonTab3 = new Janus.Windows.Ribbon.RibbonTab();
             this.ribbonGroup8 = new Janus.Windows.Ribbon.RibbonGroup();
             this.cbIsClear = new Janus.Windows.Ribbon.CheckBoxCommand();
@@ -169,19 +181,68 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.btnColorRander = new System.Windows.Forms.ToolStripMenuItem();
             this.checkBoxCommand1 = new Janus.Windows.Ribbon.CheckBoxCommand();
             this.checkBoxCommand2 = new Janus.Windows.Ribbon.CheckBoxCommand();
-            this.separatorCommand3 = new Janus.Windows.Ribbon.SeparatorCommand();
-            this.separatorCommand4 = new Janus.Windows.Ribbon.SeparatorCommand();
-            this.btnPreview2 = new Janus.Windows.Ribbon.ButtonCommand();
-            this.btnExport2 = new Janus.Windows.Ribbon.ButtonCommand();
-            this.separatorCommand5 = new Janus.Windows.Ribbon.SeparatorCommand();
-            this.btnPreview3 = new Janus.Windows.Ribbon.ButtonCommand();
-            this.btnExport3 = new Janus.Windows.Ribbon.ButtonCommand();
-            this.separatorCommand6 = new Janus.Windows.Ribbon.SeparatorCommand();
-            this.btnPreview4 = new Janus.Windows.Ribbon.ButtonCommand();
-            this.btnExport4 = new Janus.Windows.Ribbon.ButtonCommand();
-            this.separatorCommand7 = new Janus.Windows.Ribbon.SeparatorCommand();
-            this.btnPreview5 = new Janus.Windows.Ribbon.ButtonCommand();
-            this.btnExport5 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.dgv_Table2 = new System.Windows.Forms.DataGridView();
+            this.Index2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RegionName2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RegionIndex2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SetupRegion_new = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Area_new = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OutRegion_new = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OutArea = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OutTarget = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OldRegion_old = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.OldArea = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.InvolveFarmers = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ApprovalTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ApprovalIndex = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Deadline = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BuildingArea = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Plough = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgv_Table3 = new System.Windows.Forms.DataGridView();
+            this.RegionName3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RegionIndex3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.InvolvedTown = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PlanuseBuilding_all = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PlanusePlough_all = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RealuseBuilding_all = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RealusePlough_all = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PlanuseBuilding_setup = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PlanusePlough_setup = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RealuseBuilding_setup = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RealusePlough_setup = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PlanuseBuilding_out = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PlanusePlough_out = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RealuseBuilding_out = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RealusePlough_out = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Planreturnbuildingarea = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Planreturnplough = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Realreturnbuildingarea = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Realreturnplough = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgv_Table4 = new System.Windows.Forms.DataGridView();
+            this.RegionName4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ProjectregionName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Counts = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Area_new4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NewBuildingArea = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Farmland = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Plough4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Unuseland = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TargetBuildingArea4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TargetPlough = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RealUseBuildingArea = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RealUsePlough = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgv_Table5 = new System.Windows.Forms.DataGridView();
+            this.Index5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ProjectName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ReclamationProjectsNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ApprovedPlotsNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Area5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AcceptanceItemsNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AcceptancePlotsNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ImplementationArea = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ReturnBuildingArea = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NewPloughArea = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ReturnPloughArea = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.ribbon1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TableList)).BeginInit();
             this.TableList.SuspendLayout();
@@ -196,6 +257,10 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             ((System.ComponentModel.ISupportInitialize)(this.dgvStastic)).BeginInit();
             this.Table1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Table1)).BeginInit();
+            this.Table2.SuspendLayout();
+            this.Table3.SuspendLayout();
+            this.Table4.SuspendLayout();
+            this.Table5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -226,6 +291,10 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.contextMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_Table2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_Table3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_Table4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_Table5)).BeginInit();
             this.SuspendLayout();
             // 
             // ribbon1
@@ -439,6 +508,100 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.ribbonGroup2.Text = "数据库检查模块";
             this.ribbonGroup2.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.ribbonGroup2_Click);
             // 
+            // btnSearch
+            // 
+            this.btnSearch.Key = "buttonCommand1";
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Text = "查询";
+            this.btnSearch.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.buttonCommand1_Click_1);
+            // 
+            // separatorCommand3
+            // 
+            this.separatorCommand3.Key = "separatorCommand3";
+            this.separatorCommand3.Name = "separatorCommand3";
+            // 
+            // btnPreview1
+            // 
+            this.btnPreview1.Key = "buttonCommand2";
+            this.btnPreview1.Name = "btnPreview1";
+            this.btnPreview1.Text = "预览附表1";
+            this.btnPreview1.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.btnPreview1_Click);
+            // 
+            // btnExport1
+            // 
+            this.btnExport1.Key = "buttonCommand1";
+            this.btnExport1.Name = "btnExport1";
+            this.btnExport1.Text = "导出附表1";
+            this.btnExport1.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.buttonCommand1_Click_2);
+            // 
+            // separatorCommand4
+            // 
+            this.separatorCommand4.Key = "separatorCommand4";
+            this.separatorCommand4.Name = "separatorCommand4";
+            // 
+            // btnPreview2
+            // 
+            this.btnPreview2.Key = "buttonCommand1";
+            this.btnPreview2.Name = "btnPreview2";
+            this.btnPreview2.Text = "预览附表2";
+            // 
+            // btnExport2
+            // 
+            this.btnExport2.Key = "buttonCommand2";
+            this.btnExport2.Name = "btnExport2";
+            this.btnExport2.Text = "预览附表2";
+            // 
+            // separatorCommand5
+            // 
+            this.separatorCommand5.Key = "separatorCommand5";
+            this.separatorCommand5.Name = "separatorCommand5";
+            // 
+            // btnPreview3
+            // 
+            this.btnPreview3.Key = "buttonCommand1";
+            this.btnPreview3.Name = "btnPreview3";
+            this.btnPreview3.Text = "预览附表3";
+            // 
+            // btnExport3
+            // 
+            this.btnExport3.Key = "buttonCommand2";
+            this.btnExport3.Name = "btnExport3";
+            this.btnExport3.Text = "导出附表3";
+            // 
+            // separatorCommand6
+            // 
+            this.separatorCommand6.Key = "separatorCommand6";
+            this.separatorCommand6.Name = "separatorCommand6";
+            // 
+            // btnPreview4
+            // 
+            this.btnPreview4.Key = "buttonCommand3";
+            this.btnPreview4.Name = "btnPreview4";
+            this.btnPreview4.Text = "预览附表4";
+            // 
+            // btnExport4
+            // 
+            this.btnExport4.Key = "buttonCommand4";
+            this.btnExport4.Name = "btnExport4";
+            this.btnExport4.Text = "导出附表4";
+            // 
+            // separatorCommand7
+            // 
+            this.separatorCommand7.Key = "separatorCommand7";
+            this.separatorCommand7.Name = "separatorCommand7";
+            // 
+            // btnPreview5
+            // 
+            this.btnPreview5.Key = "buttonCommand1";
+            this.btnPreview5.Name = "btnPreview5";
+            this.btnPreview5.Text = "预览附表5";
+            // 
+            // btnExport5
+            // 
+            this.btnExport5.Key = "buttonCommand2";
+            this.btnExport5.Name = "btnExport5";
+            this.btnExport5.Text = "导出附表5";
+            // 
             // ribbonGroup4
             // 
             this.ribbonGroup4.Commands.AddRange(new Janus.Windows.Ribbon.CommandBase[] {
@@ -467,20 +630,10 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // 
             // ribbonGroup7
             // 
-            this.ribbonGroup7.Commands.AddRange(new Janus.Windows.Ribbon.CommandBase[] {
-            this.LineExtract});
             this.ribbonGroup7.DialogButtonSuperTipSettings.ImageListProvider = this.ribbonGroup7;
             this.ribbonGroup7.Key = "ribbonGroup7";
             this.ribbonGroup7.Name = "ribbonGroup7";
             this.ribbonGroup7.Text = "规模控制线提取模块";
-            // 
-            // LineExtract
-            // 
-            this.LineExtract.Image = ((System.Drawing.Image)(resources.GetObject("LineExtract.Image")));
-            this.LineExtract.Key = "buttonCommand1";
-            this.LineExtract.Name = "LineExtract";
-            this.LineExtract.Text = "镇总规控制线提取";
-            this.LineExtract.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.LineExtract_Click);
             // 
             // ribbonGroup9
             // 
@@ -488,13 +641,6 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.ribbonGroup9.Key = "ribbonGroup9";
             this.ribbonGroup9.Name = "ribbonGroup9";
             this.ribbonGroup9.Text = "Group 3";
-            // 
-            // btnSearch
-            // 
-            this.btnSearch.Key = "buttonCommand1";
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Text = "查询";
-            this.btnSearch.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.buttonCommand1_Click_1);
             // 
             // ribbonGroup10
             // 
@@ -548,20 +694,6 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.ribbonGroup11.Key = "ribbonGroup11";
             this.ribbonGroup11.Name = "ribbonGroup11";
             this.ribbonGroup11.Text = "Group 5";
-            // 
-            // btnPreview1
-            // 
-            this.btnPreview1.Key = "buttonCommand2";
-            this.btnPreview1.Name = "btnPreview1";
-            this.btnPreview1.Text = "预览附表1";
-            this.btnPreview1.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.btnPreview1_Click);
-            // 
-            // btnExport1
-            // 
-            this.btnExport1.Key = "buttonCommand1";
-            this.btnExport1.Name = "btnExport1";
-            this.btnExport1.Text = "导出附表1";
-            this.btnExport1.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.buttonCommand1_Click_2);
             // 
             // ribbonTab3
             // 
@@ -984,6 +1116,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // 
             // Table2
             // 
+            this.Table2.Controls.Add(this.dgv_Table2);
             this.Table2.Location = new System.Drawing.Point(1, 1);
             this.Table2.Name = "Table2";
             this.Table2.Size = new System.Drawing.Size(1248, 291);
@@ -992,6 +1125,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // 
             // Table3
             // 
+            this.Table3.Controls.Add(this.dgv_Table3);
             this.Table3.Location = new System.Drawing.Point(1, 1);
             this.Table3.Name = "Table3";
             this.Table3.Size = new System.Drawing.Size(1248, 291);
@@ -1000,6 +1134,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // 
             // Table4
             // 
+            this.Table4.Controls.Add(this.dgv_Table4);
             this.Table4.Location = new System.Drawing.Point(1, 1);
             this.Table4.Name = "Table4";
             this.Table4.Size = new System.Drawing.Size(1248, 291);
@@ -1008,6 +1143,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // 
             // Table5
             // 
+            this.Table5.Controls.Add(this.dgv_Table5);
             this.Table5.Location = new System.Drawing.Point(1, 1);
             this.Table5.Name = "Table5";
             this.Table5.Size = new System.Drawing.Size(1248, 291);
@@ -1335,78 +1471,464 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.checkBoxCommand2.Name = "cbIsClear";
             this.checkBoxCommand2.Text = "是否清除上一步检查的错误";
             // 
-            // separatorCommand3
+            // dgv_Table2
             // 
-            this.separatorCommand3.Key = "separatorCommand3";
-            this.separatorCommand3.Name = "separatorCommand3";
+            this.dgv_Table2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgv_Table2.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
+            this.dgv_Table2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_Table2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Index2,
+            this.RegionName2,
+            this.RegionIndex2,
+            this.SetupRegion_new,
+            this.Area_new,
+            this.OutRegion_new,
+            this.OutArea,
+            this.OutTarget,
+            this.OldRegion_old,
+            this.OldArea,
+            this.InvolveFarmers,
+            this.ApprovalTime,
+            this.ApprovalIndex,
+            this.Deadline,
+            this.BuildingArea,
+            this.Plough});
+            this.dgv_Table2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_Table2.Location = new System.Drawing.Point(0, 0);
+            this.dgv_Table2.Name = "dgv_Table2";
+            this.dgv_Table2.RowTemplate.Height = 23;
+            this.dgv_Table2.Size = new System.Drawing.Size(1248, 291);
+            this.dgv_Table2.TabIndex = 0;
+            this.dgv_Table2.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_Table2_CellContentClick);
             // 
-            // separatorCommand4
+            // Index2
             // 
-            this.separatorCommand4.Key = "separatorCommand4";
-            this.separatorCommand4.Name = "separatorCommand4";
+            this.Index2.DataPropertyName = "Index2";
+            this.Index2.HeaderText = "序号";
+            this.Index2.Name = "Index2";
             // 
-            // btnPreview2
+            // RegionName2
             // 
-            this.btnPreview2.Key = "buttonCommand1";
-            this.btnPreview2.Name = "btnPreview2";
-            this.btnPreview2.Text = "预览附表2";
+            this.RegionName2.DataPropertyName = "RegionName2";
+            this.RegionName2.HeaderText = "项目区名称";
+            this.RegionName2.Name = "RegionName2";
             // 
-            // btnExport2
+            // RegionIndex2
             // 
-            this.btnExport2.Key = "buttonCommand2";
-            this.btnExport2.Name = "btnExport2";
-            this.btnExport2.Text = "预览附表2";
+            this.RegionIndex2.DataPropertyName = "RegionIndex2";
+            this.RegionIndex2.HeaderText = "项目区编号";
+            this.RegionIndex2.Name = "RegionIndex2";
             // 
-            // separatorCommand5
+            // SetupRegion_new
             // 
-            this.separatorCommand5.Key = "separatorCommand5";
-            this.separatorCommand5.Name = "separatorCommand5";
+            this.SetupRegion_new.DataPropertyName = "SetupRegion_new";
+            this.SetupRegion_new.HeaderText = "安置地块_建新区";
+            this.SetupRegion_new.Name = "SetupRegion_new";
             // 
-            // btnPreview3
+            // Area_new
             // 
-            this.btnPreview3.Key = "buttonCommand1";
-            this.btnPreview3.Name = "btnPreview3";
-            this.btnPreview3.Text = "预览附表3";
+            this.Area_new.DataPropertyName = "Area_new";
+            this.Area_new.HeaderText = "面积_建新区";
+            this.Area_new.Name = "Area_new";
             // 
-            // btnExport3
+            // OutRegion_new
             // 
-            this.btnExport3.Key = "buttonCommand2";
-            this.btnExport3.Name = "btnExport3";
-            this.btnExport3.Text = "导出附表3";
+            this.OutRegion_new.DataPropertyName = "OutRegion_new";
+            this.OutRegion_new.HeaderText = "出让地块_建新区";
+            this.OutRegion_new.Name = "OutRegion_new";
             // 
-            // separatorCommand6
+            // OutArea
             // 
-            this.separatorCommand6.Key = "separatorCommand6";
-            this.separatorCommand6.Name = "separatorCommand6";
+            this.OutArea.DataPropertyName = "OutArea";
+            this.OutArea.HeaderText = "出让面积";
+            this.OutArea.Name = "OutArea";
             // 
-            // btnPreview4
+            // OutTarget
             // 
-            this.btnPreview4.Key = "buttonCommand3";
-            this.btnPreview4.Name = "btnPreview4";
-            this.btnPreview4.Text = "预览附表4";
+            this.OutTarget.DataPropertyName = "OutTarget";
+            this.OutTarget.HeaderText = "统筹出让指标";
+            this.OutTarget.Name = "OutTarget";
             // 
-            // btnExport4
+            // OldRegion_old
             // 
-            this.btnExport4.Key = "buttonCommand4";
-            this.btnExport4.Name = "btnExport4";
-            this.btnExport4.Text = "导出附表4";
+            this.OldRegion_old.DataPropertyName = "OldRegion_old";
+            this.OldRegion_old.HeaderText = "拆旧地块";
+            this.OldRegion_old.Name = "OldRegion_old";
             // 
-            // separatorCommand7
+            // OldArea
             // 
-            this.separatorCommand7.Key = "separatorCommand7";
-            this.separatorCommand7.Name = "separatorCommand7";
+            this.OldArea.DataPropertyName = "OldArea";
+            this.OldArea.HeaderText = "拆旧面积";
+            this.OldArea.Name = "OldArea";
             // 
-            // btnPreview5
+            // InvolveFarmers
             // 
-            this.btnPreview5.Key = "buttonCommand1";
-            this.btnPreview5.Name = "btnPreview5";
-            this.btnPreview5.Text = "预览附表5";
+            this.InvolveFarmers.DataPropertyName = "InvolveFarmers";
+            this.InvolveFarmers.HeaderText = "涉及农户";
+            this.InvolveFarmers.Name = "InvolveFarmers";
             // 
-            // btnExport5
+            // ApprovalTime
             // 
-            this.btnExport5.Key = "buttonCommand2";
-            this.btnExport5.Name = "btnExport5";
-            this.btnExport5.Text = "导出附表5";
+            this.ApprovalTime.DataPropertyName = "ApprovalTime";
+            this.ApprovalTime.HeaderText = "批复下达时间";
+            this.ApprovalTime.Name = "ApprovalTime";
+            // 
+            // ApprovalIndex
+            // 
+            this.ApprovalIndex.DataPropertyName = "ApprovalIndex";
+            this.ApprovalIndex.HeaderText = "批复文号";
+            this.ApprovalIndex.Name = "ApprovalIndex";
+            // 
+            // Deadline
+            // 
+            this.Deadline.DataPropertyName = "Deadline";
+            this.Deadline.HeaderText = "实施期限";
+            this.Deadline.Name = "Deadline";
+            // 
+            // BuildingArea
+            // 
+            this.BuildingArea.DataPropertyName = "BuildingArea";
+            this.BuildingArea.HeaderText = "建设用地";
+            this.BuildingArea.Name = "BuildingArea";
+            // 
+            // Plough
+            // 
+            this.Plough.DataPropertyName = "Plough";
+            this.Plough.HeaderText = "耕地";
+            this.Plough.Name = "Plough";
+            // 
+            // dgv_Table3
+            // 
+            this.dgv_Table3.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgv_Table3.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
+            this.dgv_Table3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_Table3.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.RegionName3,
+            this.RegionIndex3,
+            this.InvolvedTown,
+            this.PlanuseBuilding_all,
+            this.PlanusePlough_all,
+            this.RealuseBuilding_all,
+            this.RealusePlough_all,
+            this.PlanuseBuilding_setup,
+            this.PlanusePlough_setup,
+            this.RealuseBuilding_setup,
+            this.RealusePlough_setup,
+            this.PlanuseBuilding_out,
+            this.PlanusePlough_out,
+            this.RealuseBuilding_out,
+            this.RealusePlough_out,
+            this.Planreturnbuildingarea,
+            this.Planreturnplough,
+            this.Realreturnbuildingarea,
+            this.Realreturnplough});
+            this.dgv_Table3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_Table3.Location = new System.Drawing.Point(0, 0);
+            this.dgv_Table3.Name = "dgv_Table3";
+            this.dgv_Table3.RowTemplate.Height = 23;
+            this.dgv_Table3.Size = new System.Drawing.Size(1248, 291);
+            this.dgv_Table3.TabIndex = 1;
+            // 
+            // RegionName3
+            // 
+            this.RegionName3.DataPropertyName = "RegionName3";
+            this.RegionName3.HeaderText = "区县";
+            this.RegionName3.Name = "RegionName3";
+            // 
+            // RegionIndex3
+            // 
+            this.RegionIndex3.DataPropertyName = "RegionIndex3";
+            this.RegionIndex3.HeaderText = "项目区编号";
+            this.RegionIndex3.Name = "RegionIndex3";
+            // 
+            // InvolvedTown
+            // 
+            this.InvolvedTown.DataPropertyName = "InvolvedTown";
+            this.InvolvedTown.HeaderText = "项目涉及镇";
+            this.InvolvedTown.Name = "InvolvedTown";
+            // 
+            // PlanuseBuilding_all
+            // 
+            this.PlanuseBuilding_all.DataPropertyName = "PlanuseBuilding_all";
+            this.PlanuseBuilding_all.HeaderText = "计划使用建设用地_总";
+            this.PlanuseBuilding_all.Name = "PlanuseBuilding_all";
+            // 
+            // PlanusePlough_all
+            // 
+            this.PlanusePlough_all.DataPropertyName = "PlanusePlough_all";
+            this.PlanusePlough_all.HeaderText = "计划使用耕地_总";
+            this.PlanusePlough_all.Name = "PlanusePlough_all";
+            // 
+            // RealuseBuilding_all
+            // 
+            this.RealuseBuilding_all.DataPropertyName = "RealuseBuilding_all";
+            this.RealuseBuilding_all.HeaderText = "实际使用建设用地_总";
+            this.RealuseBuilding_all.Name = "RealuseBuilding_all";
+            // 
+            // RealusePlough_all
+            // 
+            this.RealusePlough_all.DataPropertyName = "RealusePlough_all";
+            this.RealusePlough_all.HeaderText = "实际使用耕地_总";
+            this.RealusePlough_all.Name = "RealusePlough_all";
+            // 
+            // PlanuseBuilding_setup
+            // 
+            this.PlanuseBuilding_setup.DataPropertyName = "PlanuseBuilding_setup";
+            this.PlanuseBuilding_setup.HeaderText = "计划使用建设用地_安置区";
+            this.PlanuseBuilding_setup.Name = "PlanuseBuilding_setup";
+            // 
+            // PlanusePlough_setup
+            // 
+            this.PlanusePlough_setup.DataPropertyName = "PlanusePlough_setup";
+            this.PlanusePlough_setup.HeaderText = "计划使用耕地_安置区";
+            this.PlanusePlough_setup.Name = "PlanusePlough_setup";
+            // 
+            // RealuseBuilding_setup
+            // 
+            this.RealuseBuilding_setup.DataPropertyName = "RealuseBuilding_setup";
+            this.RealuseBuilding_setup.HeaderText = "实际使用建设用地_安置区";
+            this.RealuseBuilding_setup.Name = "RealuseBuilding_setup";
+            // 
+            // RealusePlough_setup
+            // 
+            this.RealusePlough_setup.DataPropertyName = "RealusePlough_setup";
+            this.RealusePlough_setup.HeaderText = "实际使用耕地_安置区";
+            this.RealusePlough_setup.Name = "RealusePlough_setup";
+            // 
+            // PlanuseBuilding_out
+            // 
+            this.PlanuseBuilding_out.DataPropertyName = "PlanuseBuilding_out";
+            this.PlanuseBuilding_out.HeaderText = "计划使用建设用地_出让区";
+            this.PlanuseBuilding_out.Name = "PlanuseBuilding_out";
+            // 
+            // PlanusePlough_out
+            // 
+            this.PlanusePlough_out.DataPropertyName = "PlanusePlough_out";
+            this.PlanusePlough_out.HeaderText = "计划使用耕地_出让区";
+            this.PlanusePlough_out.Name = "PlanusePlough_out";
+            // 
+            // RealuseBuilding_out
+            // 
+            this.RealuseBuilding_out.DataPropertyName = "RealuseBuilding_out";
+            this.RealuseBuilding_out.HeaderText = "实际使用建设用地_出让区";
+            this.RealuseBuilding_out.Name = "RealuseBuilding_out";
+            // 
+            // RealusePlough_out
+            // 
+            this.RealusePlough_out.DataPropertyName = "RealusePlough_out";
+            this.RealusePlough_out.HeaderText = "实际使用耕地_出让区";
+            this.RealusePlough_out.Name = "RealusePlough_out";
+            // 
+            // Planreturnbuildingarea
+            // 
+            this.Planreturnbuildingarea.DataPropertyName = "Planreturnbuildingarea";
+            this.Planreturnbuildingarea.HeaderText = "计划归还建设用地";
+            this.Planreturnbuildingarea.Name = "Planreturnbuildingarea";
+            // 
+            // Planreturnplough
+            // 
+            this.Planreturnplough.DataPropertyName = "Planreturnplough";
+            this.Planreturnplough.HeaderText = "计划归还耕地";
+            this.Planreturnplough.Name = "Planreturnplough";
+            // 
+            // Realreturnbuildingarea
+            // 
+            this.Realreturnbuildingarea.DataPropertyName = "Realreturnbuildingarea";
+            this.Realreturnbuildingarea.HeaderText = "实际归还建设用地";
+            this.Realreturnbuildingarea.Name = "Realreturnbuildingarea";
+            // 
+            // Realreturnplough
+            // 
+            this.Realreturnplough.DataPropertyName = "Realreturnplough";
+            this.Realreturnplough.HeaderText = "实际归还耕地";
+            this.Realreturnplough.Name = "Realreturnplough";
+            // 
+            // dgv_Table4
+            // 
+            this.dgv_Table4.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgv_Table4.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
+            this.dgv_Table4.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_Table4.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.RegionName4,
+            this.ProjectregionName,
+            this.Counts,
+            this.Area_new4,
+            this.NewBuildingArea,
+            this.Farmland,
+            this.Plough4,
+            this.Unuseland,
+            this.TargetBuildingArea4,
+            this.TargetPlough,
+            this.RealUseBuildingArea,
+            this.RealUsePlough});
+            this.dgv_Table4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_Table4.Location = new System.Drawing.Point(0, 0);
+            this.dgv_Table4.Name = "dgv_Table4";
+            this.dgv_Table4.RowTemplate.Height = 23;
+            this.dgv_Table4.Size = new System.Drawing.Size(1248, 291);
+            this.dgv_Table4.TabIndex = 0;
+            // 
+            // RegionName4
+            // 
+            this.RegionName4.DataPropertyName = "RegionName4";
+            this.RegionName4.HeaderText = "区县";
+            this.RegionName4.Name = "RegionName4";
+            // 
+            // ProjectregionName
+            // 
+            this.ProjectregionName.DataPropertyName = "ProjectregionName";
+            this.ProjectregionName.HeaderText = "项目区名称";
+            this.ProjectregionName.Name = "ProjectregionName";
+            // 
+            // Counts
+            // 
+            this.Counts.DataPropertyName = "Counts";
+            this.Counts.HeaderText = "地块数";
+            this.Counts.Name = "Counts";
+            // 
+            // Area_new4
+            // 
+            this.Area_new4.DataPropertyName = "Area_new4";
+            this.Area_new4.HeaderText = "建新地块面积";
+            this.Area_new4.Name = "Area_new4";
+            // 
+            // NewBuildingArea
+            // 
+            this.NewBuildingArea.DataPropertyName = "NewBuildingArea";
+            this.NewBuildingArea.HeaderText = "新增建设用地面积";
+            this.NewBuildingArea.Name = "NewBuildingArea";
+            // 
+            // Farmland
+            // 
+            this.Farmland.DataPropertyName = "Farmland";
+            this.Farmland.HeaderText = "农用地";
+            this.Farmland.Name = "Farmland";
+            // 
+            // Plough4
+            // 
+            this.Plough4.DataPropertyName = "Plough4";
+            this.Plough4.HeaderText = "耕地";
+            this.Plough4.Name = "Plough4";
+            // 
+            // Unuseland
+            // 
+            this.Unuseland.DataPropertyName = "Unuseland";
+            this.Unuseland.HeaderText = "未利用地";
+            this.Unuseland.Name = "Unuseland";
+            // 
+            // TargetBuildingArea4
+            // 
+            this.TargetBuildingArea4.DataPropertyName = "TargetBuildingArea4";
+            this.TargetBuildingArea4.HeaderText = "指标建设用地";
+            this.TargetBuildingArea4.Name = "TargetBuildingArea4";
+            // 
+            // TargetPlough
+            // 
+            this.TargetPlough.DataPropertyName = "TargetPlough";
+            this.TargetPlough.HeaderText = "指标耕地";
+            this.TargetPlough.Name = "TargetPlough";
+            // 
+            // RealUseBuildingArea
+            // 
+            this.RealUseBuildingArea.DataPropertyName = "RealUseBuildingArea";
+            this.RealUseBuildingArea.HeaderText = "实际使用建设用地";
+            this.RealUseBuildingArea.Name = "RealUseBuildingArea";
+            // 
+            // RealUsePlough
+            // 
+            this.RealUsePlough.DataPropertyName = "RealUsePlough";
+            this.RealUsePlough.HeaderText = "实际使用耕地";
+            this.RealUsePlough.Name = "RealUsePlough";
+            // 
+            // dgv_Table5
+            // 
+            this.dgv_Table5.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgv_Table5.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
+            this.dgv_Table5.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_Table5.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Index5,
+            this.ProjectName,
+            this.ReclamationProjectsNumber,
+            this.ApprovedPlotsNumber,
+            this.Area5,
+            this.AcceptanceItemsNumber,
+            this.AcceptancePlotsNumber,
+            this.ImplementationArea,
+            this.ReturnBuildingArea,
+            this.NewPloughArea,
+            this.ReturnPloughArea});
+            this.dgv_Table5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_Table5.Location = new System.Drawing.Point(0, 0);
+            this.dgv_Table5.Name = "dgv_Table5";
+            this.dgv_Table5.RowTemplate.Height = 23;
+            this.dgv_Table5.Size = new System.Drawing.Size(1248, 291);
+            this.dgv_Table5.TabIndex = 0;
+            // 
+            // Index5
+            // 
+            this.Index5.DataPropertyName = "Index5";
+            this.Index5.HeaderText = "序号";
+            this.Index5.Name = "Index5";
+            // 
+            // ProjectName
+            // 
+            this.ProjectName.DataPropertyName = "ProjectName";
+            this.ProjectName.HeaderText = "项目名称";
+            this.ProjectName.Name = "ProjectName";
+            // 
+            // ReclamationProjectsNumber
+            // 
+            this.ReclamationProjectsNumber.DataPropertyName = "ReclamationProjectsNumber";
+            this.ReclamationProjectsNumber.HeaderText = "整理复垦立项数";
+            this.ReclamationProjectsNumber.Name = "ReclamationProjectsNumber";
+            // 
+            // ApprovedPlotsNumber
+            // 
+            this.ApprovedPlotsNumber.DataPropertyName = "ApprovedPlotsNumber";
+            this.ApprovedPlotsNumber.HeaderText = "立项地块数";
+            this.ApprovedPlotsNumber.Name = "ApprovedPlotsNumber";
+            // 
+            // Area5
+            // 
+            this.Area5.DataPropertyName = "Area5";
+            this.Area5.HeaderText = "面积";
+            this.Area5.Name = "Area5";
+            // 
+            // AcceptanceItemsNumber
+            // 
+            this.AcceptanceItemsNumber.DataPropertyName = "AcceptanceItemsNumber";
+            this.AcceptanceItemsNumber.HeaderText = "验收项目数";
+            this.AcceptanceItemsNumber.Name = "AcceptanceItemsNumber";
+            // 
+            // AcceptancePlotsNumber
+            // 
+            this.AcceptancePlotsNumber.DataPropertyName = "AcceptancePlotsNumber";
+            this.AcceptancePlotsNumber.HeaderText = "验收地块数";
+            this.AcceptancePlotsNumber.Name = "AcceptancePlotsNumber";
+            // 
+            // ImplementationArea
+            // 
+            this.ImplementationArea.DataPropertyName = "ImplementationArea";
+            this.ImplementationArea.HeaderText = "实施总面积";
+            this.ImplementationArea.Name = "ImplementationArea";
+            // 
+            // ReturnBuildingArea
+            // 
+            this.ReturnBuildingArea.DataPropertyName = "ReturnBuildingArea";
+            this.ReturnBuildingArea.HeaderText = "归还建设用地面积";
+            this.ReturnBuildingArea.Name = "ReturnBuildingArea";
+            // 
+            // NewPloughArea
+            // 
+            this.NewPloughArea.DataPropertyName = "NewPloughArea";
+            this.NewPloughArea.HeaderText = "总新增耕地面积";
+            this.NewPloughArea.Name = "NewPloughArea";
+            // 
+            // ReturnPloughArea
+            // 
+            this.ReturnPloughArea.DataPropertyName = "ReturnPloughArea";
+            this.ReturnPloughArea.HeaderText = "归还耕地面积";
+            this.ReturnPloughArea.Name = "ReturnPloughArea";
             // 
             // ZenJian
             // 
@@ -1436,6 +1958,10 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             ((System.ComponentModel.ISupportInitialize)(this.dgvStastic)).EndInit();
             this.Table1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Table1)).EndInit();
+            this.Table2.ResumeLayout(false);
+            this.Table3.ResumeLayout(false);
+            this.Table4.ResumeLayout(false);
+            this.Table5.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -1466,6 +1992,10 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.panel2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.contextMenu.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_Table2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_Table3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_Table4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_Table5)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1547,7 +2077,6 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         private Janus.Windows.Ribbon.CheckBoxCommand checkBoxCommand2;
         private Janus.Windows.Ribbon.RibbonGroup ribbonGroup6;
         private Janus.Windows.Ribbon.RibbonGroup ribbonGroup7;
-        private Janus.Windows.Ribbon.ButtonCommand LineExtract;
         public System.Windows.Forms.TextBox InformationBox;
         private Janus.Windows.Ribbon.RibbonGroup ribbonGroup9;
         private Janus.Windows.Ribbon.ButtonCommand btnSearch;
@@ -1590,6 +2119,68 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         private Janus.Windows.Ribbon.SeparatorCommand separatorCommand7;
         private Janus.Windows.Ribbon.ButtonCommand btnPreview5;
         private Janus.Windows.Ribbon.ButtonCommand btnExport5;
+        private System.Windows.Forms.DataGridView dgv_Table2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Index2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RegionName2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RegionIndex2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SetupRegion_new;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Area_new;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OutRegion_new;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OutArea;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OutTarget;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OldRegion_old;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OldArea;
+        private System.Windows.Forms.DataGridViewTextBoxColumn InvolveFarmers;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ApprovalTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ApprovalIndex;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Deadline;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BuildingArea;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Plough;
+        private System.Windows.Forms.DataGridView dgv_Table3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RegionName3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RegionIndex3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn InvolvedTown;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PlanuseBuilding_all;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PlanusePlough_all;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RealuseBuilding_all;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RealusePlough_all;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PlanuseBuilding_setup;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PlanusePlough_setup;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RealuseBuilding_setup;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RealusePlough_setup;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PlanuseBuilding_out;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PlanusePlough_out;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RealuseBuilding_out;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RealusePlough_out;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Planreturnbuildingarea;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Planreturnplough;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Realreturnbuildingarea;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Realreturnplough;
+        private System.Windows.Forms.DataGridView dgv_Table4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RegionName4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ProjectregionName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Counts;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Area_new4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NewBuildingArea;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Farmland;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Plough4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Unuseland;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TargetBuildingArea4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TargetPlough;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RealUseBuildingArea;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RealUsePlough;
+        private System.Windows.Forms.DataGridView dgv_Table5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Index5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ProjectName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ReclamationProjectsNumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ApprovedPlotsNumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Area5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AcceptanceItemsNumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AcceptancePlotsNumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ImplementationArea;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ReturnBuildingArea;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NewPloughArea;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ReturnPloughArea;
     }
 }
 
