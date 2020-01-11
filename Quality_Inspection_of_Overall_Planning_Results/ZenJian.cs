@@ -3337,5 +3337,10 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             }
             dgv_Table1.DataSource = pDataTable1;
         }
+
+        private void ribbonGroup2_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
+        {
+
+        }
     }
 }

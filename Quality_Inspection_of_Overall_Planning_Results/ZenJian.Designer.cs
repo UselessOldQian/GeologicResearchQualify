@@ -84,13 +84,6 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.btnStatisticExport = new Janus.Windows.Ribbon.ButtonCommand();
             this.ribbonTab2 = new Janus.Windows.Ribbon.RibbonTab();
             this.ribbonGroup2 = new Janus.Windows.Ribbon.RibbonGroup();
-            this.btnBasicCheck = new Janus.Windows.Ribbon.ButtonCommand();
-            this.btnAttributeCheck = new Janus.Windows.Ribbon.ButtonCommand();
-            this.btnTopologyCheck = new Janus.Windows.Ribbon.ButtonCommand();
-            this.btnDataConsistent = new Janus.Windows.Ribbon.ButtonCommand();
-            this.btnCheckFigureConsistent = new Janus.Windows.Ribbon.ButtonCommand();
-            this.buttonCommand5 = new Janus.Windows.Ribbon.ButtonCommand();
-            this.btnCheckAll = new Janus.Windows.Ribbon.ButtonCommand();
             this.ribbonGroup4 = new Janus.Windows.Ribbon.RibbonGroup();
             this.buttonCommand6 = new Janus.Windows.Ribbon.ButtonCommand();
             this.btnTextAuxiliaryCheck = new Janus.Windows.Ribbon.ButtonCommand();
@@ -176,6 +169,19 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.btnColorRander = new System.Windows.Forms.ToolStripMenuItem();
             this.checkBoxCommand1 = new Janus.Windows.Ribbon.CheckBoxCommand();
             this.checkBoxCommand2 = new Janus.Windows.Ribbon.CheckBoxCommand();
+            this.separatorCommand3 = new Janus.Windows.Ribbon.SeparatorCommand();
+            this.separatorCommand4 = new Janus.Windows.Ribbon.SeparatorCommand();
+            this.btnPreview2 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.btnExport2 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.separatorCommand5 = new Janus.Windows.Ribbon.SeparatorCommand();
+            this.btnPreview3 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.btnExport3 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.separatorCommand6 = new Janus.Windows.Ribbon.SeparatorCommand();
+            this.btnPreview4 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.btnExport4 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.separatorCommand7 = new Janus.Windows.Ribbon.SeparatorCommand();
+            this.btnPreview5 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.btnExport5 = new Janus.Windows.Ribbon.ButtonCommand();
             ((System.ComponentModel.ISupportInitialize)(this.ribbon1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TableList)).BeginInit();
             this.TableList.SuspendLayout();
@@ -411,73 +417,27 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // ribbonGroup2
             // 
             this.ribbonGroup2.Commands.AddRange(new Janus.Windows.Ribbon.CommandBase[] {
-            this.btnBasicCheck,
-            this.btnAttributeCheck,
-            this.btnTopologyCheck,
-            this.btnDataConsistent,
-            this.btnCheckFigureConsistent,
-            this.buttonCommand5,
-            this.btnCheckAll});
+            this.btnSearch,
+            this.separatorCommand3,
+            this.btnPreview1,
+            this.btnExport1,
+            this.separatorCommand4,
+            this.btnPreview2,
+            this.btnExport2,
+            this.separatorCommand5,
+            this.btnPreview3,
+            this.btnExport3,
+            this.separatorCommand6,
+            this.btnPreview4,
+            this.btnExport4,
+            this.separatorCommand7,
+            this.btnPreview5,
+            this.btnExport5});
             this.ribbonGroup2.DialogButtonSuperTipSettings.ImageListProvider = this.ribbonGroup2;
             this.ribbonGroup2.Key = "ribbonGroup2";
             this.ribbonGroup2.Name = "ribbonGroup2";
             this.ribbonGroup2.Text = "数据库检查模块";
-            // 
-            // btnBasicCheck
-            // 
-            this.btnBasicCheck.Image = ((System.Drawing.Image)(resources.GetObject("btnBasicCheck.Image")));
-            this.btnBasicCheck.Key = "buttonCommand1";
-            this.btnBasicCheck.Name = "btnBasicCheck";
-            this.btnBasicCheck.Text = "基本检查";
-            this.btnBasicCheck.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.btnBasicCheck_Click);
-            // 
-            // btnAttributeCheck
-            // 
-            this.btnAttributeCheck.Image = ((System.Drawing.Image)(resources.GetObject("btnAttributeCheck.Image")));
-            this.btnAttributeCheck.Key = "buttonCommand2";
-            this.btnAttributeCheck.Name = "btnAttributeCheck";
-            this.btnAttributeCheck.Text = "数据属性检查";
-            this.btnAttributeCheck.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.btnAttributeCheck_Click);
-            // 
-            // btnTopologyCheck
-            // 
-            this.btnTopologyCheck.Image = ((System.Drawing.Image)(resources.GetObject("btnTopologyCheck.Image")));
-            this.btnTopologyCheck.Key = "buttonCommand4";
-            this.btnTopologyCheck.Name = "btnTopologyCheck";
-            this.btnTopologyCheck.Text = "矢量数据拓扑检查";
-            this.btnTopologyCheck.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.btnTopologyCheck_Click);
-            // 
-            // btnDataConsistent
-            // 
-            this.btnDataConsistent.Image = ((System.Drawing.Image)(resources.GetObject("btnDataConsistent.Image")));
-            this.btnDataConsistent.Key = "buttonCommand3";
-            this.btnDataConsistent.Name = "btnDataConsistent";
-            this.btnDataConsistent.Text = "上位规划落实情况检查";
-            this.btnDataConsistent.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.btnDataConsistent_Click);
-            // 
-            // btnCheckFigureConsistent
-            // 
-            this.btnCheckFigureConsistent.Image = ((System.Drawing.Image)(resources.GetObject("btnCheckFigureConsistent.Image")));
-            this.btnCheckFigureConsistent.Key = "buttonCommand1";
-            this.btnCheckFigureConsistent.Name = "btnCheckFigureConsistent";
-            this.btnCheckFigureConsistent.Text = "图数一致性检查";
-            this.btnCheckFigureConsistent.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.buttonCommand1_Click);
-            // 
-            // buttonCommand5
-            // 
-            this.buttonCommand5.Image = ((System.Drawing.Image)(resources.GetObject("buttonCommand5.Image")));
-            this.buttonCommand5.Key = "buttonCommand5";
-            this.buttonCommand5.Name = "buttonCommand5";
-            this.buttonCommand5.Text = "规划布局检查";
-            this.buttonCommand5.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.buttonCommand5_Click);
-            // 
-            // btnCheckAll
-            // 
-            this.btnCheckAll.Image = ((System.Drawing.Image)(resources.GetObject("btnCheckAll.Image")));
-            this.btnCheckAll.Key = "buttonCommand1";
-            this.btnCheckAll.Name = "btnCheckAll";
-            this.btnCheckAll.Text = "检查所有";
-            this.btnCheckAll.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.btnCheckAll_Click);
+            this.ribbonGroup2.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.ribbonGroup2_Click);
             // 
             // ribbonGroup4
             // 
@@ -524,8 +484,6 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // 
             // ribbonGroup9
             // 
-            this.ribbonGroup9.Commands.AddRange(new Janus.Windows.Ribbon.CommandBase[] {
-            this.btnSearch});
             this.ribbonGroup9.DialogButtonSuperTipSettings.ImageListProvider = this.ribbonGroup9;
             this.ribbonGroup9.Key = "ribbonGroup9";
             this.ribbonGroup9.Name = "ribbonGroup9";
@@ -556,7 +514,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // 
             this.cbcActivateAlter.CheckBox.BackColor = System.Drawing.Color.Transparent;
             this.cbcActivateAlter.CheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(73)))), ((int)(((byte)(125)))));
-            this.cbcActivateAlter.CheckBox.Location = new System.Drawing.Point(1042, 60);
+            this.cbcActivateAlter.CheckBox.Location = new System.Drawing.Point(1163, 60);
             this.cbcActivateAlter.CheckBox.Name = "";
             this.cbcActivateAlter.CheckBox.ShowFocusRectangle = false;
             this.cbcActivateAlter.CheckBox.Size = new System.Drawing.Size(100, 22);
@@ -586,9 +544,6 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // 
             // ribbonGroup11
             // 
-            this.ribbonGroup11.Commands.AddRange(new Janus.Windows.Ribbon.CommandBase[] {
-            this.btnPreview1,
-            this.btnExport1});
             this.ribbonGroup11.DialogButtonSuperTipSettings.ImageListProvider = this.ribbonGroup11;
             this.ribbonGroup11.Key = "ribbonGroup11";
             this.ribbonGroup11.Name = "ribbonGroup11";
@@ -1380,6 +1335,79 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.checkBoxCommand2.Name = "cbIsClear";
             this.checkBoxCommand2.Text = "是否清除上一步检查的错误";
             // 
+            // separatorCommand3
+            // 
+            this.separatorCommand3.Key = "separatorCommand3";
+            this.separatorCommand3.Name = "separatorCommand3";
+            // 
+            // separatorCommand4
+            // 
+            this.separatorCommand4.Key = "separatorCommand4";
+            this.separatorCommand4.Name = "separatorCommand4";
+            // 
+            // btnPreview2
+            // 
+            this.btnPreview2.Key = "buttonCommand1";
+            this.btnPreview2.Name = "btnPreview2";
+            this.btnPreview2.Text = "预览附表2";
+            // 
+            // btnExport2
+            // 
+            this.btnExport2.Key = "buttonCommand2";
+            this.btnExport2.Name = "btnExport2";
+            this.btnExport2.Text = "预览附表2";
+            // 
+            // separatorCommand5
+            // 
+            this.separatorCommand5.Key = "separatorCommand5";
+            this.separatorCommand5.Name = "separatorCommand5";
+            // 
+            // btnPreview3
+            // 
+            this.btnPreview3.Key = "buttonCommand1";
+            this.btnPreview3.Name = "btnPreview3";
+            this.btnPreview3.Text = "预览附表3";
+            // 
+            // btnExport3
+            // 
+            this.btnExport3.Key = "buttonCommand2";
+            this.btnExport3.Name = "btnExport3";
+            this.btnExport3.Text = "导出附表3";
+            // 
+            // separatorCommand6
+            // 
+            this.separatorCommand6.Key = "separatorCommand6";
+            this.separatorCommand6.Name = "separatorCommand6";
+            // 
+            // btnPreview4
+            // 
+            this.btnPreview4.Key = "buttonCommand3";
+            this.btnPreview4.Name = "btnPreview4";
+            this.btnPreview4.Text = "预览附表4";
+            // 
+            // btnExport4
+            // 
+            this.btnExport4.Key = "buttonCommand4";
+            this.btnExport4.Name = "btnExport4";
+            this.btnExport4.Text = "导出附表4";
+            // 
+            // separatorCommand7
+            // 
+            this.separatorCommand7.Key = "separatorCommand7";
+            this.separatorCommand7.Name = "separatorCommand7";
+            // 
+            // btnPreview5
+            // 
+            this.btnPreview5.Key = "buttonCommand1";
+            this.btnPreview5.Name = "btnPreview5";
+            this.btnPreview5.Text = "预览附表5";
+            // 
+            // btnExport5
+            // 
+            this.btnExport5.Key = "buttonCommand2";
+            this.btnExport5.Name = "btnExport5";
+            this.btnExport5.Text = "导出附表5";
+            // 
             // ZenJian
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1480,11 +1508,6 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         private System.Windows.Forms.ToolStripMenuItem btnOpenAttributeTable;
         private System.Windows.Forms.ToolStripMenuItem btnDeleteLayer;
         private Janus.Windows.Ribbon.RibbonGroup ribbonGroup2;
-        private Janus.Windows.Ribbon.ButtonCommand btnBasicCheck;
-        private Janus.Windows.Ribbon.ButtonCommand btnAttributeCheck;
-        private Janus.Windows.Ribbon.ButtonCommand btnDataConsistent;
-        private Janus.Windows.Ribbon.ButtonCommand btnTopologyCheck;
-        private Janus.Windows.Ribbon.ButtonCommand buttonCommand5;
         private Janus.Windows.Ribbon.RibbonGroup ribbonGroup4;
         private Janus.Windows.Ribbon.ButtonCommand buttonCommand6;
         public Janus.Windows.UI.StatusBar.UIStatusBar uiStatusBar1;
@@ -1494,7 +1517,6 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         private Janus.Windows.Ribbon.ButtonCommand btnErrorExport;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-        private Janus.Windows.Ribbon.ButtonCommand btnCheckAll;
         private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.TreeView treeView2;
         private Janus.Windows.Ribbon.CheckBoxCommand cbIsClear;
@@ -1517,7 +1539,6 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         private System.Windows.Forms.DataGridViewTextBoxColumn MeasurementArea;
         private System.Windows.Forms.DataGridViewTextBoxColumn DiffArea;
         private Janus.Windows.Ribbon.ButtonCommand btnStatisticExport;
-        private Janus.Windows.Ribbon.ButtonCommand btnCheckFigureConsistent;
         private Janus.Windows.Ribbon.ButtonCommand btnCopyData;
         private System.Windows.Forms.ToolStripMenuItem btnColorRander;
         private Janus.Windows.Ribbon.RibbonTab ribbonTab3;
@@ -1556,6 +1577,19 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         private Janus.Windows.UI.Tab.UITabPage Table3;
         private Janus.Windows.UI.Tab.UITabPage Table4;
         private Janus.Windows.UI.Tab.UITabPage Table5;
+        private Janus.Windows.Ribbon.SeparatorCommand separatorCommand3;
+        private Janus.Windows.Ribbon.SeparatorCommand separatorCommand4;
+        private Janus.Windows.Ribbon.ButtonCommand btnPreview2;
+        private Janus.Windows.Ribbon.ButtonCommand btnExport2;
+        private Janus.Windows.Ribbon.SeparatorCommand separatorCommand5;
+        private Janus.Windows.Ribbon.ButtonCommand btnPreview3;
+        private Janus.Windows.Ribbon.ButtonCommand btnExport3;
+        private Janus.Windows.Ribbon.SeparatorCommand separatorCommand6;
+        private Janus.Windows.Ribbon.ButtonCommand btnPreview4;
+        private Janus.Windows.Ribbon.ButtonCommand btnExport4;
+        private Janus.Windows.Ribbon.SeparatorCommand separatorCommand7;
+        private Janus.Windows.Ribbon.ButtonCommand btnPreview5;
+        private Janus.Windows.Ribbon.ButtonCommand btnExport5;
     }
 }
 
