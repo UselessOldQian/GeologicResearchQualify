@@ -38,7 +38,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         IFeatureLayer pFeatureLayer;
         IFeatureDataset pFeatureDataset;
         ILayer selectedLayer;
-        static DataTable pDT;
+        public DataTable pDT;
 
         public delegate void AppendTextInfo(string strMsg);
         public AppendTextInfo myDelegateAppendTextInfo;
@@ -152,7 +152,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
                     this.tabMapTableView.SelectedTab = tabMapTableView.TabPages[0];
                     uiStatusBar1.Panels[0].Text = "数据库读取完成";
                 }
-                pDT = LD.ShowTableInDataGridView((ITable)axMapControl1.get_Layer(0), dgvTable, ref pCursor, ref pRrow,out FieldName);
+                pDT = LD.ShowTableInDataGridView_zenjian((ITable)axMapControl1.get_Layer(0), dgvTable, out FieldName);
             }
             catch (Exception ex)
             {
@@ -269,7 +269,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // 打开工作空间并遍历数据集 
             IWorkspace pWorkspace = pAccessWorkspaceFactory.OpenFromFile(this.treeView1.SelectedNode.Parent.Text, 0);
             ITable ptable = ((IFeatureWorkspace)pWorkspace).OpenTable(this.treeView1.SelectedNode.Text);
-            pDT = LD.ShowTableInDataGridView(ptable, dgvTable, ref pCursor, ref pRrow, out FieldName);
+            pDT = LD.ShowTableInDataGridView_zenjian(ptable, dgvTable, out FieldName);
             this.tabMapTableView.SelectedTab = tabMapTableView.TabPages[1];
             uiStatusBar1.Panels[0].Text = "数据加载完成";
         }
@@ -335,7 +335,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         {
             if (selectedLayer != null)
             {
-                pDT = LD.ShowTableInDataGridView((ITable)selectedLayer, dgvTable, ref pCursor, ref pRrow, out FieldName);
+                pDT = LD.ShowTableInDataGridView_zenjian((ITable)selectedLayer, dgvTable,out FieldName);
                 this.tabMapTableView.SelectedTab = tabMapTableView.TabPages[1];
             }
         }
@@ -367,29 +367,15 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             }
         }
 
-        static ICursor pCursor;
-        static IRow pRrow;
         private void dgvTable_Scroll(object sender, ScrollEventArgs e)
         {
-            if (e.ScrollOrientation == ScrollOrientation.VerticalScroll &&
-                (e.NewValue + dgvTable.DisplayedRowCount(false) == dgvTable.Rows.Count))
-            {
-                this.Invoke(myDelegateUpdateUiStatus, new object[] { "正在加载数据..." });
-                DataTable tablet = LD.GetData(ref pCursor, ref pRrow);
-                if (tablet != null)
-                {
-                    pDT.Merge(tablet);//表合并
-                    int r = Convert.ToInt16(e.NewValue);//保存当前滚动条的位置
-                    this.dgvTable.DataSource = pDT;
-                    dgvTable.FirstDisplayedScrollingRowIndex = r;//滚动条回到触发滚动事件时的位置                 
-                }
-            }
-            this.Invoke(myDelegateUpdateUiStatus, new object[] { "数据加载完成" });
+
         }
 
         DataTable pErrorDataTable = new DataTable();
-        public string[] NewLayersName = { "XZQ", "GHFW","JQDLTB", "CSKFBJNGHYT", "JSYDKZX", "YJJBNT", "STKJKZX", "JSYDHJBNTGZ2035", "JLHDK" };
+        public string[] NewLayersName = { "XZQ", "GHFW", "JQDLTB", "CSKFBJNGHYT", "JSYDKZX", "YJJBNT", "STKJKZX", "JSYDHJBNTGZ2035", "JLHDK" };
         public string[] ChineseLayerName = { "行政区", "规划范围", "基期地类图斑", "城市开发边界内规划用途", "建设用地控制线", "永久基本农田", "生态空间控制线", "建设用地和基本农田管制", "现状建设用地减量化地块" };
+       //基本检查
         private void btnBasicCheck_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
         {
             if (cbIsClear.Checked == true)
@@ -407,7 +393,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
                 ILayer layerresult = GetLayerByName(NewLayersName[i]);
                 if (layerresult == null)
                 {
-                    this.Invoke(myDelegateAppendTextInfo, new object[] { "\r\nERROR1101:" + GetChineseName(NewLayersName[i]) +"不存在" });
+                    this.Invoke(myDelegateAppendTextInfo, new object[] { "\r\nERROR1101:" + GetChineseName(NewLayersName[i]) + "不存在" });
                     pErrorDataTable.Rows.Add(new object[] { "1101", NewLayersName[i], null, null, GetChineseName(NewLayersName[i]) + "不存在", false, true });
                     continue;
                 }
@@ -417,7 +403,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
                 if (pSpatialRef.Name.ToUpper() == "UNKNOWN")
                 {
                     this.Invoke(myDelegateAppendTextInfo, new object[] { "\r\nERROR2201:" + GetChineseName(NewLayersName[i]) + "投影为" + pSpatialRef.Name });
-                    pErrorDataTable.Rows.Add(new object[] { "2201", NewLayersName[i], null, null, GetChineseName(NewLayersName[i])+"投影为" + pSpatialRef.Name,false, true });
+                    pErrorDataTable.Rows.Add(new object[] { "2201", NewLayersName[i], null, null, GetChineseName(NewLayersName[i]) + "投影为" + pSpatialRef.Name, false, true });
                 }
                 this.Invoke(this.myDelegateUpdateBarValue, new object[] { i });
             }
@@ -432,7 +418,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         public string switchName(string name)
         {
             switch (name)
-            {        
+            {
                 case "XZQ":
                     return "行政区";
                 case "GHFW":
@@ -479,7 +465,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             }
             if (pLayer == null)
             {
-                string Chinesename=switchName(strLayerName);
+                string Chinesename = switchName(strLayerName);
                 for (int i = 0; i <= axMapControl1.LayerCount - 1; i++)
                 {
                     if (Chinesename == axMapControl1.get_Layer(i).Name)
@@ -487,7 +473,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
                         pLayer = axMapControl1.get_Layer(i); break;
                     }
                 }
- 
+
             }
             return pLayer;
         }
@@ -533,7 +519,6 @@ namespace Quality_Inspection_of_Overall_Planning_Results
                 CheckAttributeYSDM(layerresult);
                 CheckAttributeXZQDM(layerresult);
                 CheckAttributeXZQMC(layerresult);
-                CheckAttributeGHYT(layerresult, "GHYT");
                 CheckAttributeMJ(layerresult, "MJ");
                 CheckAttributeMSorSM(layerresult, "SM");
                 this.Invoke(myDelegateUpdateUiStatus, new object[] { "图层CSKFBJNGHYT属性检查完成" });
@@ -547,8 +532,6 @@ namespace Quality_Inspection_of_Overall_Planning_Results
                 CheckAttributeYSDM(layerresult);
                 CheckAttributeXZQDM(layerresult);
                 CheckAttributeXZQMC(layerresult);
-                CheckAttributeGHYT(layerresult, "LX");
-                CheckAttributeMSorSM(layerresult, "SM");
                 this.Invoke(myDelegateUpdateUiStatus, new object[] { "图层JSYDKZX属性检查完成" });
             }
             this.Invoke(myDelegateUpdateBarValue, new object[] { progressBar1.Value + 1 });
@@ -620,7 +603,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         private void CheckGHFWAttribute()
         {
             ILayer player = GetLayerByName("GHFW");
-            if (player == null){return;}
+            if (player == null) { return; }
             ITable ptable = player as ITable;
             string[] attributes = { "GDBYL", "YJJBNTBHRW", "XZJSYDZGDMJ", "TDZZBCGD", "XZJSYDJLHMJ", "STBHHXMJ", "STKJMJ", "CSKFBJMJ", "JSYDZGM", "CSKFBJNXZJSYDMJ" };
             for (int i = 0; i < attributes.Length; i++)
@@ -762,7 +745,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
                     else
                     {
                         string YSDMValue = "";
-                        
+
                         switch (player.Name)
                         {
                             case "XZQ":
@@ -775,31 +758,31 @@ namespace Quality_Inspection_of_Overall_Planning_Results
                                 break;
                             case "JQDLTB":
                             case "基期地类图斑":
-                                YSDMValue="2003010100";
+                                YSDMValue = "2003010100";
                                 break;
                             case "CSKFBJNGHYT":
                             case "城市开发边界内规划用途":
-                                YSDMValue="2003020241";
+                                YSDMValue = "2003020241";
                                 break;
                             case "JSYDKZX":
                             case "建设用地控制线":
-                                YSDMValue="2003020140";
+                                YSDMValue = "2003020140";
                                 break;
                             case "STKJKZX":
                             case "生态空间控制线":
-                                YSDMValue="2003020120";
+                                YSDMValue = "2003020120";
                                 break;
                             case "YJJBNT":
                             case "永久基本农田":
-                                YSDMValue="2003020110";
+                                YSDMValue = "2003020110";
                                 break;
                             case "JSYDHJBNTGZ2035":
                             case "建设用地和基本农田管制":
-                                YSDMValue="2003020221";
+                                YSDMValue = "2003020221";
                                 break;
                             case "JLHDK":
                             case "减量化地块":
-                                YSDMValue="2003020510";
+                                YSDMValue = "2003020510";
                                 break;
                             default:
                                 break;
@@ -1072,70 +1055,9 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             }
         }
 
-        string[] GHYTrange = { "城镇建设用地区", "产业基地", "产业社区", "战略预留区", "规划水域","010","021","022","030","040" };
+        string[] GHYTrange = { "城镇建设用地区", "产业基地", "产业社区", "战略预留区", "规划水域", "010", "021", "022", "030", "040" };
         string[] LXrange = { "城市开发边界内建设用地", "其他建设用地区" };
 
-        /// <summary>
-        /// 检查GHYT字段
-        /// </summary>
-        /// <param name="player">要检查图层的名称</param>
-        /// <param name="GHYTorLX">字段名称为GHYT还是LX</param>
-        private void CheckAttributeGHYT(ILayer player, string GHYTorLX)
-        {
-            string[] valuerange = { };
-            int textrange = 0;
-            if (GHYTorLX == "GHYT") { valuerange = GHYTrange; textrange = 10; }
-            if (GHYTorLX == "LX") { valuerange = LXrange; textrange = 20; }
-            ITable ptable = (ITable)player;
-            int FieldIndex = ptable.FindField(GHYTorLX);
-            if (FieldIndex < 0)
-            {
-                this.Invoke(myDelegateAppendTextInfo, new object[] { "\r\nERROR3201:" + GetChineseName(player.Name) + "的属性字段" + GHYTorLX + "不存在或正名命名错误" });
-                pErrorDataTable.Rows.Add(new object[] { "3201", player.Name, GHYTorLX, null, GetChineseName(player.Name) + "的属性字段" + GHYTorLX + "不存在或正名命名错误", false, true });
-                return;
-            }
-            int IDIndex = ptable.FindField("OBJECTID");
-            IField pfield = ptable.Fields.get_Field(FieldIndex);
-            if (pfield != null)
-            {
-                if (esriFieldType.esriFieldTypeString != pfield.Type)
-                {
-                    this.Invoke(myDelegateAppendTextInfo, new object[] { "\r\nERROR3201:" + GetChineseName(player.Name) + "的属性字段GHYT类型不是Text" });
-                    pErrorDataTable.Rows.Add(new object[] { "3201", player.Name, GHYTorLX, null, GetChineseName(player.Name) + "的属性字段GHYT类型不是Text", false, true });
-                    return;
-                }
-                if (pfield.Length != textrange)
-                {
-                    this.Invoke(myDelegateAppendTextInfo, new object[] { "\r\nERROR3201:" + GetChineseName(player.Name) + "的属性字段GHYT字段长度不为10" });
-                    pErrorDataTable.Rows.Add(new object[] { "3201", player.Name, GHYTorLX, null, GetChineseName(player.Name) + "的属性字段GHYT字段长度不为10", false, true });
-                }
-                ICursor pCursor = ptable.Search(null, false);
-                IRow pRrow = pCursor.NextRow();
-                while (pRrow != null)
-                {
-                    if (Convert.IsDBNull(pRrow.get_Value(FieldIndex)))
-                    {
-                        this.Invoke(myDelegateAppendTextInfo, new object[] { "\r\nERROR3601:" + GetChineseName(player.Name) + "的属性字段GHYT objectID=" + pRrow.get_Value(IDIndex) + "的值为空" });
-                        pErrorDataTable.Rows.Add(new object[] { "3601", player.Name, GHYTorLX, pRrow.get_Value(IDIndex).ToString(), GetChineseName(player.Name) + "的属性字段GHYT objectID=" + pRrow.get_Value(IDIndex) + "的值为空", false, true });
-                    }
-                    else
-                    {
-                        if (valuerange.Contains((string)pRrow.get_Value(FieldIndex)) == false)
-                        {
-                            this.Invoke(myDelegateAppendTextInfo, new object[] { "\r\nERROR3301:" + GetChineseName(player.Name) + "的属性字段GHYT objectID=" + pRrow.get_Value(IDIndex) + "的值不符合要求" });
-                            pErrorDataTable.Rows.Add(new object[] { "3301", player.Name, GHYTorLX, pRrow.get_Value(IDIndex).ToString(), GetChineseName(player.Name) + "的属性字段GHYT objectID=" + pRrow.get_Value(IDIndex) + "的值不符合要求", false, true });
-                        }
-                    }
-                    pRrow = pCursor.NextRow();
-                }
-            }
-            else
-            {
-                this.Invoke(myDelegateAppendTextInfo, new object[] { "\r\nERROR3201:" + GetChineseName(player.Name) + "的属性字段GHYT不存在或正名命名错误" });
-                pErrorDataTable.Rows.Add(new object[] { "3201", player.Name, GHYTorLX, pRrow.get_Value(IDIndex).ToString(), GetChineseName(player.Name) + "的属性字段GHYT不存在或正名命名错误", false, true });
-                return;
-            }
-        }
 
         string[] SFCSZBrange = { "Y", "N" };
         /// <summary>
@@ -1197,7 +1119,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         string[] BHLXrange = { "110", "111", "112", "113", "114", "210", "211", "212", "213", "214", "215", "216", "217", "218", "219", "220", "221" };
         string[] GKDJrange = { "01", "02", "03", "04" };
         string[] GZQLXDMrange = { "01", "011", "012", "031", "033", "032", "040" };
-        string[] GZQLXMCrange = { "允许建设区", "允许建设区(现状)", "允许建设区（现状）", "允许建设区(新增)", "允许建设区（新增）", "基本农田","河湖水面","一般农用地","限制建设区", "禁止建设区" };
+        string[] GZQLXMCrange = { "允许建设区", "允许建设区(现状)", "允许建设区（现状）", "允许建设区(新增)", "允许建设区（新增）", "基本农田", "河湖水面", "一般农用地", "限制建设区", "禁止建设区" };
         string[] JQDLDMrange = { "20", "22", "25", "26", "27" };
         string[] JQDLMCrange = { "城镇建设用地", "工业仓储用地", "农村居民点用地", "交通运输用地", "其他建设用地" };
         string[] SSSXrange = { "近期", "远期" };
@@ -1286,7 +1208,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.Invoke(myDelegateUpdateBarValue, new object[] { progressBar1.Value + 1 });
             this.Invoke(myDelegateAppendTextInfo, new object[] { CDC.CheckSpatialRangeEquals(GetLayerByName("生态保护红线") as IFeatureLayer, GetLayerByName("STKJKZX") as IFeatureLayer, ref pErrorDataTable, "行政区界", "BHLX LIKE '11*'", "6401") });
             this.Invoke(myDelegateUpdateBarValue, new object[] { progressBar1.Value + 1 });
-            this.Invoke(myDelegateAppendTextInfo, new object[] { CheckSpatial6401_5(GetLayerByName("CSKFBJNGHYT") as IFeatureLayer,GetLayerByName("城市开发边界") as IFeatureLayer,ref pErrorDataTable) });            
+            this.Invoke(myDelegateAppendTextInfo, new object[] { CheckSpatial6401_5(GetLayerByName("CSKFBJNGHYT") as IFeatureLayer, GetLayerByName("城市开发边界") as IFeatureLayer, ref pErrorDataTable) });
             BindingSource bind = new BindingSource();
             bind.DataSource = pErrorDataTable;
             dgvError.DataSource = bind;
@@ -1314,7 +1236,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             ITopologicalOperator pGeoInTP2 = Geo2 as ITopologicalOperator;
             IGeometry pDiff2 = pGeoInTP2.Difference(Geo1);
             ITopologicalOperator pGeoInTP3 = pDiff2 as ITopologicalOperator;
-            IGeometry pDiff3 = pGeoInTP3.Intersect(XZQ_geo,esriGeometryDimension.esriGeometry2Dimension);
+            IGeometry pDiff3 = pGeoInTP3.Intersect(XZQ_geo, esriGeometryDimension.esriGeometry2Dimension);
             IArea pArea3 = pDiff3 as IArea;
             IFeatureLayer pFeatureLayerPlus = new FeatureLayerClass();
             pFeatureLayerPlus.FeatureClass = CT.CreateMemoryFeatureClass(Data1.FeatureClass);
@@ -1525,7 +1447,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
                     DataRow tempRow = tmpErrorDataTable.NewRow();
                     for (int i = 0; i < tmpErrorDataTable.Columns.Count; i++)
                     {
-                        if (i == 5) 
+                        if (i == 5)
                         {
                             if (Convert.IsDBNull(dgvError.Rows[row].Cells[modelTable.Columns[i].ColumnName].Value))
                             {
@@ -1537,7 +1459,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
                                 tempRow[i] = "否";
                                 continue;
                             }
-                            else 
+                            else
                             {
                                 tempRow[i] = "是";
                                 continue;
@@ -1797,7 +1719,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.Invoke(this.myDelegateAppendTextInfo, new object[] { AppendText });
             double[] MeasureArea = new double[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             this.Invoke(myDelegateUpdateBarValue, new object[] { progressBar1.Value + 1 });
-            MeasureArea[1] = CDC.getLayerArea(GetLayerByName("YJJBNT"),null);
+            MeasureArea[1] = CDC.getLayerArea(GetLayerByName("YJJBNT"), null);
             this.Invoke(myDelegateUpdateBarValue, new object[] { progressBar1.Value + 1 });
             MeasureArea[2] = CDC.getIntersectArea(GetLayerByName("JSYDHJBNTGZ2035"), GetLayerByName("JQDLTB"), "GZQLXDM LIKE '012'", "DLBM_SX LIKE '11*'");
             this.Invoke(myDelegateUpdateBarValue, new object[] { progressBar1.Value + 1 });
@@ -1818,9 +1740,9 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             string[] Attrs ={"耕地保有量（公顷）","永久基本农田保护任务（公顷）","新增建设用地占用耕地面积（公顷）","土地整治补充耕地（公顷）",
                                "现状建设用地减量化面积（公顷）","生态保护红线（一二类生态空间）面积（公顷）","生态空间面积（公顷）","城市开发边界面积（公顷）",
                            "建设用地总规模（公顷）","城市开发边界内新增建设用地面积（公顷）"};
-            for(int i = 0;i<Attrs.Length;i++)
+            for (int i = 0; i < Attrs.Length; i++)
             {
-                if(i==0||i==3){StatisticTable.Rows.Add(new object[]{Attrs[i],IndicatorArea[i].ToString(),"/","/"});continue;}
+                if (i == 0 || i == 3) { StatisticTable.Rows.Add(new object[] { Attrs[i], IndicatorArea[i].ToString(), "/", "/" }); continue; }
                 StatisticTable.Rows.Add(new object[] { Attrs[i], IndicatorArea[i].ToString(), MeasureArea[i].ToString("0.00"), (IndicatorArea[i] - MeasureArea[i]).ToString("0.00") });
             }
             BindingSource bind = new BindingSource();
@@ -1832,7 +1754,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.Invoke(myDelegateUpdateBarValue, new object[] { 0 });
         }
 
-        
+
 
 
 
@@ -1848,7 +1770,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             //openfiledialog 常规使用
             string pFolder = System.IO.Path.GetDirectoryName(path1);
             string pFileName = System.IO.Path.GetFileName(path1);
-            axMapControl1.AddShapeFile(pFolder,pFileName);
+            axMapControl1.AddShapeFile(pFolder, pFileName);
         }
 
         private void btnCheckAll_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
@@ -1875,13 +1797,13 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         {
 
             string ColumnName = this.dgvError.Columns[e.ColumnIndex].Name;
-            if (ColumnName == "ErrorCheck"||ColumnName=="ErrorExcept")
+            if (ColumnName == "ErrorCheck" || ColumnName == "ErrorExcept")
             {
-                if (dgvError.IsCurrentCellInEditMode == true) 
-                { 
-                    dgvError.CurrentCell = null; 
+                if (dgvError.IsCurrentCellInEditMode == true)
+                {
+                    dgvError.CurrentCell = null;
                 }
-                if(Convert.IsDBNull(dgvError.Rows[0].Cells[e.ColumnIndex].Value))
+                if (Convert.IsDBNull(dgvError.Rows[0].Cells[e.ColumnIndex].Value))
                 {
                     for (int i = 0; i < dgvError.Rows.Count; i++)
                     {
@@ -1905,14 +1827,14 @@ namespace Quality_Inspection_of_Overall_Planning_Results
                         dgvError.Rows[i].Cells[e.ColumnIndex].Value = true;
                     }
                 }
- 
+
             }
         }
 
         private void treeView2_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             dgvError.Sort(dgvError.Columns[0], ListSortDirection.Ascending);
-            for(int i=0;i<dgvError.Rows.Count;i++)
+            for (int i = 0; i < dgvError.Rows.Count; i++)
             {
                 dgvError.Rows[i].Selected = false;
             }
@@ -1929,16 +1851,16 @@ namespace Quality_Inspection_of_Overall_Planning_Results
 
         private void treeView2_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
         {
-            e.Cancel=true;
+            e.Cancel = true;
         }
 
         private void btnAllSelectExcept_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
         {
             if (dgvError.SelectedRows.Count <= 0) { return; }
-            
-            if (dgvError.IsCurrentCellInEditMode == true) 
-            { 
-                dgvError.CurrentCell = null; 
+
+            if (dgvError.IsCurrentCellInEditMode == true)
+            {
+                dgvError.CurrentCell = null;
             }
             if (Convert.IsDBNull(dgvError.SelectedRows[0].Cells[5].Value))
             {
@@ -2033,10 +1955,10 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             {
                 if (pDataset is IFeatureClass)
                 {
-                    if (!NewLayersName.Contains(pDataset.Name)) 
-                    { 
-                        pDataset = pEnumDataset.Next(); 
-                        continue; 
+                    if (!NewLayersName.Contains(pDataset.Name))
+                    {
+                        pDataset = pEnumDataset.Next();
+                        continue;
                     }
                     pFeatureWorkspace = (IFeatureWorkspace)pWorkspace;
                     pFeatureLayer = new FeatureLayerClass();
@@ -2047,7 +1969,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
                     axMapControl1.ActiveView.Refresh();
                     this.uiTab2.SelectedTab = uiTab2.TabPages[0];
                 }
-                else if(pDataset is ITable)
+                else if (pDataset is ITable)
                 {
                     if (tableflag == 0)
                     {
@@ -2074,28 +1996,28 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             else
             {
                 int OID = int.Parse(dgvError.CurrentRow.Cells[3].Value.ToString());
-                ILayer player=GetLayerByName(dgvError.CurrentRow.Cells[1].Value.ToString());
+                ILayer player = GetLayerByName(dgvError.CurrentRow.Cells[1].Value.ToString());
                 IFeatureSelection pFeatureSelection = (player as IFeatureLayer) as IFeatureSelection;
                 //创建过滤器
                 IQueryFilter pQueryFilter = new QueryFilterClass();
                 //设置过滤器对象的查询条件
-                pQueryFilter.WhereClause = "OBJECTID = "+OID.ToString();
+                pQueryFilter.WhereClause = "OBJECTID = " + OID.ToString();
                 //根据查询条件选择要素
                 pFeatureSelection.SelectFeatures(pQueryFilter, esriSelectionResultEnum.esriSelectionResultNew, false);
-                ISimpleFillSymbol SFS=new SimpleFillSymbolClass();
-                ISimpleLineSymbol ILS=new SimpleLineSymbolClass();
+                ISimpleFillSymbol SFS = new SimpleFillSymbolClass();
+                ISimpleLineSymbol ILS = new SimpleLineSymbolClass();
                 SFS.Style = esriSimpleFillStyle.esriSFSSolid;
                 SFS.Color = getRGB(255, 0, 0);
                 ILS.Color = getRGB(0, 255, 0);
                 ILS.Style = esriSimpleLineStyle.esriSLSSolid;
                 ILS.Width = 13;
-                SFS.Outline=ILS;
+                SFS.Outline = ILS;
                 pFeatureSelection.SelectionSymbol = SFS as ISymbol;
                 IArea pArea = (player as IFeatureLayer).FeatureClass.GetFeature(OID).Shape as IArea;
                 IPoint iPnt = pArea.LabelPoint;
                 axMapControl1.Extent = (player as IFeatureLayer).FeatureClass.GetFeature(OID).Shape.Envelope;
                 axMapControl1.CenterAt(iPnt);
-                ShowAllTableInDataGridView(player as ITable, dgvTable, OID);
+            
                 axMapControl1.Refresh();
             }
         }
@@ -2110,38 +2032,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             return pRgbColor;
         }
 
-        public void ShowAllTableInDataGridView(ITable ptable, DataGridView DGV,int OID)
-        {
-            DGV.DataSource = null;
-            DataTable pDataTable = new DataTable();//建立一个table
-            for (int i = 0; i < ptable.Fields.FieldCount; i++)
-            {
-                string FieldName;//建立一个string变量存储Field的名字
-                FieldName = ptable.Fields.get_Field(i).AliasName;
-                pDataTable.Columns.Add(FieldName);
-            }
-            int index = 0;
-            int rowindex = 0;
-            pCursor = ptable.Search(null, false);
-            pRrow = pCursor.NextRow();
-            while (pRrow != null)
-            {
-                DataRow pRow = pDataTable.NewRow();
-                string[] StrRow = new string[pRrow.Fields.FieldCount];
-                for (int i = 0; i < pRrow.Fields.FieldCount; i++)
-                {
-                    StrRow[i] = pRrow.get_Value(i).ToString();
-                }
-                pRow.ItemArray = StrRow;
-                pDataTable.Rows.Add(pRow);
-                if(OID==pRrow.OID){rowindex = index;}
-                pRrow = pCursor.NextRow();
-                index++;
-            }
-            DGV.DataSource = pDataTable;
-            DGV.Rows[rowindex].Selected = true;
-            DGV.FirstDisplayedScrollingRowIndex = rowindex;
-        }
+       
 
         private void btnTextAuxiliaryCheck_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
         {
@@ -2171,10 +2062,10 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             bind.DataSource = pErrorDataTable;
             dgvError.DataSource = bind;
             this.Invoke(myDelegateUpdateUiStatus, new object[] { "文本辅助检查完毕" });
-            this.Invoke(myDelegateAppendTextInfo, new object[] { "\r\n文本辅助检查完成\r\n完成时间:" + DateTime.Now.ToString( ) + "\r\n" });
+            this.Invoke(myDelegateAppendTextInfo, new object[] { "\r\n文本辅助检查完成\r\n完成时间:" + DateTime.Now.ToString() + "\r\n" });
             this.Invoke(myDelegateUpdateBarValue, new object[] { 0 });
         }
-
+        //导出统计数据
         private void btnStatisticExport_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
         {
             if (dgvStastic.IsCurrentCellInEditMode == true)
@@ -2332,10 +2223,10 @@ namespace Quality_Inspection_of_Overall_Planning_Results
 
         private void dgvError_DataSourceChanged(object sender, EventArgs e)
         {
-            string[] ErrorNumber=new string[] {"1101","2201","3201","3301","3401","3601","4301","4101","6401","6402","6403","6501","6502","6503","6504","6505"};
+            string[] ErrorNumber = new string[] { "1101", "2201", "3201", "3301", "3401", "3601", "4301", "4101", "6401", "6402", "6403", "6501", "6502", "6503", "6504", "6505" };
             int[] ErrorIndex = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             string[] ErrorMassage = new string[] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" };
-            if (dgvError.Rows.Count == 0) 
+            if (dgvError.Rows.Count == 0)
             {
                 for (int i = 0; i < ErrorNumber.Length; i++)
                 {
@@ -2345,7 +2236,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
                 {
                     treeView2.Nodes[0].Nodes[i].Text = ErrorMassage[i];
                 }
-                return; 
+                return;
             }
             for (int rows = 0; rows < dgvError.RowCount; rows++)
             {
@@ -2381,12 +2272,12 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             sfd.RestoreDirectory = true;
 
             sfd.OverwritePrompt = true;
-            sfd.FileName = DateTime.Now.ToString("yyyyMMdd") + ".mdb"; 
+            sfd.FileName = DateTime.Now.ToString("yyyyMMdd") + ".mdb";
             //点了保存按钮进入 
             if (sfd.ShowDialog() == DialogResult.OK)
             {
                 localFilePath = sfd.FileName.ToString(); //获得文件路径 
-                string fileNameExt =localFilePath.Substring(localFilePath.LastIndexOf("\\") + 1); //获取文件名，不带路径
+                string fileNameExt = localFilePath.Substring(localFilePath.LastIndexOf("\\") + 1); //获取文件名，不带路径
                 string filePath = System.IO.Path.GetDirectoryName(localFilePath);
                 IWorkspaceFactory pWorksapceFactory = new AccessWorkspaceFactory();
                 IWorkspaceName worksapcename = pWorksapceFactory.Create(filePath, fileNameExt, null, 0);
@@ -2421,7 +2312,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
                     IFeatureDataset pCphDataset = CreateFeatureClass(pWorkspace, pCphFeatureClass, datasetName);
                     //3.导入SHP到要素数据集(
                     importToDB(pCphFeatureClass, pWorkspace, pCphDataset, pCphFeatureClass.AliasName);
- 
+
                 }
 
 
@@ -2442,7 +2333,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             IFeatureWorkspace featureWorkspace = (IFeatureWorkspace)workspace;
             //创建一个要素集创建一个投影
             ISpatialReferenceFactory spatialRefFactory = new SpatialReferenceEnvironmentClass();
-                        IDataset dataset = tFeatureClass as IDataset;
+            IDataset dataset = tFeatureClass as IDataset;
             IGeoDataset geoDataset = (IGeoDataset)dataset;
             ISpatialReference spatialReference = geoDataset.SpatialReference;//spatialRefFactory.CreateProjectedCoordinateSystem(code);
             //确定是否支持高精度存储空间
@@ -2624,7 +2515,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
                 case "现状建设用地减量化地块":
                     return "SSSX";
                 case "JQDLTB":
-                case "基期地类图斑":    
+                case "基期地类图斑":
                     return "DLBM_SX";
                 case "STKJKZX":
                 case "生态空间控制线":
@@ -2634,9 +2525,9 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             }
         }
 
-        public IColor getAttrColor(string AttrValue,string FieldName)
+        public IColor getAttrColor(string AttrValue, string FieldName)
         {
-            IColor pcolor=new RgbColorClass();
+            IColor pcolor = new RgbColorClass();
             if (FieldName == "GHYT")
             {
                 switch (AttrValue)
@@ -2726,7 +2617,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             else if (FieldName == "DLBM_SX")
             {
                 Regex re = new Regex(@"11(\w+)"); //以11开头的单词
-                if (re.IsMatch(AttrValue)||AttrValue.Contains("K"))
+                if (re.IsMatch(AttrValue) || AttrValue.Contains("K"))
                 {
                     pcolor.RGB = 100 * 65536 + 255 * 256 + 255;
                     return pcolor;
@@ -2743,7 +2634,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
                     pcolor.RGB = 115 * 65536 + 255 * 256 + 164;
                     return pcolor;
                 }
-                if (AttrValue=="155")
+                if (AttrValue == "155")
                 {
                     pcolor.RGB = 242 * 65536 + 219 * 256 + 197;
                     return pcolor;
@@ -2857,7 +2748,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             }
             pcolor.RGB = 0 * 65536 + 0 * 256 + 0;
             return pcolor;
- 
+
         }
 
         private void LineExtract_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
@@ -3056,10 +2947,10 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             {
                 _layerInfo.Add(this.axMapControl1.get_Layer(layerIndex));
             }
-            
+
             _SelectbyAttributeFrm.ShowInfo(_layerInfo);
         }
-
+  
         private void _SelectbyAttributeFrm_SqlOK(object sender, SQLFileterEventArgs e)
         {
             IFeatureSelection layer = this.axMapControl1.get_Layer(e.LayerIndex) as IFeatureSelection;
@@ -3084,22 +2975,22 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             DataRow[] rowsinDataTable = pDT.Select(e.SQL_2);
             dgvTable.MultiSelect = true;
             dgvTable.ClearSelection();
-            foreach(DataRow r in rowsinDataTable)
+            foreach (DataRow r in rowsinDataTable)
             {
-                foreach(DataGridViewRow row in dgvTable.Rows)
+                foreach (DataGridViewRow row in dgvTable.Rows)
                 {
                     // 假设ID为第一个单元格,比较他们之间的值
-                    if(r["OBJECTID"] == row.Cells[0].Value)
+                    if (r["OBJECTID"] == row.Cells[0].Value)
                     {
                         // 相等就代表你查询出的数据行在DataGridView 中存在，并选中对应的数据行
-                        row.Selected =true;
+                        row.Selected = true;
                     }
 
                 }
             }
 
-            DataView dv = new DataView((DataTable)dgvTable.DataSource);            
-            dv.RowFilter =e.SQL_2;
+            DataView dv = new DataView((DataTable)dgvTable.DataSource);
+            dv.RowFilter = e.SQL_2;
             pDTSearch = dv.ToTable();
             dgvSearch.DataSource = pDTSearch;
             for (int i = 0; i < FieldName.Count; i++)
@@ -3110,6 +3001,8 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             //DateTimeFormatInfo dtFormat = new DateTimeFormatInfo();
             //dtFormat.ShortDatePattern = "yyyy/MM/dd";
             //dt = Convert.ToDateTime("2011/05/26", dtFormat);
+            foreach (DataGridViewColumn column in dgvSearch.Columns)
+            { column.SortMode = DataGridViewColumnSortMode.NotSortable; }
         }
 
         static DataTable pDTSearch;
@@ -3149,5 +3042,274 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             axMapControl1.Refresh();
         }
 
+        private void dgvSearch_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            foreach (DataGridViewColumn column in dgvSearch.Columns)
+            { column.SortMode = DataGridViewColumnSortMode.NotSortable; }
+            Change _frmChange = new Change(FieldName[e.ColumnIndex]);
+            dgvSearch_select = e.ColumnIndex;
+            _frmChange.ChangeOK += _frmChange_ChangeOK;
+            _frmChange.Show();
+        }
+
+        Revise revise = new Revise();
+        int dgvSearch_select;
+        private void _frmChange_ChangeOK(object sender, ChangeEventArgs e)
+        {
+            for (int i = 0; i < dgvSearch.Rows.Count; i++)
+            {
+                dgvSearch[dgvSearch_select,i].Value = e.field_value;
+            }
+        }
+
+        private void dgvTable_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            //if (e.Button == MouseButtons.Right && cbcActivateAlter.Checked == true)
+            //{
+            //    this.contextMenuStrip1.Show(splitContainer4.Panel1, new System.Drawing.Point(e.Location.X, e.Location.Y));
+            //    //显示右键菜单，并定义其相对控件的位置，正好在鼠标出显示
+            //    dgvTable_select_Index = e.ColumnIndex;
+            //}
+        }
+        int dgvTable_select_Index;
+        private void AddToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Addname addname = new Addname(tempFeatureLayer as IFeatureLayer,this,FieldName);
+            addname.Show();
+        }
+
+        IFeatureLayer tempFeatureLayer;
+        private void cbcActivateAlter_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
+        {
+            if (axMapControl1.Map.LayerCount == 0) { return; }
+            if (cbcActivateAlter.Checked == true)
+            {
+                this.btnadd.Enabled = false;
+                this.dgvSearch.ReadOnly = false;
+                string fileNameExt = DateTime.Now.ToString("yyyyMMddHHmmss") + ".mdb";
+                string filePath = System.IO.Directory.GetCurrentDirectory();
+                IWorkspaceFactory pWorksapceFactory = new AccessWorkspaceFactory();
+                IWorkspaceName worksapcename = pWorksapceFactory.Create(filePath, fileNameExt, null, 0);
+                IName name = worksapcename as IName;
+                IWorkspace pWorkspace = name.Open() as IWorkspace;
+                IFeatureLayer mCphFeatureLayer = axMapControl1.get_Layer(0) as IFeatureLayer;//这是获得要入库的shapefile，获取其FeatureLayer即可
+                //2.创建要素数据集
+                IFeatureClass pCphFeatureClass = mCphFeatureLayer.FeatureClass;
+                //int code = getSpatialReferenceCode(pCphFeatureClass);//参照投影的代号
+                string datasetName = pCphFeatureClass.AliasName;//要素数据集的名称
+                IFeatureDataset pCphDataset = CreateFeatureClass(pWorkspace, pCphFeatureClass, datasetName);
+                //3.导入SHP到要素数据集(
+                importToDB(pCphFeatureClass, pWorkspace, pCphDataset, pCphFeatureClass.AliasName);
+
+                // 打开personGeodatabase,并添加图层 
+                IWorkspaceFactory pAccessWorkspaceFactory = new AccessWorkspaceFactoryClass();
+                // 打开工作空间并遍历数据集 
+                IWorkspace temp_Workspace = pAccessWorkspaceFactory.OpenFromFile(filePath + "/" + fileNameExt, 0);
+                IEnumDataset pEnumDataset = pWorkspace.get_Datasets(ESRI.ArcGIS.Geodatabase.esriDatasetType.esriDTAny);
+                pEnumDataset.Reset();
+                IDataset pDataset = pEnumDataset.Next();
+
+                if (pDataset is IFeatureDataset)
+                {
+                    pFeatureWorkspace = (IFeatureWorkspace)pAccessWorkspaceFactory.OpenFromFile(filePath + "/" + fileNameExt, 0);
+                    pFeatureDataset = pFeatureWorkspace.OpenFeatureDataset(pDataset.Name);
+                    IEnumDataset pEnumDataset1 = pFeatureDataset.Subsets;
+                    pEnumDataset1.Reset();
+                    IDataset pDataset1 = pEnumDataset1.Next();
+                    if (pDataset1 is IFeatureClass)
+                    {
+                        tempFeatureLayer = new FeatureLayerClass();
+                        tempFeatureLayer.FeatureClass = pFeatureWorkspace.OpenFeatureClass(pDataset1.Name);
+                        tempFeatureLayer.Name = pFeatureLayer.FeatureClass.AliasName;
+                    }
+                }
+            }
+            else
+            {
+                this.btnadd.Enabled = false;
+                this.dgvSearch.ReadOnly = true;
+ 
+            }
+            
+        }
+
+        public void UpdateFTOnDV(ILayer player, DataTable pdatatable, int[] array)
+        {
+            IFeatureLayer pFTClass = player as IFeatureLayer;
+            ITable pTable = pFTClass as ITable;
+            ICursor pCursor;
+            IRow pRow;
+            pCursor = pTable.GetRows(array, false);
+            for (int i = 0; i < array.Length; i++)
+            {
+                pRow = pCursor.NextRow();
+                int k = array[i];
+                for (int j = 2; j < pdatatable.Columns.Count; j++)
+                {
+                    object pgridview = pdatatable.Rows[k][j];
+                    object prow = pRow.get_Value(j);
+                    if (prow.ToString() != pgridview.ToString())
+                    {
+                        pRow.set_Value(j, pgridview);
+                        pRow.Store();
+                    }
+                }
+
+            }
+
+            MessageBox.Show("数据保存成功！");
+        }
+
+        private void btnSave_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
+        {
+            dgvSearch.CurrentCell = null;
+            for (int i=0; i < this.dgvSearch.RowCount; i++)
+            {
+                string oid = dgvSearch.Rows[i].Cells[0].Value.ToString();
+
+                IFeatureLayer pfeaturelayer = axMapControl1.get_Layer(0) as IFeatureLayer;
+                
+                //找到要素
+                IQueryFilter pQueryFilter = new QueryFilter();
+                pQueryFilter.WhereClause = "OBJECTID = " + oid;
+
+                IFeatureCursor pFeatureCur = pfeaturelayer.Search(pQueryFilter, false);
+
+                IFeature pFeature = null;
+
+                pFeature = pFeatureCur.NextFeature();
+
+                if (null == pFeature){}
+                else
+                {
+                    IFields pFields = pFeature.Fields;
+                    IFeatureClass pFeatureClass = pfeaturelayer.FeatureClass;
+                    for (int j = 0; j < pFeature.Fields.FieldCount; j++)
+                    {
+                        if (pFeature.Fields.get_Field(j).Type != esriFieldType.esriFieldTypeString) { continue; }
+                        pFeature.set_Value(j, dgvSearch[j,i].Value);
+                    }
+                    pFeature.Store();
+                }
+                pDT = LD.ShowTableInDataGridView_zenjian(axMapControl1.get_Layer(0) as ITable, dgvTable, out FieldName);
+            }
+        }
+        //导出附表1
+
+        private void buttonCommand1_Click_2(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
+        {
+            if (dgvStastic.IsCurrentCellInEditMode == true)
+            {
+                dgvStastic.CurrentCell = null;
+            }
+            string filePath = "";
+            SaveFileDialog s = new SaveFileDialog();
+            s.Title = "保存Excel文件";
+            s.Filter = "Excel文件(*.xlsx)|*.xlsx";
+            s.FilterIndex = 1;
+            if (s.ShowDialog() == DialogResult.OK)
+            {
+                filePath = s.FileName;
+                string AppendText = "\r\n导出统计表格\r\n时间:" + DateTime.Now.ToString();
+                this.Invoke(this.myDelegateAppendTextInfo, new object[] { AppendText });
+                if (dgvStastic.Rows.Count <= 0)
+                {
+                    this.Invoke(this.myDelegateAppendTextInfo, new object[] { "\r\n提示：无数据导出" }); return;
+                }
+                DataTable tmpStatisticDataTable = new DataTable("StatisticDT");
+                DataTable modelTable = new DataTable("ModelTable");
+                for (int column = 0; column < dgvStastic.Columns.Count; column++)
+                {
+                    if (dgvStastic.Columns[column].Visible == true)
+                    {
+                        DataColumn tempColumn = new DataColumn(dgvStastic.Columns[column].HeaderText, typeof(string));
+                        tmpStatisticDataTable.Columns.Add(tempColumn);
+
+                        DataColumn modelColumn = new DataColumn(dgvStastic.Columns[column].Name, typeof(string));
+                        modelTable.Columns.Add(modelColumn);
+                    }
+                }
+                for (int row = 0; row < dgvStastic.Rows.Count; row++)
+                {
+                    DataRow tempRow = tmpStatisticDataTable.NewRow();
+                    for (int i = 0; i < tmpStatisticDataTable.Columns.Count; i++)
+                    {
+                        tempRow[i] = dgvStastic.Rows[row].Cells[modelTable.Columns[i].ColumnName].Value;
+                    }
+                    tmpStatisticDataTable.Rows.Add(tempRow);
+                }
+                if (tmpStatisticDataTable == null)
+                {
+                    return;
+                }
+                //第二步：导出dataTable到Excel  
+                long rowNum = tmpStatisticDataTable.Rows.Count;//行数  
+                int columnNum = tmpStatisticDataTable.Columns.Count;//列数  
+                Excel.Application m_xlApp = new Excel.Application();
+                m_xlApp.DisplayAlerts = false;//不显示更改提示  
+                m_xlApp.Visible = false;
+                Excel.Workbooks workbooks = m_xlApp.Workbooks;
+                Excel.Workbook workbook = workbooks.Add(Excel.XlWBATemplate.xlWBATWorksheet);
+                Excel.Worksheet worksheet = (Excel.Worksheet)workbook.Worksheets[1];//取得sheet1  
+                try
+                {
+                    string[,] datas = new string[rowNum + 1, columnNum];
+                    for (int i = 0; i < columnNum; i++) //写入字段  
+                        datas[0, i] = tmpStatisticDataTable.Columns[i].Caption;
+                    //Excel.Range range = worksheet.get_Range(worksheet.Cells[1, 1], worksheet.Cells[1, columnNum]);  
+                    Excel.Range range = m_xlApp.Range[worksheet.Cells[1, 1], worksheet.Cells[1, columnNum]];
+                    range.Interior.ColorIndex = 15;//15代表灰色  
+                    range.Font.Bold = true;
+                    range.Font.Size = 10;
+                    int r = 0;
+                    for (r = 0; r < rowNum; r++)
+                    {
+                        for (int i = 0; i < columnNum; i++)
+                        {
+                            object obj = tmpStatisticDataTable.Rows[r][tmpStatisticDataTable.Columns[i].ToString()];
+                            datas[r + 1, i] = obj == null ? "" : "'" + obj.ToString().Trim();//在obj.ToString()前加单引号是为了防止自动转化格式  
+                        }
+                        System.Windows.Forms.Application.DoEvents();
+                        //添加进度条  
+                    }
+                    //Excel.Range fchR = worksheet.get_Range(worksheet.Cells[1, 1], worksheet.Cells[rowNum + 1, columnNum]);  
+                    Excel.Range fchR = m_xlApp.Range[worksheet.Cells[1, 1], worksheet.Cells[rowNum + 1, columnNum]];
+                    fchR.Value2 = datas;
+                    worksheet.Columns.EntireColumn.AutoFit();//列宽自适应。  
+                    //worksheet.Name = "dd";  
+                    //m_xlApp.WindowState = Excel.XlWindowState.xlMaximized;
+                    m_xlApp.Visible = false;
+                    // = worksheet.get_Range(worksheet.Cells[1, 1], worksheet.Cells[rowNum + 1, columnNum]);  
+                    range = m_xlApp.Range[worksheet.Cells[1, 1], worksheet.Cells[rowNum + 1, columnNum]];
+                    //range.Interior.ColorIndex = 15;//15代表灰色  
+                    range.Font.Size = 9;
+                    range.RowHeight = 14.25;
+                    range.Borders.LineStyle = 1;
+                    range.HorizontalAlignment = 1;
+                    workbook.Saved = true;
+                    workbook.SaveCopyAs(filePath);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("导出异常：" + ex.Message, "导出异常", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    m_xlApp.Workbooks.Close();
+                    m_xlApp.Workbooks.Application.Quit();
+                    m_xlApp.Application.Quit();
+                    m_xlApp.Quit();
+                    return;
+                }
+                finally
+                {
+                    //EndReport();
+                }
+                m_xlApp.Workbooks.Close();
+                m_xlApp.Workbooks.Application.Quit();
+                m_xlApp.Application.Quit();
+                m_xlApp.Quit();
+                MessageBox.Show("导出成功！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Invoke(myDelegateAppendTextInfo, new object[] { "\r\n导出成功，路径为" + filePath + "\r\n" });
+            }
+            else { return; }
+        }
     }
 }

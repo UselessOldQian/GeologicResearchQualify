@@ -95,7 +95,42 @@ namespace QI_ClassLibrary
             return dt;//返回
         }
 
-
+        public DataTable ShowTableInDataGridView_zenjian(ITable ptable, DataGridView DGV,out List<String> FieldName)
+        {
+            DGV.DataSource = null;
+            DataTable pDataTable = new DataTable();//建立一个table
+            FieldName = new List<string>();
+            for (int i = 0; i < ptable.Fields.FieldCount; i++)
+            {
+                //建立一个string变量存储Field的名字
+                FieldName.Add(ptable.Fields.get_Field(i).AliasName);
+                string FieldTrueName = ptable.Fields.get_Field(i).Name;
+                pDataTable.Columns.Add(FieldTrueName);
+            }
+            int index = 0;
+            ICursor pCursor = ptable.Search(null, false);
+            IRow pRrow = pCursor.NextRow();
+            while (pRrow != null)
+            {
+                DataRow pRow = pDataTable.NewRow();
+                string[] StrRow = new string[pRrow.Fields.FieldCount];
+                for (int i = 0; i < pRrow.Fields.FieldCount; i++)
+                {
+                    StrRow[i] = pRrow.get_Value(i).ToString();
+                }
+                pRow.ItemArray = StrRow;
+                pDataTable.Rows.Add(pRow);
+                pRrow = pCursor.NextRow();
+                index++;
+            }
+            DGV.DataSource = pDataTable;
+            for (int i = 0; i < FieldName.Count; i++)
+            {
+                //if (ptable.Fields.get_Field(i).Type == esriFieldType.esriFieldTypeDate) { DGV.Columns[i].ValueType = typeof.};
+                DGV.Columns[i].HeaderText = FieldName[i];
+            }
+            return pDataTable;
+        }
 
     }
 }
