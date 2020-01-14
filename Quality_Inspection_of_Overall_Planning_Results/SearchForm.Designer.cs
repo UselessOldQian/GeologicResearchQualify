@@ -49,7 +49,7 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(535, 112);
             this.listBox1.TabIndex = 0;
-            this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.button1_Click);
+            this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listbox1_Click);
             // 
             // btnOK
             // 
@@ -75,10 +75,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(330, 57);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(29, 12);
+            this.label3.Size = new System.Drawing.Size(11, 12);
             this.label3.TabIndex = 6;
-            this.label3.Text = "like";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
+            this.label3.Text = "=";
             // 
             // label2
             // 
