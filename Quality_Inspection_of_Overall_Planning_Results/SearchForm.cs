@@ -31,45 +31,82 @@ namespace Quality_Inspection_of_Overall_Planning_Results
 
 
             if (this.comLayerName.SelectedItem == null) {return;}
-            if (this.ListFieldsName.SelectedItem == null) { return; }
-            //if (this.listBox1.SelectedItem == null) { return; }
             IFeatureLayer pFeatureLayer = GetLayerbyName(this.comLayerName.SelectedItem.ToString()) as IFeatureLayer;
-            string Fname = (pFeatureLayer as ITable).Fields.get_Field((pFeatureLayer as ITable).Fields.FindFieldByAliasName(this.ListFieldsName.SelectedItem.ToString())).Name;
             string ret_sql = "";
             string ret_sql2 = "";
-            if (Fname != "ZBGHSYSJ")
-            { 
-                //ret_sql = Fname + " LIKE '" + this.listBox1.SelectedItem.ToString() + "'";
-                ret_sql = Fname + " LIKE '" + this.textBox1.Text + "'";
-                //ret_sql2 = Fname + " LIKE '" + this.listBox1.SelectedItem.ToString() + "'";
-                ret_sql2 = Fname + " LIKE '" + this.textBox1.Text + "'";
-            }
-            else {
-                ret_sql = Fname + " = #" + this.listBox1.SelectedItem.ToString() + "#";
-                ret_sql2 = Fname + " = '" + this.listBox1.SelectedItem.ToString() + " 0:00:00'"; 
-            }
-
-            //测试取值
-            int len = 0;
-            //string combotext = this.panel1.Controls.Find("ComboBox1", false)[len].Text;
-
-
-            foreach (Control c in this.panel1.Controls)
+            if (this.ListFieldsName.SelectedItem != null)
             {
-
-                if (c.Name == "text1")
+                string Fname = (pFeatureLayer as ITable).Fields.get_Field((pFeatureLayer as ITable).Fields.FindFieldByAliasName(this.ListFieldsName.SelectedItem.ToString())).Name;
+                if (Fname != "ZBGHSYSJ")
                 {
-                    string combotext = this.panel1.Controls.Find("ComboBox1", false)[len].Text;
-                    len += 1;
-                    if (combotext != "") 
+                    //ret_sql = Fname + " LIKE '" + this.listBox1.SelectedItem.ToString() + "'";
+                    ret_sql = Fname + " LIKE '" + this.textBox1.Text + "'";
+                    //ret_sql2 = Fname + " LIKE '" + this.listBox1.SelectedItem.ToString() + "'";
+                    ret_sql2 = Fname + " LIKE '" + this.textBox1.Text + "'";
+                }
+                else
+                {
+                    ret_sql = Fname + " = #" + this.listBox1.SelectedItem.ToString() + "#";
+                    ret_sql2 = Fname + " = '" + this.listBox1.SelectedItem.ToString() + " 0:00:00'";
+                }
+
+                //测试取值
+                int len = 0;
+                //string combotext = this.panel1.Controls.Find("ComboBox1", false)[len].Text;
+                foreach (Control c in this.panel1.Controls)
+                {
+
+                    if (c.Name == "text1")
                     {
-                        string Fcombotext = (pFeatureLayer as ITable).Fields.get_Field((pFeatureLayer as ITable).Fields.FindFieldByAliasName(combotext)).Name;        
-                        string text = ((TextBox)c).Text;
-                        ret_sql += " And " + Fcombotext + " LIKE '*" + text + "*'";
-                        ret_sql2 += " And " + Fcombotext + " LIKE '*" + text + "*'"; 
+                        string combotext = this.panel1.Controls.Find("ComboBox1", false)[len].Text;
+                        len += 1;
+                        if (combotext != "")
+                        {
+                            string Fcombotext = (pFeatureLayer as ITable).Fields.get_Field((pFeatureLayer as ITable).Fields.FindFieldByAliasName(combotext)).Name;
+                            string text = ((TextBox)c).Text;
+                            ret_sql += " And " + Fcombotext + " LIKE '*" + text + "*'";
+                            ret_sql2 += " And " + Fcombotext + " LIKE '*" + text + "*'";
+                        }
                     }
                 }
             }
+            else 
+            {
+                //测试取值
+                int len = 0;
+                int is1 = 0;
+                //string combotext = this.panel1.Controls.Find("ComboBox1", false)[len].Text;
+                foreach (Control c in this.panel1.Controls)
+                {
+
+                    if (c.Name == "text1")
+                    {
+                        string combotext = this.panel1.Controls.Find("ComboBox1", false)[len].Text;
+                        len += 1;
+                        if (combotext != "")
+                        {
+                            if (is1 == 0)
+                            {
+                                string Fcombotext = (pFeatureLayer as ITable).Fields.get_Field((pFeatureLayer as ITable).Fields.FindFieldByAliasName(combotext)).Name;
+                                string text = ((TextBox)c).Text;
+                                ret_sql += Fcombotext + " LIKE '*" + text + "*'";
+                                ret_sql2 += Fcombotext + " LIKE '*" + text + "*'";
+                                is1 += 1;
+                            }
+                            else 
+                            {
+                                string Fcombotext = (pFeatureLayer as ITable).Fields.get_Field((pFeatureLayer as ITable).Fields.FindFieldByAliasName(combotext)).Name;
+                                string text = ((TextBox)c).Text;
+                                ret_sql += " And " + Fcombotext + " LIKE '*" + text + "*'";
+                                ret_sql2 += " And " + Fcombotext + " LIKE '*" + text + "*'";
+                            }
+                            
+                        }
+                    }
+                }
+ 
+            }
+
 
 
             if (this.SqlOK != null)

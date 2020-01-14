@@ -226,7 +226,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.ribbon1.HelpButton.Key = "HelpButton";
             this.ribbon1.Location = new System.Drawing.Point(0, 0);
             this.ribbon1.Name = "ribbon1";
-            this.ribbon1.Size = new System.Drawing.Size(1413, 142);
+            this.ribbon1.Size = new System.Drawing.Size(1413, 146);
             // 
             // 
             // 
@@ -524,7 +524,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // 
             // uiStatusBar1
             // 
-            this.uiStatusBar1.Location = new System.Drawing.Point(0, 1036);
+            this.uiStatusBar1.Location = new System.Drawing.Point(0, 1037);
             this.uiStatusBar1.Name = "uiStatusBar1";
             uiStatusBarPanel1.BorderColor = System.Drawing.Color.Black;
             uiStatusBarPanel1.Key = "";
@@ -544,7 +544,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.TableList.FirstTabOffset = 3;
             this.TableList.Location = new System.Drawing.Point(0, 0);
             this.TableList.Name = "TableList";
-            this.TableList.Size = new System.Drawing.Size(1250, 314);
+            this.TableList.Size = new System.Drawing.Size(1250, 313);
             this.TableList.TabIndex = 8;
             this.TableList.TabPages.AddRange(new Janus.Windows.UI.Tab.UITabPage[] {
             this.Table1,
@@ -561,7 +561,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.Table1.Controls.Add(this.dgv_Table1);
             this.Table1.Location = new System.Drawing.Point(1, 1);
             this.Table1.Name = "Table1";
-            this.Table1.Size = new System.Drawing.Size(1248, 293);
+            this.Table1.Size = new System.Drawing.Size(1248, 292);
             this.Table1.TabStop = true;
             this.Table1.Text = "附表1";
             // 
@@ -582,7 +582,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.dgv_Table1.Location = new System.Drawing.Point(0, 0);
             this.dgv_Table1.Name = "dgv_Table1";
             this.dgv_Table1.RowTemplate.Height = 23;
-            this.dgv_Table1.Size = new System.Drawing.Size(1248, 293);
+            this.dgv_Table1.Size = new System.Drawing.Size(1248, 292);
             this.dgv_Table1.TabIndex = 0;
             // 
             // Index
@@ -1139,7 +1139,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 142);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 146);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -1149,7 +1149,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(1413, 894);
+            this.splitContainer1.Size = new System.Drawing.Size(1413, 891);
             this.splitContainer1.SplitterDistance = 159;
             this.splitContainer1.TabIndex = 10;
             // 
@@ -1160,7 +1160,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.uiTab2.FirstTabOffset = 3;
             this.uiTab2.Location = new System.Drawing.Point(0, 0);
             this.uiTab2.Name = "uiTab2";
-            this.uiTab2.Size = new System.Drawing.Size(159, 894);
+            this.uiTab2.Size = new System.Drawing.Size(159, 891);
             this.uiTab2.TabIndex = 0;
             this.uiTab2.TabPages.AddRange(new Janus.Windows.UI.Tab.UITabPage[] {
             this.uiTabPage3,
@@ -1173,7 +1173,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.uiTabPage3.Controls.Add(this.axTOCControl1);
             this.uiTabPage3.Location = new System.Drawing.Point(1, 1);
             this.uiTabPage3.Name = "uiTabPage3";
-            this.uiTabPage3.Size = new System.Drawing.Size(157, 873);
+            this.uiTabPage3.Size = new System.Drawing.Size(157, 870);
             this.uiTabPage3.TabStop = true;
             this.uiTabPage3.Text = "空间数据";
             // 
@@ -1183,7 +1183,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.axTOCControl1.Location = new System.Drawing.Point(0, 0);
             this.axTOCControl1.Name = "axTOCControl1";
             this.axTOCControl1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axTOCControl1.OcxState")));
-            this.axTOCControl1.Size = new System.Drawing.Size(157, 873);
+            this.axTOCControl1.Size = new System.Drawing.Size(157, 870);
             this.axTOCControl1.TabIndex = 0;
             this.axTOCControl1.OnMouseDown += new ESRI.ArcGIS.Controls.ITOCControlEvents_Ax_OnMouseDownEventHandler(this.axTOCControl1_OnMouseDown);
             // 
@@ -1221,8 +1221,8 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // 
             this.splitContainer2.Panel2.Controls.Add(this.panel2);
             this.splitContainer2.Panel2.Controls.Add(this.panel1);
-            this.splitContainer2.Size = new System.Drawing.Size(1250, 894);
-            this.splitContainer2.SplitterDistance = 560;
+            this.splitContainer2.Size = new System.Drawing.Size(1250, 891);
+            this.splitContainer2.SplitterDistance = 558;
             this.splitContainer2.TabIndex = 9;
             // 
             // splitContainer4
@@ -1238,7 +1238,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.dgvSearch);
-            this.splitContainer4.Size = new System.Drawing.Size(1250, 560);
+            this.splitContainer4.Size = new System.Drawing.Size(1250, 558);
             this.splitContainer4.SplitterDistance = 647;
             this.splitContainer4.TabIndex = 1;
             // 
@@ -1248,7 +1248,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.tabMapTableView.FirstTabOffset = 3;
             this.tabMapTableView.Location = new System.Drawing.Point(0, 0);
             this.tabMapTableView.Name = "tabMapTableView";
-            this.tabMapTableView.Size = new System.Drawing.Size(647, 560);
+            this.tabMapTableView.Size = new System.Drawing.Size(647, 558);
             this.tabMapTableView.TabIndex = 0;
             this.tabMapTableView.TabPages.AddRange(new Janus.Windows.UI.Tab.UITabPage[] {
             this.MapView,
@@ -1261,7 +1261,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.MapView.Controls.Add(this.axMapControl1);
             this.MapView.Location = new System.Drawing.Point(1, 20);
             this.MapView.Name = "MapView";
-            this.MapView.Size = new System.Drawing.Size(645, 539);
+            this.MapView.Size = new System.Drawing.Size(645, 537);
             this.MapView.TabStop = true;
             this.MapView.Text = "空间数据视图";
             // 
@@ -1280,7 +1280,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.axMapControl1.Location = new System.Drawing.Point(0, 0);
             this.axMapControl1.Name = "axMapControl1";
             this.axMapControl1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axMapControl1.OcxState")));
-            this.axMapControl1.Size = new System.Drawing.Size(645, 539);
+            this.axMapControl1.Size = new System.Drawing.Size(645, 537);
             this.axMapControl1.TabIndex = 0;
             this.axMapControl1.OnMouseDown += new ESRI.ArcGIS.Controls.IMapControlEvents2_Ax_OnMouseDownEventHandler(this.axMapControl1_OnMouseDown);
             // 
@@ -1290,7 +1290,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.TableView.Controls.Add(this.axLicenseControl1);
             this.TableView.Location = new System.Drawing.Point(1, 20);
             this.TableView.Name = "TableView";
-            this.TableView.Size = new System.Drawing.Size(645, 538);
+            this.TableView.Size = new System.Drawing.Size(645, 537);
             this.TableView.TabStop = true;
             this.TableView.Text = "属性数据视图";
             // 
@@ -1307,7 +1307,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.dgvTable.Name = "dgvTable";
             this.dgvTable.ReadOnly = true;
             this.dgvTable.RowTemplate.Height = 23;
-            this.dgvTable.Size = new System.Drawing.Size(645, 538);
+            this.dgvTable.Size = new System.Drawing.Size(645, 537);
             this.dgvTable.TabIndex = 0;
             this.dgvTable.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvTable_ColumnHeaderMouseClick);
             this.dgvTable.RowHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvTable_RowHeaderMouseDoubleClick);
@@ -1353,9 +1353,8 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.dgvSearch.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvSearch.Location = new System.Drawing.Point(0, 0);
             this.dgvSearch.Name = "dgvSearch";
-            this.dgvSearch.ReadOnly = true;
             this.dgvSearch.RowTemplate.Height = 23;
-            this.dgvSearch.Size = new System.Drawing.Size(599, 560);
+            this.dgvSearch.Size = new System.Drawing.Size(599, 558);
             this.dgvSearch.TabIndex = 0;
             this.dgvSearch.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvSearch_ColumnHeaderMouseDoubleClick);
             this.dgvSearch.RowHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvSearch_RowHeaderMouseDoubleClick);
@@ -1366,14 +1365,14 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1250, 314);
+            this.panel2.Size = new System.Drawing.Size(1250, 313);
             this.panel2.TabIndex = 1;
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.progressBar1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 314);
+            this.panel1.Location = new System.Drawing.Point(0, 313);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1250, 16);
             this.panel1.TabIndex = 0;
@@ -1452,7 +1451,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1413, 1061);
+            this.ClientSize = new System.Drawing.Size(1413, 1062);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.ribbon1);
             this.Controls.Add(this.uiStatusBar1);
