@@ -35,6 +35,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.ribbonTab1 = new Janus.Windows.Ribbon.RibbonTab();
             this.ribbonGroup1 = new Janus.Windows.Ribbon.RibbonGroup();
             this.btnLoadMDB = new Janus.Windows.Ribbon.ButtonCommand();
+            this.Add_shp = new Janus.Windows.Ribbon.ButtonCommand();
             this.ribbonGroup3 = new Janus.Windows.Ribbon.RibbonGroup();
             this.btnZoomIn = new Janus.Windows.Ribbon.ButtonCommand();
             this.btnZoomOut = new Janus.Windows.Ribbon.ButtonCommand();
@@ -43,8 +44,6 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.btnNormal = new Janus.Windows.Ribbon.ButtonCommand();
             this.ribbonTab2 = new Janus.Windows.Ribbon.RibbonTab();
             this.ribbonGroup2 = new Janus.Windows.Ribbon.RibbonGroup();
-            this.btnSearch = new Janus.Windows.Ribbon.ButtonCommand();
-            this.separatorCommand3 = new Janus.Windows.Ribbon.SeparatorCommand();
             this.btnPreview1 = new Janus.Windows.Ribbon.ButtonCommand();
             this.btnExport1 = new Janus.Windows.Ribbon.ButtonCommand();
             this.separatorCommand4 = new Janus.Windows.Ribbon.SeparatorCommand();
@@ -59,10 +58,21 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.separatorCommand7 = new Janus.Windows.Ribbon.SeparatorCommand();
             this.btnPreview5 = new Janus.Windows.Ribbon.ButtonCommand();
             this.btnExport5 = new Janus.Windows.Ribbon.ButtonCommand();
-            this.ribbonGroup10 = new Janus.Windows.Ribbon.RibbonGroup();
-            this.cbcActivateAlter = new Janus.Windows.Ribbon.CheckBoxCommand();
-            this.btnadd = new Janus.Windows.Ribbon.ButtonCommand();
-            this.btnSave = new Janus.Windows.Ribbon.ButtonCommand();
+            this.ribbonTab4 = new Janus.Windows.Ribbon.RibbonTab();
+            this.ribbonGroup6 = new Janus.Windows.Ribbon.RibbonGroup();
+            this.buttonCommand1 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.btn_saveView = new Janus.Windows.Ribbon.ButtonCommand();
+            this.ribbonTab3 = new Janus.Windows.Ribbon.RibbonTab();
+            this.editLayer5 = new Janus.Windows.Ribbon.RibbonTab();
+            this.ribbonGroup7 = new Janus.Windows.Ribbon.RibbonGroup();
+            this.buttonCommand4 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.buttonCommand7 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.buttonCommand6 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.buttonCommand8 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.labelCommand2 = new Janus.Windows.Ribbon.LabelCommand();
+            this.editLayer = new Janus.Windows.Ribbon.ComboBoxCommand();
+            this.ribbonGroup8 = new Janus.Windows.Ribbon.RibbonGroup();
+            this.buttonCommand9 = new Janus.Windows.Ribbon.ButtonCommand();
             this.buttonGroup2 = new Janus.Windows.Ribbon.ButtonGroup();
             this.buttonGroup3 = new Janus.Windows.Ribbon.ButtonGroup();
             this.uiStatusBar1 = new Janus.Windows.UI.StatusBar.UIStatusBar();
@@ -157,9 +167,6 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.axMapControl1 = new ESRI.ArcGIS.Controls.AxMapControl();
             this.TableView = new Janus.Windows.UI.Tab.UITabPage();
             this.dgvTable = new System.Windows.Forms.DataGridView();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.AddToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.DeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.axLicenseControl1 = new ESRI.ArcGIS.Controls.AxLicenseControl();
             this.dgvSearch = new System.Windows.Forms.DataGridView();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -170,6 +177,12 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.btnColorRander = new System.Windows.Forms.ToolStripMenuItem();
             this.checkBoxCommand1 = new Janus.Windows.Ribbon.CheckBoxCommand();
             this.checkBoxCommand2 = new Janus.Windows.Ribbon.CheckBoxCommand();
+            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.DeNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.janusSuperTip1 = new Janus.Windows.Common.JanusSuperTip(this.components);
+            this.buttonCommand2 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.buttonCommand3 = new Janus.Windows.Ribbon.ButtonCommand();
+            this.buttonCommand5 = new Janus.Windows.Ribbon.ButtonCommand();
             ((System.ComponentModel.ISupportInitialize)(this.ribbon1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TableList)).BeginInit();
             this.TableList.SuspendLayout();
@@ -207,12 +220,12 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             ((System.ComponentModel.ISupportInitialize)(this.axMapControl1)).BeginInit();
             this.TableView.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTable)).BeginInit();
-            this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.axLicenseControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSearch)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.contextMenu.SuspendLayout();
+            this.contextMenuStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // ribbon1
@@ -236,7 +249,10 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.ribbon1.TabIndex = 5;
             this.ribbon1.Tabs.AddRange(new Janus.Windows.Ribbon.RibbonTab[] {
             this.ribbonTab1,
-            this.ribbonTab2});
+            this.ribbonTab2,
+            this.ribbonTab4,
+            this.ribbonTab3,
+            this.editLayer5});
             this.ribbon1.Text = "";
             // 
             // ribbonTab1
@@ -244,14 +260,16 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.ribbonTab1.Groups.AddRange(new Janus.Windows.Ribbon.RibbonGroup[] {
             this.ribbonGroup1,
             this.ribbonGroup3});
+            this.ribbonTab1.Image = ((System.Drawing.Image)(resources.GetObject("ribbonTab1.Image")));
             this.ribbonTab1.Key = "ribbonTab1";
             this.ribbonTab1.Name = "ribbonTab1";
-            this.ribbonTab1.Text = "加载数据";
+            this.ribbonTab1.Text = "基础操作";
             // 
             // ribbonGroup1
             // 
             this.ribbonGroup1.Commands.AddRange(new Janus.Windows.Ribbon.CommandBase[] {
-            this.btnLoadMDB});
+            this.btnLoadMDB,
+            this.Add_shp});
             this.ribbonGroup1.DialogButtonSuperTipSettings.ImageListProvider = this.ribbonGroup1;
             this.ribbonGroup1.Key = "ribbonGroup1";
             this.ribbonGroup1.Name = "ribbonGroup1";
@@ -264,6 +282,14 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.btnLoadMDB.Name = "btnLoadMDB";
             this.btnLoadMDB.Text = "加载mdb";
             this.btnLoadMDB.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.btnLoadMDB_Click);
+            // 
+            // Add_shp
+            // 
+            this.Add_shp.Icon = ((System.Drawing.Icon)(resources.GetObject("Add_shp.Icon")));
+            this.Add_shp.Key = "buttonCommand1";
+            this.Add_shp.Name = "Add_shp";
+            this.Add_shp.Text = "添加shp";
+            this.Add_shp.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.Add_shp_Click);
             // 
             // ribbonGroup3
             // 
@@ -322,17 +348,15 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // ribbonTab2
             // 
             this.ribbonTab2.Groups.AddRange(new Janus.Windows.Ribbon.RibbonGroup[] {
-            this.ribbonGroup2,
-            this.ribbonGroup10});
+            this.ribbonGroup2});
+            this.ribbonTab2.Icon = ((System.Drawing.Icon)(resources.GetObject("ribbonTab2.Icon")));
             this.ribbonTab2.Key = "ribbonTab2";
             this.ribbonTab2.Name = "ribbonTab2";
-            this.ribbonTab2.Text = "导出图表";
+            this.ribbonTab2.Text = "规划技术审查模块";
             // 
             // ribbonGroup2
             // 
             this.ribbonGroup2.Commands.AddRange(new Janus.Windows.Ribbon.CommandBase[] {
-            this.btnSearch,
-            this.separatorCommand3,
             this.btnPreview1,
             this.btnExport1,
             this.separatorCommand4,
@@ -351,19 +375,6 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.ribbonGroup2.Key = "ribbonGroup2";
             this.ribbonGroup2.Name = "ribbonGroup2";
             this.ribbonGroup2.Text = "附表导出";
-            // 
-            // btnSearch
-            // 
-            this.btnSearch.Icon = ((System.Drawing.Icon)(resources.GetObject("btnSearch.Icon")));
-            this.btnSearch.Key = "buttonCommand1";
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Text = "查询";
-            this.btnSearch.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.buttonCommand1_Click_1);
-            // 
-            // separatorCommand3
-            // 
-            this.separatorCommand3.Key = "separatorCommand3";
-            this.separatorCommand3.Name = "separatorCommand3";
             // 
             // btnPreview1
             // 
@@ -465,52 +476,136 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.btnExport5.Text = "导出附表5";
             this.btnExport5.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.btnExport5_Click);
             // 
-            // ribbonGroup10
+            // ribbonTab4
             // 
-            this.ribbonGroup10.Commands.AddRange(new Janus.Windows.Ribbon.CommandBase[] {
-            this.cbcActivateAlter,
-            this.btnadd,
-            this.btnSave});
-            this.ribbonGroup10.DialogButtonSuperTipSettings.ImageListProvider = this.ribbonGroup10;
-            this.ribbonGroup10.Key = "ribbonGroup10";
-            this.ribbonGroup10.Name = "ribbonGroup10";
-            this.ribbonGroup10.Text = "Group 4";
+            this.ribbonTab4.Groups.AddRange(new Janus.Windows.Ribbon.RibbonGroup[] {
+            this.ribbonGroup6});
+            this.ribbonTab4.Key = "ribbonTab4";
+            this.ribbonTab4.Name = "ribbonTab4";
+            this.ribbonTab4.Text = "非空间数据操作";
+            this.ribbonTab4.Visible = false;
             // 
-            // cbcActivateAlter
+            // ribbonGroup6
+            // 
+            this.ribbonGroup6.Commands.AddRange(new Janus.Windows.Ribbon.CommandBase[] {
+            this.buttonCommand1,
+            this.btn_saveView});
+            this.ribbonGroup6.DialogButtonSuperTipSettings.ImageListProvider = this.ribbonGroup6;
+            this.ribbonGroup6.Key = "ribbonGroup6";
+            this.ribbonGroup6.Name = "ribbonGroup6";
+            // 
+            // buttonCommand1
+            // 
+            this.buttonCommand1.Key = "buttonCommand1";
+            this.buttonCommand1.Name = "buttonCommand1";
+            this.buttonCommand1.Text = "非空间表查询";
+            this.buttonCommand1.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.buttonCommand1_Click_2);
+            // 
+            // btn_saveView
+            // 
+            this.btn_saveView.Key = "buttonCommand2";
+            this.btn_saveView.Name = "btn_saveView";
+            this.btn_saveView.Text = "保存修改内容";
+            this.btn_saveView.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.btn_saveView_Click);
+            // 
+            // ribbonTab3
+            // 
+            this.ribbonTab3.Image = ((System.Drawing.Image)(resources.GetObject("ribbonTab3.Image")));
+            this.ribbonTab3.Key = "ribbonTab3";
+            this.ribbonTab3.Name = "ribbonTab3";
+            this.ribbonTab3.Text = "更新监测模块";
+            // 
+            // editLayer5
+            // 
+            this.editLayer5.Groups.AddRange(new Janus.Windows.Ribbon.RibbonGroup[] {
+            this.ribbonGroup7,
+            this.ribbonGroup8});
+            this.editLayer5.Icon = ((System.Drawing.Icon)(resources.GetObject("editLayer5.Icon")));
+            this.editLayer5.Key = "ribbonTab5";
+            this.editLayer5.Name = "editLayer5";
+            this.editLayer5.Text = "实施情况成果表格录入模块";
+            // 
+            // ribbonGroup7
+            // 
+            this.ribbonGroup7.Commands.AddRange(new Janus.Windows.Ribbon.CommandBase[] {
+            this.buttonCommand4,
+            this.buttonCommand7,
+            this.buttonCommand6,
+            this.buttonCommand8,
+            this.labelCommand2,
+            this.editLayer});
+            this.ribbonGroup7.DialogButtonSuperTipSettings.ImageListProvider = this.ribbonGroup7;
+            this.ribbonGroup7.Key = "ribbonGroup7";
+            this.ribbonGroup7.Name = "ribbonGroup7";
+            this.ribbonGroup7.Text = "空间矢量数据操作";
+            // 
+            // buttonCommand4
+            // 
+            this.buttonCommand4.Image = ((System.Drawing.Image)(resources.GetObject("buttonCommand4.Image")));
+            this.buttonCommand4.Key = "buttonCommand4";
+            this.buttonCommand4.Name = "buttonCommand4";
+            this.buttonCommand4.Text = "添加新的矢量数据";
+            this.buttonCommand4.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.btn_combine_Click);
+            // 
+            // buttonCommand7
+            // 
+            this.buttonCommand7.Icon = ((System.Drawing.Icon)(resources.GetObject("buttonCommand7.Icon")));
+            this.buttonCommand7.Key = "buttonCommand7";
+            this.buttonCommand7.Name = "buttonCommand7";
+            this.buttonCommand7.Text = "图层数据查询";
+            this.buttonCommand7.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.btnSearchSpatial_Click);
+            // 
+            // buttonCommand6
+            // 
+            this.buttonCommand6.Image = ((System.Drawing.Image)(resources.GetObject("buttonCommand6.Image")));
+            this.buttonCommand6.Key = "buttonCommand6";
+            this.buttonCommand6.Name = "buttonCommand6";
+            this.buttonCommand6.Text = "删除选中矢量数据";
+            this.buttonCommand6.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.btnDeleteAttr_Click);
+            // 
+            // buttonCommand8
+            // 
+            this.buttonCommand8.Icon = ((System.Drawing.Icon)(resources.GetObject("buttonCommand8.Icon")));
+            this.buttonCommand8.Key = "buttonCommand8";
+            this.buttonCommand8.Name = "buttonCommand8";
+            this.buttonCommand8.Text = "保存修改内容";
+            this.buttonCommand8.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.btnSave_spatial_Click);
+            // 
+            // labelCommand2
+            // 
+            this.labelCommand2.Key = "labelCommand2";
+            this.labelCommand2.Name = "labelCommand2";
+            this.labelCommand2.Text = "目前编辑的图层：";
+            // 
+            // editLayer
             // 
             // 
             // 
             // 
-            this.cbcActivateAlter.CheckBox.BackColor = System.Drawing.Color.Transparent;
-            this.cbcActivateAlter.CheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(73)))), ((int)(((byte)(125)))));
-            this.cbcActivateAlter.CheckBox.Location = new System.Drawing.Point(794, 60);
-            this.cbcActivateAlter.CheckBox.Name = "";
-            this.cbcActivateAlter.CheckBox.ShowFocusRectangle = false;
-            this.cbcActivateAlter.CheckBox.Size = new System.Drawing.Size(100, 22);
-            this.cbcActivateAlter.CheckBox.TabIndex = 0;
-            this.cbcActivateAlter.CheckBox.VisualStyle = Janus.Windows.UI.VisualStyle.Office2007;
-            this.cbcActivateAlter.Key = "checkBoxCommand3";
-            this.cbcActivateAlter.Name = "cbcActivateAlter";
-            this.cbcActivateAlter.Text = "启用修改属性表";
-            this.cbcActivateAlter.CheckedChanged += new Janus.Windows.Ribbon.CommandEventHandler(this.cbcActivateAlter_Click);
-            this.cbcActivateAlter.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.cbcActivateAlter_Click);
+            this.editLayer.ComboBox.Location = new System.Drawing.Point(373, 83);
+            this.editLayer.ComboBox.Name = "";
+            this.editLayer.ComboBox.Size = new System.Drawing.Size(100, 21);
+            this.editLayer.ComboBox.TabIndex = 0;
+            this.editLayer.ComboBox.VisualStyle = Janus.Windows.UI.VisualStyle.Office2007;
+            this.editLayer.Key = "comboBoxCommand1";
+            this.editLayer.Name = "editLayer";
+            this.editLayer.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.editLayer_CheckedChanged);
             // 
-            // btnadd
+            // ribbonGroup8
             // 
-            this.btnadd.Enabled = false;
-            this.btnadd.Key = "buttonCommand1";
-            this.btnadd.Name = "btnadd";
-            this.btnadd.SizeStyle = Janus.Windows.Ribbon.CommandSizeStyle.Small;
-            this.btnadd.Text = "添加字段";
+            this.ribbonGroup8.Commands.AddRange(new Janus.Windows.Ribbon.CommandBase[] {
+            this.buttonCommand9});
+            this.ribbonGroup8.DialogButtonSuperTipSettings.ImageListProvider = this.ribbonGroup8;
+            this.ribbonGroup8.Key = "ribbonGroup8";
+            this.ribbonGroup8.Name = "ribbonGroup8";
+            this.ribbonGroup8.Text = "非空间数据操作";
             // 
-            // btnSave
+            // buttonCommand9
             // 
-            this.btnSave.Icon = ((System.Drawing.Icon)(resources.GetObject("btnSave.Icon")));
-            this.btnSave.Key = "buttonCommand1";
-            this.btnSave.Name = "btnSave";
-            this.btnSave.SizeStyle = Janus.Windows.Ribbon.CommandSizeStyle.Small;
-            this.btnSave.Text = "保存";
-            this.btnSave.Click += new Janus.Windows.Ribbon.CommandEventHandler(this.btnSave_Click);
+            this.buttonCommand9.Image = ((System.Drawing.Image)(resources.GetObject("buttonCommand9.Image")));
+            this.buttonCommand9.Key = "buttonCommand9";
+            this.buttonCommand9.Name = "buttonCommand9";
+            this.buttonCommand9.Text = "删除选中记录";
             // 
             // buttonGroup2
             // 
@@ -524,7 +619,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // 
             // uiStatusBar1
             // 
-            this.uiStatusBar1.Location = new System.Drawing.Point(0, 1037);
+            this.uiStatusBar1.Location = new System.Drawing.Point(0, 830);
             this.uiStatusBar1.Name = "uiStatusBar1";
             uiStatusBarPanel1.BorderColor = System.Drawing.Color.Black;
             uiStatusBarPanel1.Key = "";
@@ -544,7 +639,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.TableList.FirstTabOffset = 3;
             this.TableList.Location = new System.Drawing.Point(0, 0);
             this.TableList.Name = "TableList";
-            this.TableList.Size = new System.Drawing.Size(1250, 313);
+            this.TableList.Size = new System.Drawing.Size(1250, 242);
             this.TableList.TabIndex = 8;
             this.TableList.TabPages.AddRange(new Janus.Windows.UI.Tab.UITabPage[] {
             this.Table1,
@@ -561,7 +656,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.Table1.Controls.Add(this.dgv_Table1);
             this.Table1.Location = new System.Drawing.Point(1, 1);
             this.Table1.Name = "Table1";
-            this.Table1.Size = new System.Drawing.Size(1248, 292);
+            this.Table1.Size = new System.Drawing.Size(1248, 221);
             this.Table1.TabStop = true;
             this.Table1.Text = "附表1";
             // 
@@ -582,7 +677,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.dgv_Table1.Location = new System.Drawing.Point(0, 0);
             this.dgv_Table1.Name = "dgv_Table1";
             this.dgv_Table1.RowTemplate.Height = 23;
-            this.dgv_Table1.Size = new System.Drawing.Size(1248, 292);
+            this.dgv_Table1.Size = new System.Drawing.Size(1248, 221);
             this.dgv_Table1.TabIndex = 0;
             // 
             // Index
@@ -639,7 +734,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.Table2.Controls.Add(this.dgv_Table2);
             this.Table2.Location = new System.Drawing.Point(1, 1);
             this.Table2.Name = "Table2";
-            this.Table2.Size = new System.Drawing.Size(1248, 291);
+            this.Table2.Size = new System.Drawing.Size(1248, 220);
             this.Table2.TabStop = true;
             this.Table2.Text = "附表2";
             // 
@@ -669,7 +764,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.dgv_Table2.Location = new System.Drawing.Point(0, 0);
             this.dgv_Table2.Name = "dgv_Table2";
             this.dgv_Table2.RowTemplate.Height = 23;
-            this.dgv_Table2.Size = new System.Drawing.Size(1248, 291);
+            this.dgv_Table2.Size = new System.Drawing.Size(1248, 220);
             this.dgv_Table2.TabIndex = 0;
             // 
             // Index2
@@ -773,7 +868,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.Table3.Controls.Add(this.dgv_Table3);
             this.Table3.Location = new System.Drawing.Point(1, 1);
             this.Table3.Name = "Table3";
-            this.Table3.Size = new System.Drawing.Size(1248, 291);
+            this.Table3.Size = new System.Drawing.Size(1248, 220);
             this.Table3.TabStop = true;
             this.Table3.Text = "附表3";
             // 
@@ -806,7 +901,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.dgv_Table3.Location = new System.Drawing.Point(0, 0);
             this.dgv_Table3.Name = "dgv_Table3";
             this.dgv_Table3.RowTemplate.Height = 23;
-            this.dgv_Table3.Size = new System.Drawing.Size(1248, 291);
+            this.dgv_Table3.Size = new System.Drawing.Size(1248, 220);
             this.dgv_Table3.TabIndex = 1;
             // 
             // RegionName3
@@ -928,7 +1023,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.Table4.Controls.Add(this.dgv_Table4);
             this.Table4.Location = new System.Drawing.Point(1, 1);
             this.Table4.Name = "Table4";
-            this.Table4.Size = new System.Drawing.Size(1248, 291);
+            this.Table4.Size = new System.Drawing.Size(1248, 220);
             this.Table4.TabStop = true;
             this.Table4.Text = "附表4";
             // 
@@ -954,7 +1049,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.dgv_Table4.Location = new System.Drawing.Point(0, 0);
             this.dgv_Table4.Name = "dgv_Table4";
             this.dgv_Table4.RowTemplate.Height = 23;
-            this.dgv_Table4.Size = new System.Drawing.Size(1248, 291);
+            this.dgv_Table4.Size = new System.Drawing.Size(1248, 220);
             this.dgv_Table4.TabIndex = 0;
             // 
             // RegionName4
@@ -1034,7 +1129,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.Table5.Controls.Add(this.dgv_Table5);
             this.Table5.Location = new System.Drawing.Point(1, 1);
             this.Table5.Name = "Table5";
-            this.Table5.Size = new System.Drawing.Size(1248, 291);
+            this.Table5.Size = new System.Drawing.Size(1248, 220);
             this.Table5.TabStop = true;
             this.Table5.Text = "附表5";
             // 
@@ -1059,7 +1154,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.dgv_Table5.Location = new System.Drawing.Point(0, 0);
             this.dgv_Table5.Name = "dgv_Table5";
             this.dgv_Table5.RowTemplate.Height = 23;
-            this.dgv_Table5.Size = new System.Drawing.Size(1248, 291);
+            this.dgv_Table5.Size = new System.Drawing.Size(1248, 220);
             this.dgv_Table5.TabIndex = 0;
             // 
             // Index5
@@ -1149,7 +1244,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(1413, 891);
+            this.splitContainer1.Size = new System.Drawing.Size(1413, 684);
             this.splitContainer1.SplitterDistance = 159;
             this.splitContainer1.TabIndex = 10;
             // 
@@ -1160,7 +1255,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.uiTab2.FirstTabOffset = 3;
             this.uiTab2.Location = new System.Drawing.Point(0, 0);
             this.uiTab2.Name = "uiTab2";
-            this.uiTab2.Size = new System.Drawing.Size(159, 891);
+            this.uiTab2.Size = new System.Drawing.Size(159, 684);
             this.uiTab2.TabIndex = 0;
             this.uiTab2.TabPages.AddRange(new Janus.Windows.UI.Tab.UITabPage[] {
             this.uiTabPage3,
@@ -1173,7 +1268,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.uiTabPage3.Controls.Add(this.axTOCControl1);
             this.uiTabPage3.Location = new System.Drawing.Point(1, 1);
             this.uiTabPage3.Name = "uiTabPage3";
-            this.uiTabPage3.Size = new System.Drawing.Size(157, 870);
+            this.uiTabPage3.Size = new System.Drawing.Size(157, 663);
             this.uiTabPage3.TabStop = true;
             this.uiTabPage3.Text = "空间数据";
             // 
@@ -1183,7 +1278,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.axTOCControl1.Location = new System.Drawing.Point(0, 0);
             this.axTOCControl1.Name = "axTOCControl1";
             this.axTOCControl1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axTOCControl1.OcxState")));
-            this.axTOCControl1.Size = new System.Drawing.Size(157, 870);
+            this.axTOCControl1.Size = new System.Drawing.Size(157, 663);
             this.axTOCControl1.TabIndex = 0;
             this.axTOCControl1.OnMouseDown += new ESRI.ArcGIS.Controls.ITOCControlEvents_Ax_OnMouseDownEventHandler(this.axTOCControl1_OnMouseDown);
             // 
@@ -1192,7 +1287,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.uiTabPage4.Controls.Add(this.treeView1);
             this.uiTabPage4.Location = new System.Drawing.Point(1, 1);
             this.uiTabPage4.Name = "uiTabPage4";
-            this.uiTabPage4.Size = new System.Drawing.Size(157, 870);
+            this.uiTabPage4.Size = new System.Drawing.Size(157, 662);
             this.uiTabPage4.TabStop = true;
             this.uiTabPage4.Text = "非空间数据";
             // 
@@ -1202,8 +1297,9 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView1.Location = new System.Drawing.Point(0, 0);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(157, 870);
+            this.treeView1.Size = new System.Drawing.Size(157, 662);
             this.treeView1.TabIndex = 0;
+            this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
             this.treeView1.DoubleClick += new System.EventHandler(this.treeView1_DoubleClick);
             // 
             // splitContainer2
@@ -1221,8 +1317,8 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // 
             this.splitContainer2.Panel2.Controls.Add(this.panel2);
             this.splitContainer2.Panel2.Controls.Add(this.panel1);
-            this.splitContainer2.Size = new System.Drawing.Size(1250, 891);
-            this.splitContainer2.SplitterDistance = 558;
+            this.splitContainer2.Size = new System.Drawing.Size(1250, 684);
+            this.splitContainer2.SplitterDistance = 422;
             this.splitContainer2.TabIndex = 9;
             // 
             // splitContainer4
@@ -1238,8 +1334,8 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.dgvSearch);
-            this.splitContainer4.Size = new System.Drawing.Size(1250, 558);
-            this.splitContainer4.SplitterDistance = 647;
+            this.splitContainer4.Size = new System.Drawing.Size(1250, 422);
+            this.splitContainer4.SplitterDistance = 646;
             this.splitContainer4.TabIndex = 1;
             // 
             // tabMapTableView
@@ -1248,7 +1344,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.tabMapTableView.FirstTabOffset = 3;
             this.tabMapTableView.Location = new System.Drawing.Point(0, 0);
             this.tabMapTableView.Name = "tabMapTableView";
-            this.tabMapTableView.Size = new System.Drawing.Size(647, 558);
+            this.tabMapTableView.Size = new System.Drawing.Size(646, 422);
             this.tabMapTableView.TabIndex = 0;
             this.tabMapTableView.TabPages.AddRange(new Janus.Windows.UI.Tab.UITabPage[] {
             this.MapView,
@@ -1261,7 +1357,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.MapView.Controls.Add(this.axMapControl1);
             this.MapView.Location = new System.Drawing.Point(1, 20);
             this.MapView.Name = "MapView";
-            this.MapView.Size = new System.Drawing.Size(645, 537);
+            this.MapView.Size = new System.Drawing.Size(644, 401);
             this.MapView.TabStop = true;
             this.MapView.Text = "空间数据视图";
             // 
@@ -1270,7 +1366,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.axToolbarControl1.Location = new System.Drawing.Point(3, 3);
             this.axToolbarControl1.Name = "axToolbarControl1";
             this.axToolbarControl1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axToolbarControl1.OcxState")));
-            this.axToolbarControl1.Size = new System.Drawing.Size(124, 28);
+            this.axToolbarControl1.Size = new System.Drawing.Size(155, 28);
             this.axToolbarControl1.TabIndex = 11;
             this.axToolbarControl1.OnMouseUp += new ESRI.ArcGIS.Controls.IToolbarControlEvents_Ax_OnMouseUpEventHandler(this.axToolbarControl1_OnMouseUp);
             // 
@@ -1280,7 +1376,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.axMapControl1.Location = new System.Drawing.Point(0, 0);
             this.axMapControl1.Name = "axMapControl1";
             this.axMapControl1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axMapControl1.OcxState")));
-            this.axMapControl1.Size = new System.Drawing.Size(645, 537);
+            this.axMapControl1.Size = new System.Drawing.Size(644, 401);
             this.axMapControl1.TabIndex = 0;
             this.axMapControl1.OnMouseDown += new ESRI.ArcGIS.Controls.IMapControlEvents2_Ax_OnMouseDownEventHandler(this.axMapControl1_OnMouseDown);
             // 
@@ -1290,7 +1386,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.TableView.Controls.Add(this.axLicenseControl1);
             this.TableView.Location = new System.Drawing.Point(1, 20);
             this.TableView.Name = "TableView";
-            this.TableView.Size = new System.Drawing.Size(645, 537);
+            this.TableView.Size = new System.Drawing.Size(644, 401);
             this.TableView.TabStop = true;
             this.TableView.Text = "属性数据视图";
             // 
@@ -1301,37 +1397,16 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.dgvTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvTable.BackgroundColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.dgvTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvTable.ContextMenuStrip = this.contextMenuStrip1;
             this.dgvTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvTable.Location = new System.Drawing.Point(0, 0);
             this.dgvTable.Name = "dgvTable";
-            this.dgvTable.ReadOnly = true;
             this.dgvTable.RowTemplate.Height = 23;
-            this.dgvTable.Size = new System.Drawing.Size(645, 537);
+            this.dgvTable.Size = new System.Drawing.Size(644, 401);
             this.dgvTable.TabIndex = 0;
+            this.dgvTable.DataSourceChanged += new System.EventHandler(this.dgvTable_DataSourceChanged);
+            this.dgvTable.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTable_CellValueChanged);
             this.dgvTable.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvTable_ColumnHeaderMouseClick);
             this.dgvTable.RowHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvTable_RowHeaderMouseDoubleClick);
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.AddToolStripMenuItem,
-            this.DeleteToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(125, 48);
-            // 
-            // AddToolStripMenuItem
-            // 
-            this.AddToolStripMenuItem.Name = "AddToolStripMenuItem";
-            this.AddToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.AddToolStripMenuItem.Text = "添加字段";
-            this.AddToolStripMenuItem.Click += new System.EventHandler(this.AddToolStripMenuItem_Click);
-            // 
-            // DeleteToolStripMenuItem
-            // 
-            this.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem";
-            this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.DeleteToolStripMenuItem.Text = "删除字段";
             // 
             // axLicenseControl1
             // 
@@ -1354,7 +1429,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.dgvSearch.Location = new System.Drawing.Point(0, 0);
             this.dgvSearch.Name = "dgvSearch";
             this.dgvSearch.RowTemplate.Height = 23;
-            this.dgvSearch.Size = new System.Drawing.Size(599, 558);
+            this.dgvSearch.Size = new System.Drawing.Size(600, 422);
             this.dgvSearch.TabIndex = 0;
             this.dgvSearch.ColumnHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvSearch_ColumnHeaderMouseDoubleClick);
             this.dgvSearch.RowHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvSearch_RowHeaderMouseDoubleClick);
@@ -1365,14 +1440,14 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1250, 313);
+            this.panel2.Size = new System.Drawing.Size(1250, 242);
             this.panel2.TabIndex = 1;
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.progressBar1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 313);
+            this.panel1.Location = new System.Drawing.Point(0, 242);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1250, 16);
             this.panel1.TabIndex = 0;
@@ -1447,11 +1522,51 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.checkBoxCommand2.Name = "cbIsClear";
             this.checkBoxCommand2.Text = "是否清除上一步检查的错误";
             // 
+            // contextMenuStrip2
+            // 
+            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.DeNodeToolStripMenuItem});
+            this.contextMenuStrip2.Name = "contextMenuStrip2";
+            this.contextMenuStrip2.Size = new System.Drawing.Size(125, 26);
+            // 
+            // DeNodeToolStripMenuItem
+            // 
+            this.DeNodeToolStripMenuItem.Name = "DeNodeToolStripMenuItem";
+            this.DeNodeToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.DeNodeToolStripMenuItem.Text = "删除节点";
+            this.DeNodeToolStripMenuItem.Click += new System.EventHandler(this.DeNodeToolStripMenuItem_Click);
+            // 
+            // janusSuperTip1
+            // 
+            this.janusSuperTip1.AutoPopDelay = 2000;
+            this.janusSuperTip1.ImageList = null;
+            // 
+            // buttonCommand2
+            // 
+            this.buttonCommand2.Image = ((System.Drawing.Image)(resources.GetObject("buttonCommand2.Image")));
+            this.buttonCommand2.Key = "buttonCommand1";
+            this.buttonCommand2.Name = "btn_combine";
+            this.buttonCommand2.Text = "合并新的shp数据";
+            // 
+            // buttonCommand3
+            // 
+            this.buttonCommand3.Image = ((System.Drawing.Image)(resources.GetObject("buttonCommand3.Image")));
+            this.buttonCommand3.Key = "buttonCommand1";
+            this.buttonCommand3.Name = "btn_combine";
+            this.buttonCommand3.Text = "合并新的shp数据";
+            // 
+            // buttonCommand5
+            // 
+            this.buttonCommand5.Image = ((System.Drawing.Image)(resources.GetObject("buttonCommand5.Image")));
+            this.buttonCommand5.Key = "buttonCommand1";
+            this.buttonCommand5.Name = "btn_combine";
+            this.buttonCommand5.Text = "合并新的shp数据";
+            // 
             // ZenJian
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1413, 1062);
+            this.ClientSize = new System.Drawing.Size(1413, 855);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.ribbon1);
             this.Controls.Add(this.uiStatusBar1);
@@ -1497,12 +1612,12 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             ((System.ComponentModel.ISupportInitialize)(this.axMapControl1)).EndInit();
             this.TableView.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvTable)).EndInit();
-            this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.axLicenseControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSearch)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.contextMenu.ResumeLayout(false);
+            this.contextMenuStrip2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1547,17 +1662,9 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         private System.Windows.Forms.ToolStripMenuItem btnColorRander;
         private Janus.Windows.Ribbon.CheckBoxCommand checkBoxCommand1;
         private Janus.Windows.Ribbon.CheckBoxCommand checkBoxCommand2;
-        private Janus.Windows.Ribbon.ButtonCommand btnSearch;
         private System.Windows.Forms.SplitContainer splitContainer4;
         private System.Windows.Forms.DataGridView dgvSearch;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem AddToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem DeleteToolStripMenuItem;
-        private Janus.Windows.Ribbon.RibbonGroup ribbonGroup10;
-        private Janus.Windows.Ribbon.CheckBoxCommand cbcActivateAlter;
-        private Janus.Windows.Ribbon.ButtonCommand btnSave;
         public System.Windows.Forms.DataGridView dgvTable;
-        private Janus.Windows.Ribbon.ButtonCommand btnadd;
         private Janus.Windows.Ribbon.ButtonCommand btnExport1;
         private Janus.Windows.UI.Tab.UITabPage Table1;
         private System.Windows.Forms.DataGridView dgv_Table1;
@@ -1573,7 +1680,6 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         private Janus.Windows.UI.Tab.UITabPage Table3;
         private Janus.Windows.UI.Tab.UITabPage Table4;
         private Janus.Windows.UI.Tab.UITabPage Table5;
-        private Janus.Windows.Ribbon.SeparatorCommand separatorCommand3;
         private Janus.Windows.Ribbon.SeparatorCommand separatorCommand4;
         private Janus.Windows.Ribbon.ButtonCommand btnPreview2;
         private Janus.Windows.Ribbon.ButtonCommand btnExport2;
@@ -1648,6 +1754,28 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         private System.Windows.Forms.DataGridViewTextBoxColumn ReturnBuildingArea;
         private System.Windows.Forms.DataGridViewTextBoxColumn NewPloughArea;
         private System.Windows.Forms.DataGridViewTextBoxColumn ReturnPloughArea;
+        private Janus.Windows.Ribbon.ButtonCommand Add_shp;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
+        private System.Windows.Forms.ToolStripMenuItem DeNodeToolStripMenuItem;
+        private Janus.Windows.Ribbon.RibbonTab ribbonTab4;
+        private Janus.Windows.Ribbon.RibbonGroup ribbonGroup6;
+        private Janus.Windows.Ribbon.ButtonCommand buttonCommand1;
+        private Janus.Windows.Ribbon.ButtonCommand btn_saveView;
+        private Janus.Windows.Common.JanusSuperTip janusSuperTip1;
+        private Janus.Windows.Ribbon.RibbonTab editLayer5;
+        private Janus.Windows.Ribbon.RibbonGroup ribbonGroup7;
+        private Janus.Windows.Ribbon.ButtonCommand buttonCommand4;
+        private Janus.Windows.Ribbon.ButtonCommand buttonCommand6;
+        private Janus.Windows.Ribbon.ButtonCommand buttonCommand7;
+        private Janus.Windows.Ribbon.ButtonCommand buttonCommand2;
+        private Janus.Windows.Ribbon.ButtonCommand buttonCommand3;
+        private Janus.Windows.Ribbon.ButtonCommand buttonCommand5;
+        private Janus.Windows.Ribbon.ButtonCommand buttonCommand8;
+        private Janus.Windows.Ribbon.LabelCommand labelCommand2;
+        private Janus.Windows.Ribbon.ComboBoxCommand editLayer;
+        private Janus.Windows.Ribbon.RibbonTab ribbonTab3;
+        private Janus.Windows.Ribbon.RibbonGroup ribbonGroup8;
+        private Janus.Windows.Ribbon.ButtonCommand buttonCommand9;
     }
 }
 

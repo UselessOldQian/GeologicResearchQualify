@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quality_Inspection_of_Overa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QI_ClassLibrary", "QI_ClassLibrary\QI_ClassLibrary.csproj", "{AD24FC61-7DE6-4DD5-9751-830E545D5612}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "installpackage", "package\installpackage\installpackage.vdproj", "{9963D2A3-835C-44DD-8F61-14D80EAC50E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,12 @@ Global
 		{AD24FC61-7DE6-4DD5-9751-830E545D5612}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{AD24FC61-7DE6-4DD5-9751-830E545D5612}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AD24FC61-7DE6-4DD5-9751-830E545D5612}.Release|x86.ActiveCfg = Release|Any CPU
+		{9963D2A3-835C-44DD-8F61-14D80EAC50E0}.Debug|Any CPU.ActiveCfg = Debug
+		{9963D2A3-835C-44DD-8F61-14D80EAC50E0}.Debug|Mixed Platforms.ActiveCfg = Debug
+		{9963D2A3-835C-44DD-8F61-14D80EAC50E0}.Debug|x86.ActiveCfg = Debug
+		{9963D2A3-835C-44DD-8F61-14D80EAC50E0}.Release|Any CPU.ActiveCfg = Release
+		{9963D2A3-835C-44DD-8F61-14D80EAC50E0}.Release|Mixed Platforms.ActiveCfg = Release
+		{9963D2A3-835C-44DD-8F61-14D80EAC50E0}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

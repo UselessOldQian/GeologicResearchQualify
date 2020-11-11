@@ -29,5 +29,11 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             get { return _SQL_2; }
             set { _SQL_2 = value; }
         }
+        private string _editLayer = "";
+        public string editLayer
+        {
+            get { return _editLayer; }
+            set { _editLayer = value; }
+        }
     }
 }
