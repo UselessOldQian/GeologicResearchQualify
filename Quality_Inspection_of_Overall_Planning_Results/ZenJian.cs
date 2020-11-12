@@ -120,6 +120,7 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             Thread.Sleep(2000);
         }
 
+        bool editCombo = false;
         private void btnLoadMDB_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
         {
             try
@@ -137,9 +138,18 @@ namespace Quality_Inspection_of_Overall_Planning_Results
                     OpenMDB(strFullPath);
                     this.tabMapTableView.SelectedTab = tabMapTableView.TabPages[0];
                     uiStatusBar1.Panels[0].Text = "数据库读取完成";
+                    tableMode = false;
                     pDT = LD.ShowTableInDataGridView_zenjian((ITable)axMapControl1.get_Layer(0), dgvTable, out FieldName);
+                    if (editCombo == false)
+                    {
+                        for (int i = 0; i < axMapControl1.LayerCount; i++)
+                        {
+                            editLayer.ComboBox.Items.Add(axMapControl1.get_Layer(i).Name);
+                            editLayer.ComboBox.SelectedIndex = 0;
+                            editCombo = true;
+                        }
+                    }
                 }
-                
             }
             catch (Exception ex)
             {
@@ -247,6 +257,8 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         }
 
         LoadData LD = new LoadData();
+        bool tableMode = false;
+        ITable currentTable = null;
         private void treeView1_DoubleClick(object sender, EventArgs e)
         {
             if (this.treeView1.SelectedNode == null || this.treeView1.SelectedNode.Nodes.Count != 0) return;
@@ -255,10 +267,12 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             IWorkspaceFactory pAccessWorkspaceFactory = new AccessWorkspaceFactoryClass();
             // 打开工作空间并遍历数据集 
             IWorkspace pWorkspace = pAccessWorkspaceFactory.OpenFromFile(this.treeView1.SelectedNode.Parent.Text, 0);
+            tableMode = true;
             ITable ptable = ((IFeatureWorkspace)pWorkspace).OpenTable(this.treeView1.SelectedNode.Text);
             pDT = LD.ShowTableInDataGridView_zenjian(ptable, dgvTable, out FieldName);
             this.tabMapTableView.SelectedTab = tabMapTableView.TabPages[1];
             uiStatusBar1.Panels[0].Text = "数据加载完成";
+            currentTable = ptable;
         }
 
         private void btnZoomIn_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
@@ -322,7 +336,10 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         {
             if (selectedLayer != null)
             {
+                tableMode = false;
                 pDT = LD.ShowTableInDataGridView_zenjian((ITable)selectedLayer, dgvTable,out FieldName);
+                updateEditLayer(selectedLayer.Name);
+                
                 this.tabMapTableView.SelectedTab = tabMapTableView.TabPages[1];
             }
         }
@@ -1037,43 +1054,60 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             return pRgbColor;
         }
 
+        private void updateEditLayer(string editLayerName)
+        {
+            for (int i = 0; i < editLayer.ComboBox.Items.Count; i++)
+            {
+                if (editLayer.ComboBox.Items[i].Text == editLayerName)
+                {
+                    editLayer.ComboBox.SelectedIndex = i;
+                }
+            }
+        }
+
         private void _SelectbyAttributeFrm_SqlOK(object sender, SQLFileterEventArgs e)
         {
-            IFeatureSelection layer = this.axMapControl1.get_Layer(e.LayerIndex) as IFeatureSelection;
+            updateEditLayer(e.editLayer);
+            pDT = LD.ShowTableInDataGridView_zenjian((ITable)GetLayerByName(e.editLayer), dgvTable, out FieldName);
+            IFeatureSelection layer = GetLayerByName(e.editLayer) as IFeatureSelection;
             IQueryFilter pQueryFilter = new QueryFilterClass();
             pQueryFilter.WhereClause = e.SQL;//过滤条件，查询表达式
             layer.SelectFeatures(pQueryFilter, esriSelectionResultEnum.esriSelectionResultNew, false);
 
-            ISimpleFillSymbol SFS = new SimpleFillSymbolClass();
-            ISimpleLineSymbol ILS = new SimpleLineSymbolClass();
-            SFS.Style = esriSimpleFillStyle.esriSFSSolid;
-            SFS.Color = getRGB(255, 0, 0);
-            ILS.Color = getRGB(0, 255, 0);
-            ILS.Style = esriSimpleLineStyle.esriSLSSolid;
-            ILS.Width = 13;
-            SFS.Outline = ILS;
-            layer.SelectionSymbol = SFS as ISymbol;
-            //this.dgvTable.Columns;
-            this.axMapControl1.ActiveView.PartialRefresh(esriViewDrawPhase.esriViewGraphicSelection, null, null);
-            this.axMapControl1.Refresh();
-
-            // 这个是你查询出来的DataTable中的行集合
-            DataRow[] rowsinDataTable = pDT.Select(e.SQL_2);
-            dgvTable.MultiSelect = true;
-            dgvTable.ClearSelection();
-            foreach (DataRow r in rowsinDataTable)
+            if (e.SQL != null)
             {
-                foreach (DataGridViewRow row in dgvTable.Rows)
-                {
-                    // 假设ID为第一个单元格,比较他们之间的值
-                    if (r["OBJECTID"] == row.Cells[0].Value)
-                    {
-                        // 相等就代表你查询出的数据行在DataGridView 中存在，并选中对应的数据行
-                        row.Selected = true;
-                    }
+                ISimpleFillSymbol SFS = new SimpleFillSymbolClass();
+                ISimpleLineSymbol ILS = new SimpleLineSymbolClass();
+                SFS.Style = esriSimpleFillStyle.esriSFSSolid;
+                SFS.Color = getRGB(255, 0, 0);
+                ILS.Color = getRGB(0, 255, 0);
+                ILS.Style = esriSimpleLineStyle.esriSLSSolid;
+                ILS.Width = 13;
+                SFS.Outline = ILS;
+                layer.SelectionSymbol = SFS as ISymbol;
+                //this.dgvTable.Columns;
+                this.axMapControl1.ActiveView.PartialRefresh(esriViewDrawPhase.esriViewGraphicSelection, null, null);
+                this.axMapControl1.Refresh();
 
+                // 这个是你查询出来的DataTable中的行集合
+                DataRow[] rowsinDataTable = pDT.Select(e.SQL_2);
+                dgvTable.MultiSelect = true;
+                dgvTable.ClearSelection();
+                foreach (DataRow r in rowsinDataTable)
+                {
+                    foreach (DataGridViewRow row in dgvTable.Rows)
+                    {
+                        // 假设ID为第一个单元格,比较他们之间的值
+                        if (r["OBJECTID"] == row.Cells[0].Value)
+                        {
+                            // 相等就代表你查询出的数据行在DataGridView 中存在，并选中对应的数据行
+                            row.Selected = true;
+                        }
+
+                    }
                 }
             }
+         
 
             DataView dv = new DataView((DataTable)dgvTable.DataSource);
             dv.RowFilter = e.SQL_2;
@@ -1083,43 +1117,50 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             {
                 dgvSearch.Columns[i].HeaderText = FieldName[i];
             }
-            //DateTime dt;
-            //DateTimeFormatInfo dtFormat = new DateTimeFormatInfo();
-            //dtFormat.ShortDatePattern = "yyyy/MM/dd";
-            //dt = Convert.ToDateTime("2011/05/26", dtFormat);
             foreach (DataGridViewColumn column in dgvSearch.Columns)
             { column.SortMode = DataGridViewColumnSortMode.NotSortable; }
+
         }
 
         static DataTable pDTSearch;
 
         private void dgvTable_RowHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            int OID_index = -1;
-            for (int count = 0; count < dgvTable.Columns.Count; count++)
+            try
             {
-                if (dgvTable.Columns[count].HeaderText == "OBJECTID") { OID_index = count; break; }
+                if (tableMode == false)
+                {
+                    int OID_index = -1;
+                    for (int count = 0; count < dgvTable.Columns.Count; count++)
+                    {
+                        if (dgvTable.Columns[count].HeaderText == "OBJECTID") { OID_index = count; break; }
+                    }
+                    if (OID_index == -1) { return; };
+                    ILayer player = axMapControl1.get_Layer(0);
+                    int OID = int.Parse(dgvTable.SelectedRows[0].Cells[OID_index].Value.ToString());
+                    IArea pArea = (player as IFeatureLayer).FeatureClass.GetFeature(OID).Shape as IArea;
+                    IPoint iPnt = pArea.LabelPoint;
+                    axMapControl1.Extent = (player as IFeatureLayer).FeatureClass.GetFeature(OID).Shape.Envelope;
+                    axMapControl1.CenterAt(iPnt);
+                    axMapControl1.Refresh();
+                }
             }
-            if (OID_index == -1) { return; };
-            ILayer player = axMapControl1.get_Layer(0);
-            int OID = int.Parse(dgvTable.SelectedRows[0].Cells[OID_index].Value.ToString());
-            IArea pArea = (player as IFeatureLayer).FeatureClass.GetFeature(OID).Shape as IArea;
-            IPoint iPnt = pArea.LabelPoint;
-            axMapControl1.Extent = (player as IFeatureLayer).FeatureClass.GetFeature(OID).Shape.Envelope;
-            axMapControl1.CenterAt(iPnt);
-            axMapControl1.Refresh();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void dgvSearch_RowHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (dgvTable.SelectedRows.Count == 0) { return; }
+            if (dgvSearch.SelectedRows.Count == 0) { return; }
             int OID_index = -1;
-            for (int count = 0; count < dgvTable.Columns.Count; count++)
+            for (int count = 0; count < dgvSearch.Columns.Count; count++)
             {
-                if (dgvTable.Columns[count].HeaderText == "OBJECTID") { OID_index = count; break; }
+                if (dgvSearch.Columns[count].HeaderText == "OBJECTID") { OID_index = count; break; }
             }
             if (OID_index == -1) { return; };
-            ILayer player = axMapControl1.get_Layer(0);
+            ILayer player = GetLayerByName(editLayer.ComboBox.SelectedItem.Text);
             int OID = int.Parse(dgvSearch.SelectedRows[0].Cells[OID_index].Value.ToString());
             IArea pArea = (player as IFeatureLayer).FeatureClass.GetFeature(OID).Shape as IArea;
             IPoint iPnt = pArea.LabelPoint;
@@ -1165,58 +1206,56 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         }
 
         IFeatureLayer tempFeatureLayer;
-        private void cbcActivateAlter_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
-        {
-            if (axMapControl1.Map.LayerCount == 0) { return; }
-            if (cbcActivateAlter.Checked == true)
-            {
-                this.btnadd.Enabled = false;
-                this.dgvSearch.ReadOnly = false;
-                string fileNameExt = DateTime.Now.ToString("yyyyMMddHHmmss") + ".mdb";
-                string filePath = System.IO.Directory.GetCurrentDirectory();
-                IWorkspaceFactory pWorksapceFactory = new AccessWorkspaceFactory();
-                IWorkspaceName worksapcename = pWorksapceFactory.Create(filePath, fileNameExt, null, 0);
-                IName name = worksapcename as IName;
-                IWorkspace pWorkspace = name.Open() as IWorkspace;
-                IFeatureLayer mCphFeatureLayer = axMapControl1.get_Layer(0) as IFeatureLayer;//这是获得要入库的shapefile，获取其FeatureLayer即可
-                //2.创建要素数据集
-                IFeatureClass pCphFeatureClass = mCphFeatureLayer.FeatureClass;
-                //int code = getSpatialReferenceCode(pCphFeatureClass);//参照投影的代号
-                string datasetName = pCphFeatureClass.AliasName;//要素数据集的名称
-                IFeatureDataset pCphDataset = CreateFeatureClass(pWorkspace, pCphFeatureClass, datasetName);
-                //3.导入SHP到要素数据集(
-                importToDB(pCphFeatureClass, pWorkspace, pCphDataset, pCphFeatureClass.AliasName);
+        //private void cbcActivateAlter_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
+        //{
+        //    if (axMapControl1.Map.LayerCount == 0) { return; }
+        //    if (cbcActivateAlter.Checked == true)
+        //    {
+        //        this.dgvSearch.ReadOnly = false;
+        //        string fileNameExt = DateTime.Now.ToString("yyyyMMddHHmmss") + ".mdb";
+        //        string filePath = System.IO.Directory.GetCurrentDirectory();
+        //        IWorkspaceFactory pWorksapceFactory = new AccessWorkspaceFactory();
+        //        IWorkspaceName worksapcename = pWorksapceFactory.Create(filePath, fileNameExt, null, 0);
+        //        IName name = worksapcename as IName;
+        //        IWorkspace pWorkspace = name.Open() as IWorkspace;
+        //        IFeatureLayer mCphFeatureLayer = axMapControl1.get_Layer(0) as IFeatureLayer;//这是获得要入库的shapefile，获取其FeatureLayer即可
+        //        //2.创建要素数据集
+        //        IFeatureClass pCphFeatureClass = mCphFeatureLayer.FeatureClass;
+        //        //int code = getSpatialReferenceCode(pCphFeatureClass);//参照投影的代号
+        //        string datasetName = pCphFeatureClass.AliasName;//要素数据集的名称
+        //        IFeatureDataset pCphDataset = CreateFeatureClass(pWorkspace, pCphFeatureClass, datasetName);
+        //        //3.导入SHP到要素数据集(
+        //        importToDB(pCphFeatureClass, pWorkspace, pCphDataset, pCphFeatureClass.AliasName);
 
-                // 打开personGeodatabase,并添加图层 
-                IWorkspaceFactory pAccessWorkspaceFactory = new AccessWorkspaceFactoryClass();
-                // 打开工作空间并遍历数据集 
-                IWorkspace temp_Workspace = pAccessWorkspaceFactory.OpenFromFile(filePath + "/" + fileNameExt, 0);
-                IEnumDataset pEnumDataset = pWorkspace.get_Datasets(ESRI.ArcGIS.Geodatabase.esriDatasetType.esriDTAny);
-                pEnumDataset.Reset();
-                IDataset pDataset = pEnumDataset.Next();
+        //        // 打开personGeodatabase,并添加图层 
+        //        IWorkspaceFactory pAccessWorkspaceFactory = new AccessWorkspaceFactoryClass();
+        //        // 打开工作空间并遍历数据集 
+        //        IWorkspace temp_Workspace = pAccessWorkspaceFactory.OpenFromFile(filePath + "/" + fileNameExt, 0);
+        //        IEnumDataset pEnumDataset = pWorkspace.get_Datasets(ESRI.ArcGIS.Geodatabase.esriDatasetType.esriDTAny);
+        //        pEnumDataset.Reset();
+        //        IDataset pDataset = pEnumDataset.Next();
 
-                if (pDataset is IFeatureDataset)
-                {
-                    pFeatureWorkspace = (IFeatureWorkspace)pAccessWorkspaceFactory.OpenFromFile(filePath + "/" + fileNameExt, 0);
-                    pFeatureDataset = pFeatureWorkspace.OpenFeatureDataset(pDataset.Name);
-                    IEnumDataset pEnumDataset1 = pFeatureDataset.Subsets;
-                    pEnumDataset1.Reset();
-                    IDataset pDataset1 = pEnumDataset1.Next();
-                    if (pDataset1 is IFeatureClass)
-                    {
-                        tempFeatureLayer = new FeatureLayerClass();
-                        tempFeatureLayer.FeatureClass = pFeatureWorkspace.OpenFeatureClass(pDataset1.Name);
-                        tempFeatureLayer.Name = pFeatureLayer.FeatureClass.AliasName;
-                    }
-                }
-            }
-            else
-            {
-                this.btnadd.Enabled = false;
-                this.dgvSearch.ReadOnly = true;
-            }
+        //        if (pDataset is IFeatureDataset)
+        //        {
+        //            pFeatureWorkspace = (IFeatureWorkspace)pAccessWorkspaceFactory.OpenFromFile(filePath + "/" + fileNameExt, 0);
+        //            pFeatureDataset = pFeatureWorkspace.OpenFeatureDataset(pDataset.Name);
+        //            IEnumDataset pEnumDataset1 = pFeatureDataset.Subsets;
+        //            pEnumDataset1.Reset();
+        //            IDataset pDataset1 = pEnumDataset1.Next();
+        //            if (pDataset1 is IFeatureClass)
+        //            {
+        //                tempFeatureLayer = new FeatureLayerClass();
+        //                tempFeatureLayer.FeatureClass = pFeatureWorkspace.OpenFeatureClass(pDataset1.Name);
+        //                tempFeatureLayer.Name = pFeatureLayer.FeatureClass.AliasName;
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        this.dgvSearch.ReadOnly = true;
+        //    }
             
-        }
+        //}
 
         public void UpdateFTOnDV(ILayer player, DataTable pdatatable, int[] array)
         {
@@ -1251,17 +1290,15 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             for (int i=0; i < this.dgvSearch.RowCount; i++)
             {
                 string oid = dgvSearch.Rows[i].Cells[0].Value.ToString();
-
-                IFeatureLayer pfeaturelayer = axMapControl1.get_Layer(0) as IFeatureLayer;
+                
+                IFeatureLayer pfeaturelayer = GetLayerByName(editLayer.ComboBox.SelectedItem.Text) as IFeatureLayer;
                 
                 //找到要素
                 IQueryFilter pQueryFilter = new QueryFilter();
                 pQueryFilter.WhereClause = "OBJECTID = " + oid;
 
                 IFeatureCursor pFeatureCur = pfeaturelayer.Search(pQueryFilter, false);
-
                 IFeature pFeature = null;
-
                 pFeature = pFeatureCur.NextFeature();
 
                 if (null == pFeature){}
@@ -1278,65 +1315,116 @@ namespace Quality_Inspection_of_Overall_Planning_Results
                     System.Runtime.InteropServices.Marshal.ReleaseComObject(pFeatureCur);
                 }
             }
-            pDT = LD.ShowTableInDataGridView_zenjian(axMapControl1.get_Layer(0) as ITable, dgvTable, out FieldName);
+            pDT = LD.ShowTableInDataGridView_zenjian(GetLayerByName(editLayer.ComboBox.SelectedItem.Text) as ITable, dgvTable, out FieldName);
         }
         //导出附表1
 
 
         private void btnPreview1_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
         {
-            pDT.DefaultView.Sort = "区名 desc";
-            DataTable pDataTable1 = new DataTable();//建立一个table
-            string[] FieldName = new string[] { "Index", "District", "RegionName", "RegionIndex", "AdmitedTime", "ImplementSpan", "ProcessState" };
-            //表格2 string[] FieldName = new string[] { "Index2", "RegionName2", "RegionIndex2", "SetupRegion_new", "Area_new", "OutRegion_new", "OutArea","OutTarget","OldRegion_old","OldArea","InvolveFarmers","ApprovalTime","ApprovalIndex","Deadline","BuildingArea","Plough" };
-
-            //表格3 string[] FieldName = new string[] { "RegionName3", "RegionIndex3", "InvolvedTown", "PlanuseBuilding_all", "PlanusePlough_all", "RealuseBuilding_all", "RealusePlough_all", "PlanuseBuilding_setup", "PlanusePlough_setup", "RealuseBuilding_setup", "RealusePlough_setup", "PlanuseBuilding_out", "PlanusePlough_out", "RealuseBuilding_out", "RealusePlough_out","Planreturnbuildingarea","Planreturnplough","Realreturnbuildingarea","Realreturnplough" };
-            //string[] FieldName = new string[] { "Index", "District", "RegionName", "RegionIndex", "AdmitedTime", "ImplementSpan", "ProcessState" };
-            //string[] FieldName = new string[] { "Index", "District", "RegionName", "RegionIndex", "AdmitedTime", "ImplementSpan", "ProcessState" };
-            for (int i = 0; i < FieldName.Length; i++)
+            DataTable pDataTable1;
+            try
             {
-                pDataTable1.Columns.Add(FieldName[i]);
+                string table_name = "挂钩建新区农转用及占补平衡管理台帐";
+                TreeNode tnRet = getTextinTree(table_name);
+                if (tnRet == null) { MessageBox.Show(table_name + "不存在"); return; }
+                // 打开personGeodatabase,并添加图层 
+                IWorkspaceFactory pAccessWorkspaceFactory = new AccessWorkspaceFactoryClass();
+                // 打开工作空间并遍历数据集 
+                IWorkspace pWorkspace = pAccessWorkspaceFactory.OpenFromFile(tnRet.Parent.Text, 0);
+                ITable ptable = ((IFeatureWorkspace)pWorkspace).OpenTable(tnRet.Text);
+
+
+
+               pDT.DefaultView.Sort = "区名 desc";
+                pDataTable1 = new DataTable();//建立一个table
+                string[] FieldName = new string[] { "Index", "District", "RegionName", "RegionIndex", "AdmitedTime", "ImplementSpan", "ProcessState" };
+                
+                for (int i = 0; i < FieldName.Length; i++)
+                {
+                    pDataTable1.Columns.Add(FieldName[i]);
+                }
+                //pDataTable1.Columns.Add("count");
+                DataTable dtName = pDT.DefaultView.ToTable(true, "XMMC");
+                for (int i = 0; i < dtName.Rows.Count; i++)
+                {
+                    DataRow[] rows = pDT.Select("XMMC='" + dtName.Rows[i][0] + "'");
+                    //temp用来存储筛选出来的数据
+                    DataRow StrRow = pDataTable1.NewRow();
+                    StrRow[0] = (i + 1).ToString();
+                    StrRow[1] = rows[0]["区名"].ToString();
+                    StrRow[2] = rows[0]["XMMC"].ToString();
+                    StrRow[3] = rows[0]["XMBH"].ToString();
+                    StrRow[4] = rows[0]["项目批复时间"].ToString();
+                    StrRow[5] = rows[0]["实施期限"].ToString();
+                    StrRow[6] = getStatus(rows[0], ptable);
+                    //StrRow[7] = rows.Count().ToString();
+                    pDataTable1.Rows.Add(StrRow);
+                    dgv_Table1.DataSource = pDataTable1;
+                    this.TableList.SelectedTab = TableList.TabPages[0];     
+                }
             }
-            //pDataTable1.Columns.Add("count");
-            DataTable dtName = pDT.DefaultView.ToTable(true, "XMMC");
-            for (int i = 0; i < dtName.Rows.Count; i++)
+            catch (Exception error)
             {
-                DataRow[] rows = pDT.Select("XMMC='" + dtName.Rows[i][0] + "'");
-                //temp用来存储筛选出来的数据
-                //DataTable temp = pDataTable1.Clone();
-                //foreach (DataRow row in rows)
-                //{
-                //    temp.Rows.Add(row.ItemArray);
-                //}
+                MessageBox.Show(error.Message);
+            }
+        }
 
-                DataRow StrRow = pDataTable1.NewRow();
-                StrRow[0] = (i + 1).ToString();
-                StrRow[1] = rows[0]["区名"].ToString();
-                StrRow[2] = rows[0]["XMMC"].ToString();
-                StrRow[3] = rows[0]["XMBH"].ToString();
-                StrRow[4] = rows[0]["项目批复时间"].ToString();
-                StrRow[5] = rows[0]["实施期限"].ToString();
-                StrRow[6] = rows[0]["项目进度概况"].ToString();
-                //StrRow[7] = rows.Count().ToString();
-                pDataTable1.Rows.Add(StrRow);
-            } 
+        private string getStatus(DataRow row,ITable ptable)
+        {
+            if (row["是否总体验收"].ToString() == "是") 
+            {
+                return "整体验收";
+            }
+            else if (dateProcess(row["实施期限"].ToString()) != "其他")
+            {
+                return dateProcess(row["实施期限"].ToString());
+            }
+            double a = double.Parse(getanzhi_js(ptable, row["XMBH"].ToString()))+double.Parse(getcr_js(ptable, row["XMBH"].ToString()));
+            double b = double.Parse(getanzhi_gd(ptable, row["XMBH"].ToString()))+double.Parse(getcr_gd(ptable, row["XMBH"].ToString()));
+            double a_t = double.Parse(get_sjgh_js(row["XMBH"].ToString()));
+            double b_t = double.Parse(get_sjgh_gd(row["XMBH"].ToString()));
+            if((a<a_t)&& (b<b_t))
+            {
+                return "逾期中但具备整体竣工条件";
+            }
+            return "已逾期";
+        }
 
+        private string dateProcess(string str)
+        {
+            string[] strs = str.Split('-', '—');
+            if (strs.Length != 2) { return ""; }
+            string yyyy1 = yyyymmddprocess(strs[0]);
+            string yyyy2 = yyyymmddprocess(strs[1]);
+            DateTime dt1 = Convert.ToDateTime(yyyy1);
+            DateTime dt2 = Convert.ToDateTime(yyyy2);
+            DateTime nowDt = DateTime.Now;
+            
+            TimeSpan workStartDT = DateTime.Parse("10:00").TimeOfDay;
+            TimeSpan workEndDT = DateTime.Parse("15:00").TimeOfDay;
+            int afterstart = DateTime.Compare(nowDt,dt1);
+            int beforeend = DateTime.Compare(dt2,nowDt);
+            if (afterstart > 0 && beforeend>0)
+            {
+                return "实施进度正常";
+            }
+            return "其他";
+        }
 
-            //for (int i = 0; i < pDT.Rows.Count; i++)
-            //{
-            //    DataRow pRow = pDataTable1.NewRow();
-            //    string[] StrRow = new string[7];
-            //    StrRow[0] = (i + 1).ToString();
-            //    StrRow[1] = pDT.Rows[i]["区名"].ToString();
-            //    StrRow[2] = pDT.Rows[i]["XMMC"].ToString();
-            //    StrRow[3] = pDT.Rows[i]["XMBH"].ToString();
-            //    StrRow[4] = pDT.Rows[i]["项目批复时间"].ToString();
-            //    StrRow[5] = pDT.Rows[i]["实施期限"].ToString();
-            //    StrRow[6] = pDT.Rows[i]["项目进度概况"].ToString();
-            //    pRow.ItemArray = StrRow;
-            //    pDataTable1.Rows.Add(pRow);
-            //}
-            dgv_Table1.DataSource = pDataTable1;
+        private string yyyymmddprocess(string str)
+        {
+
+            string[] strs = str.Split('.');
+            if (strs[1].Length == 1)
+            {
+                strs[1] = "0" + strs[1];
+            }
+            if (strs[2].Length == 1)
+            {
+                strs[2] = "0" + strs[2];
+            }
+            return strs[0]+"/"+strs[1]+"/"+strs[2] +" 00:00:00";
         }
 
         public double calcu_sum(DataRow[] rows)
@@ -1354,53 +1442,66 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         }
         private void btnPreview2_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
         {
-            pDT.DefaultView.Sort = "区名 desc";
-            DataTable pDataTable1 = new DataTable();//建立一个table
-            string[] FieldName = new string[] { "Index2", "RegionName2", "RegionIndex2", "SetupRegion_new", "Area_new", "OutRegion_new", "OutArea","OutTarget","OldRegion_old","OldArea","InvolveFarmers","ApprovalTime","ApprovalIndex","Deadline","BuildingArea","Plough" };
-
-            //表格3 string[] FieldName = new string[] { "RegionName3", "RegionIndex3", "InvolvedTown", "PlanuseBuilding_all", "PlanusePlough_all", "RealuseBuilding_all", "RealusePlough_all", "PlanuseBuilding_setup", "PlanusePlough_setup", "RealuseBuilding_setup", "RealusePlough_setup", "PlanuseBuilding_out", "PlanusePlough_out", "RealuseBuilding_out", "RealusePlough_out","Planreturnbuildingarea","Planreturnplough","Realreturnbuildingarea","Realreturnplough" };
-            //string[] FieldName = new string[] { "Index", "District", "RegionName", "RegionIndex", "AdmitedTime", "ImplementSpan", "ProcessState" };
-            //string[] FieldName = new string[] { "Index", "District", "RegionName", "RegionIndex", "AdmitedTime", "ImplementSpan", "ProcessState" };
-
-            for (int i = 0; i < FieldName.Length; i++)
+            try
             {
-                pDataTable1.Columns.Add(FieldName[i]);
-            }
-            DataTable dtResult = pDT.Clone();
-            DataTable dtName = pDT.DefaultView.ToTable(true, "XMMC");
-            for (int i = 0; i < dtName.Rows.Count; i++)
-            {
-                DataRow[] rows = pDT.Select("XMMC='" + dtName.Rows[i][0] + "'");
+                pDT.DefaultView.Sort = "区名 desc";
+                DataTable pDataTable1 = new DataTable();//建立一个table
+                string[] FieldName = new string[] { "Index2", "RegionName2", "RegionIndex2", "SetupRegion_new", "Area_new", "OutRegion_new", "OutArea", "OutTarget", "OldRegion_old", "OldArea", "InvolveFarmers", "ApprovalTime", "ApprovalIndex", "Deadline", "BuildingArea", "Plough" };
 
-                //temp用来存储筛选出来的数据
-                DataTable temp = dtResult.Clone();
-                foreach (DataRow row in rows)
+                //表格3 string[] FieldName = new string[] { "RegionName3", "RegionIndex3", "InvolvedTown", "PlanuseBuilding_all", "PlanusePlough_all", "RealuseBuilding_all", "RealusePlough_all", "PlanuseBuilding_setup", "PlanusePlough_setup", "RealuseBuilding_setup", "RealusePlough_setup", "PlanuseBuilding_out", "PlanusePlough_out", "RealuseBuilding_out", "RealusePlough_out","Planreturnbuildingarea","Planreturnplough","Realreturnbuildingarea","Realreturnplough" };
+                //string[] FieldName = new string[] { "Index", "District", "RegionName", "RegionIndex", "AdmitedTime", "ImplementSpan", "ProcessState" };
+                //string[] FieldName = new string[] { "Index", "District", "RegionName", "RegionIndex", "AdmitedTime", "ImplementSpan", "ProcessState" };
+
+                for (int i = 0; i < FieldName.Length; i++)
                 {
-                    temp.Rows.Add(row.ItemArray);
+                    pDataTable1.Columns.Add(FieldName[i]);
                 }
-                DataRow[] anzhi_rows = temp.Select("DKLX='安置地块'");
-                DataRow[] churang_rows = temp.Select("DKLX='出让地块'");
-                DataRow[] chaijiu_rows = temp.Select("DKLX='拆旧地块'");
+                DataTable dtResult = pDT.Clone();
+                DataTable dtName = pDT.DefaultView.ToTable(true, "XMMC");
+                for (int i = 0; i < dtName.Rows.Count; i++)
+                {
+                    DataRow[] rows = pDT.Select("XMMC='" + dtName.Rows[i][0] + "'");
 
-                DataRow pRow = pDataTable1.NewRow();
-                string[] StrRow = new string[16];
-                StrRow[0] = (i + 1).ToString();
-                StrRow[1] = rows[0]["XMMC"].ToString();
-                StrRow[2] = rows[0]["XMBH"].ToString();
-                StrRow[3] = anzhi_rows.Count().ToString();
-                StrRow[4] = calcu_sum(anzhi_rows).ToString();
-                StrRow[5] = churang_rows.Count().ToString();
-                StrRow[6] = calcu_sum(churang_rows).ToString();
-                StrRow[8] = chaijiu_rows.Count().ToString();
-                StrRow[9] = calcu_sum(chaijiu_rows).ToString();
-                StrRow[11] = rows[0]["批复下达时间"].ToString();
-                StrRow[12] = rows[0]["批复文号"].ToString();
-                StrRow[13] = rows[0]["实施期限"].ToString();
-                StrRow[14] = rows[0]["批复文号"].ToString();
-                pRow.ItemArray = StrRow;
-                pDataTable1.Rows.Add(pRow);
+                    //temp用来存储筛选出来的数据
+                    DataTable temp = dtResult.Clone();
+                    foreach (DataRow row in rows)
+                    {
+                        temp.Rows.Add(row.ItemArray);
+                    }
+                    //DataRow[] anzhi_rows = temp.Select("DKLX='安置地块'");
+                    //DataRow[] churang_rows = temp.Select("DKLX='出让地块'");
+                    //DataRow[] chaijiu_rows = temp.Select("DKLX='拆旧地块'");
+
+                    DataRow[] anzhi_rows = temp.Select("DKBH like '%AZ%'");
+                    DataRow[] churang_rows = temp.Select("DKBH like '%CR%'");
+                    DataRow[] chaijiu_rows = temp.Select("DKBH like '%CJ%'");
+
+
+                    DataRow pRow = pDataTable1.NewRow();
+                    string[] StrRow = new string[16];
+                    StrRow[0] = (i + 1).ToString();
+                    StrRow[1] = rows[0]["XMMC"].ToString();
+                    StrRow[2] = rows[0]["XMBH"].ToString();
+                    StrRow[3] = anzhi_rows.Count().ToString();
+                    StrRow[4] = string.Format("{0:F2}", calcu_sum(anzhi_rows) / 666.66666);
+                    StrRow[5] = churang_rows.Count().ToString();
+                    StrRow[6] = string.Format("{0:F2}", calcu_sum(churang_rows) / 666.66666);
+                    StrRow[8] = chaijiu_rows.Count().ToString();
+                    StrRow[9] = string.Format("{0:F2}", calcu_sum(chaijiu_rows)/666.66666);
+                    StrRow[11] = rows[0]["批复下达时间"].ToString();
+                    StrRow[12] = rows[0]["批复文号"].ToString();
+                    StrRow[13] = rows[0]["实施期限"].ToString();
+                    //StrRow[14] = rows[0]["批复文号"].ToString();
+                    pRow.ItemArray = StrRow;
+                    pDataTable1.Rows.Add(pRow);
+                }
+                dgv_Table2.DataSource = pDataTable1;
+                this.TableList.SelectedTab = TableList.TabPages[1];
             }
-            dgv_Table2.DataSource = pDataTable1;
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
         }
 
         public void export(Janus.Windows.Ribbon.ButtonCommand btn)
@@ -1535,124 +1636,1036 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             else { return; }
         }
 
+        private TreeNode getTextinTree(string text)
+        {
+            foreach(TreeNode Node in this.treeView1.Nodes){
+                TreeNode tn = FindNode(Node, text);
+                if(tn != null){
+                    return tn;
+                }
+               
+            }
+            //TreeNode tn = FindNode(this.treeView1.TopNode,text);
+            return null;
+        }
+
+        private TreeNode FindNode(TreeNode tnParent, string strValue)
+        {
+            if (tnParent == null) return null;
+            if (tnParent.Text == strValue) return tnParent;
+
+            TreeNode tnRet = null;
+            foreach (TreeNode tn in tnParent.Nodes)
+            {
+                tnRet = FindNode(tn, strValue);
+                if (tnRet != null) break;
+            }
+            return tnRet;
+        }
         private void btnPreview3_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
         {
-            pDT.DefaultView.Sort = "区名 desc";
-            DataTable pDataTable1 = new DataTable();//建立一个table
-            string[] FieldName = new string[] { "RegionName3", "RegionIndex3", "InvolvedTown", "PlanuseBuilding_all", "PlanusePlough_all", "RealuseBuilding_all", "RealusePlough_all", "PlanuseBuilding_setup", "PlanusePlough_setup", "RealuseBuilding_setup", "RealusePlough_setup", "PlanuseBuilding_out", "PlanusePlough_out", "RealuseBuilding_out", "RealusePlough_out", "Planreturnbuildingarea", "Planreturnplough", "Realreturnbuildingarea", "Realreturnplough" };
-
-            //表格3 string[] FieldName = new string[] { "RegionName3", "RegionIndex3", "InvolvedTown", "PlanuseBuilding_all", "PlanusePlough_all", "RealuseBuilding_all", "RealusePlough_all", "PlanuseBuilding_setup", "PlanusePlough_setup", "RealuseBuilding_setup", "RealusePlough_setup", "PlanuseBuilding_out", "PlanusePlough_out", "RealuseBuilding_out", "RealusePlough_out","Planreturnbuildingarea","Planreturnplough","Realreturnbuildingarea","Realreturnplough" };
-            //string[] FieldName = new string[] { "Index", "District", "RegionName", "RegionIndex", "AdmitedTime", "ImplementSpan", "ProcessState" };
-            //string[] FieldName = new string[] { "Index", "District", "RegionName", "RegionIndex", "AdmitedTime", "ImplementSpan", "ProcessState" };
-
-            for (int i = 0; i < FieldName.Length; i++)
+            try
             {
-                pDataTable1.Columns.Add(FieldName[i]);
-            }
-            DataTable dtResult = pDT.Clone();
-            DataTable dtName = pDT.DefaultView.ToTable(true, "XMBH");
-            for (int i = 0; i < dtName.Rows.Count; i++)
-            {
-                DataRow[] rows = pDT.Select("XMBH='" + dtName.Rows[i][0] + "'");
+                pDT.DefaultView.Sort = "区名 desc";
+                DataTable pDataTable1 = new DataTable();
+                DataTable newDt = new DataTable(); //getdistinct的表
 
-                //temp用来存储筛选出来的数据
-                DataTable temp = dtResult.Clone();
-                foreach (DataRow row in rows)
+                string[] FieldName = new string[] { "RegionName3", "RegionIndex3", "InvolvedTown", "PlanuseBuilding_all", "PlanusePlough_all", "RealuseBuilding_all", "RealusePlough_all", "PlanuseBuilding_setup", "PlanusePlough_setup", "RealuseBuilding_setup", "RealusePlough_setup", "PlanuseBuilding_out", "PlanusePlough_out", "RealuseBuilding_out", "RealusePlough_out", "Planreturnbuildingarea", "Planreturnplough", "Realreturnbuildingarea", "Realreturnplough" };
+                for (int i = 0; i < FieldName.Length; i++)
                 {
-                    temp.Rows.Add(row.ItemArray);
+                    pDataTable1.Columns.Add(FieldName[i]);
+                }
+                string table_name = "挂钩建新区农转用及占补平衡管理台帐";
+                TreeNode tnRet = getTextinTree(table_name);
+                if (tnRet == null) { MessageBox.Show(table_name + "不存在"); return; }
+                // 打开personGeodatabase,并添加图层 
+                IWorkspaceFactory pAccessWorkspaceFactory = new AccessWorkspaceFactoryClass();
+                // 打开工作空间并遍历数据集 
+                IWorkspace pWorkspace = pAccessWorkspaceFactory.OpenFromFile(tnRet.Parent.Text, 0);
+                ITable ptable = ((IFeatureWorkspace)pWorkspace).OpenTable(tnRet.Text);
+
+                DataTable dtName = pDT.DefaultView.ToTable(true, "XMBH");
+                for (int i = 0; i < dtName.Rows.Count; i++)
+                {
+                    DataRow[] rows = pDT.Select("XMBH='" + dtName.Rows[i][0] + "'");
+                    //temp用来存储筛选出来的数据
+                    DataRow StrRow = pDataTable1.NewRow();
+  
+                    StrRow[0] = rows[0]["区名"].ToString();
+                    StrRow[1] = rows[0]["XMBH"].ToString();
+
+                    StrRow[7] = get_anzhi_js_jh(rows[0]["XMBH"].ToString());
+                    StrRow[8] = get_anzhi_gd_jh(rows[0]["XMBH"].ToString());
+                    StrRow[9] = getanzhi_js(ptable, rows[0]["XMBH"].ToString());
+                    StrRow[10] = getanzhi_gd(ptable, rows[0]["XMBH"].ToString());
+                    //pDataRow[10] = pRow.get_Value(pRow.Fields.FindFieldByAliasName("挂钩周转耕地指标归还数")).ToString();
+                    StrRow[11] = getcr_js_jh(rows[0]["XMBH"].ToString());
+                    StrRow[12] = getcr_gd_jh(rows[0]["XMBH"].ToString());
+                    StrRow[13] = getcr_js(ptable, rows[0]["XMBH"].ToString());
+                    StrRow[14] = getcr_gd(ptable, rows[0]["XMBH"].ToString());
+                    StrRow[15] = get_jhgh_js(rows[0]["XMBH"].ToString());
+                    StrRow[16] = get_jhgh_gd(rows[0]["XMBH"].ToString());
+                    StrRow[17] = get_sjgh_js(rows[0]["XMBH"].ToString());
+                    StrRow[18] = get_sjgh_gd(rows[0]["XMBH"].ToString());
+
+
+
+
+                    StrRow[3] = Convert.ToDouble(StrRow[7]) + Convert.ToDouble(StrRow[11]);
+                    StrRow[4] = Convert.ToDouble(StrRow[8]) + Convert.ToDouble(StrRow[12]);
+                    StrRow[5] = Convert.ToDouble(StrRow[9]) + Convert.ToDouble(StrRow[13]);
+                    StrRow[6] = Convert.ToDouble(StrRow[10]) + Convert.ToDouble(StrRow[14]);
+                    //StrRow[7] = rows.Count().ToString();
+                    pDataTable1.Rows.Add(StrRow);
+                    dgv_Table3.DataSource = pDataTable1;
+                    this.TableList.SelectedTab = TableList.TabPages[2];
+                }
+            }
+            catch (Exception error){
+                MessageBox.Show(error.Message);
+            }
+        }
+        //附表三_old
+        private void btnPreview3_Clickhh(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
+        {
+            try
+            {
+                DataTable pDataTable1 = new DataTable();
+                DataTable newDt = new DataTable(); 
+                string[] FieldName = new string[] { "RegionName3", "RegionIndex3", "InvolvedTown", "PlanuseBuilding_all", "PlanusePlough_all", "RealuseBuilding_all", "RealusePlough_all", "PlanuseBuilding_setup", "PlanusePlough_setup", "RealuseBuilding_setup", "RealusePlough_setup", "PlanuseBuilding_out", "PlanusePlough_out", "RealuseBuilding_out", "RealusePlough_out", "Planreturnbuildingarea", "Planreturnplough", "Realreturnbuildingarea", "Realreturnplough" };
+                for (int i = 0; i < FieldName.Length; i++)
+                {
+                    pDataTable1.Columns.Add(FieldName[i]);
                 }
 
-                DataRow pRow = pDataTable1.NewRow();
-                string[] StrRow = new string[19];
-                StrRow[0] = rows[0]["区名"].ToString();
-                StrRow[1] = rows[0]["XMBH"].ToString();
+                string table_name = "挂钩建新区农转用及占补平衡管理台帐";
+                TreeNode tnRet = getTextinTree(table_name);
+                if (tnRet == null) { MessageBox.Show(table_name + "不存在"); return; }
+                // 打开personGeodatabase,并添加图层 
+                IWorkspaceFactory pAccessWorkspaceFactory = new AccessWorkspaceFactoryClass();
+                // 打开工作空间并遍历数据集 
+                IWorkspace pWorkspace = pAccessWorkspaceFactory.OpenFromFile(tnRet.Parent.Text, 0);
+                ITable ptable = ((IFeatureWorkspace)pWorkspace).OpenTable(tnRet.Text);
+                ICursor pCursor;
+                IRow pRow;
 
-                StrRow[15] = rows[0]["指标归还情况_归还建设用地面积"].ToString();
-                StrRow[16] = rows[0]["指标归还情况_归还耕地面积"].ToString();
-                pRow.ItemArray = StrRow;
-                pDataTable1.Rows.Add(pRow);
+                pCursor = ptable.Search(null,true);
+                pRow = pCursor.NextRow();
+                while(pRow!=null)
+                {
+                    DataRow pDataRow = pDataTable1.NewRow();
+
+                    //pDataRow[0] = pRow.get_Value(pRow.Fields.FindFieldByAliasName("区县")).ToString();
+                    pDataRow[1] = pRow.get_Value(pRow.Fields.FindFieldByAliasName("增减挂钩项目编号")).ToString();
+
+                    pDataRow[7] = get_anzhi_js_jh(pRow.get_Value(pRow.Fields.FindFieldByAliasName("增减挂钩项目编号")).ToString());
+                    pDataRow[8] = get_anzhi_gd_jh(pRow.get_Value(pRow.Fields.FindFieldByAliasName("增减挂钩项目编号")).ToString());
+                    pDataRow[9] = getanzhi_js(ptable, pRow.get_Value(pRow.Fields.FindFieldByAliasName("增减挂钩项目编号")).ToString());
+                    pDataRow[10] = getanzhi_gd(ptable, pRow.get_Value(pRow.Fields.FindFieldByAliasName("增减挂钩项目编号")).ToString());
+                    //pDataRow[10] = pRow.get_Value(pRow.Fields.FindFieldByAliasName("挂钩周转耕地指标归还数")).ToString();
+                    pDataRow[11] = getcr_js_jh(pRow.get_Value(pRow.Fields.FindFieldByAliasName("增减挂钩项目编号")).ToString());
+                    pDataRow[12] = getcr_gd_jh(pRow.get_Value(pRow.Fields.FindFieldByAliasName("增减挂钩项目编号")).ToString());
+                    pDataRow[13] = getcr_js(ptable, pRow.get_Value(pRow.Fields.FindFieldByAliasName("增减挂钩项目编号")).ToString());
+                    pDataRow[14] = getcr_gd(ptable, pRow.get_Value(pRow.Fields.FindFieldByAliasName("增减挂钩项目编号")).ToString());
+                    pDataRow[15] = get_jhgh_js(pRow.get_Value(pRow.Fields.FindFieldByAliasName("增减挂钩项目编号")).ToString());
+                    pDataRow[16] = get_jhgh_gd(pRow.get_Value(pRow.Fields.FindFieldByAliasName("增减挂钩项目编号")).ToString());
+                    pDataRow[17] = get_sjgh_js(pRow.get_Value(pRow.Fields.FindFieldByAliasName("增减挂钩项目编号")).ToString());
+                    pDataRow[18] = get_sjgh_gd(pRow.get_Value(pRow.Fields.FindFieldByAliasName("增减挂钩项目编号")).ToString());
+
+                    pDataRow[3] = Convert.ToDouble(pDataRow[7]) + Convert.ToDouble(pDataRow[11]);
+                    pDataRow[4] = Convert.ToDouble(pDataRow[8]) + Convert.ToDouble(pDataRow[12]);
+                    pDataRow[5] = Convert.ToDouble(pDataRow[9]) + Convert.ToDouble(pDataRow[13]);
+                    pDataRow[6] = Convert.ToDouble(pDataRow[10]) + Convert.ToDouble(pDataRow[14]);
+                    pDataTable1.Rows.Add(pDataRow);
+                    
+                    pRow = pCursor.NextRow();
+                }
+                newDt = GetDistinctTable(pDataTable1);
+                //string[] FieldName = new string[] { "RegionName3", "RegionIndex3", "InvolvedTown", "PlanuseBuilding_all", "PlanusePlough_all", "RealuseBuilding_all", "RealusePlough_all", "PlanuseBuilding_setup", "PlanusePlough_setup", "RealuseBuilding_setup", "RealusePlough_setup", "PlanuseBuilding_out", "PlanusePlough_out", "RealuseBuilding_out", "RealusePlough_out", "Planreturnbuildingarea", "Planreturnplough", "Realreturnbuildingarea", "Realreturnplough" };
+                dgv_Table3.DataSource = newDt;
+                this.TableList.SelectedTab = TableList.TabPages[2];
             }
-            dgv_Table3.DataSource = pDataTable1;
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
+        }
+        /// <summary>  
+        /// datatable去重  
+        /// </summary>  
+        /// <param name="dtSource">需要去重的datatable</param>  
+        /// <returns></returns>  
+        public static DataTable GetDistinctTable(DataTable dtSource)
+        {
+            DataTable distinctTable = null;
+            try
+            {
+                if (dtSource != null && dtSource.Rows.Count > 0)
+                {
+                    string[] columnNames = GetTableColumnName(dtSource);
+                    DataView dv = new DataView(dtSource);
+                    distinctTable = dv.ToTable(true, columnNames);
+                }
+            }
+            catch (Exception ee)
+            {
+                MessageBox.Show(ee.ToString());
+            }
+            return distinctTable;
+        }  
+        
+        public static string[] GetTableColumnName(DataTable dt)
+        {
+            string cols = string.Empty;
+            for (int i = 0; i < dt.Columns.Count; i++)
+            {
+                cols += (dt.Columns[i].ColumnName + ",");
+            }
+            cols = cols.TrimEnd(',');
+            return cols.Split(',');
+        }
+
+        private string get_anzhi_js_jh(String xmbh)
+        {
+            Double count_anzhi_js_jh = 0;
+            string table_name = "建新实施计划汇总表";
+            TreeNode tnRet = getTextinTree(table_name);
+            if (tnRet == null) { MessageBox.Show(table_name + "不存在"); }
+            // 打开personGeodatabase,并添加图层 
+            IWorkspaceFactory pAccessWorkspaceFactory = new AccessWorkspaceFactoryClass();
+            // 打开工作空间并遍历数据集 
+            IWorkspace pWorkspace = pAccessWorkspaceFactory.OpenFromFile(tnRet.Parent.Text, 0);
+            ITable ptable = ((IFeatureWorkspace)pWorkspace).OpenTable(tnRet.Text);
+            ICursor pCursor;
+            IRow pRow;
+            IQueryFilter pQueryFilter = new QueryFilter();
+            pQueryFilter.WhereClause = "项目编号 = '" + xmbh + "'";
+            pCursor = ptable.Search(pQueryFilter, false);
+            pRow = pCursor.NextRow();
+            while (pRow != null)
+            {
+                if (pRow.get_Value(pRow.Fields.FindFieldByAliasName("安置地块_建设用地_")) == DBNull.Value)
+                {
+                    pRow = pCursor.NextRow();
+                    continue;
+                }
+                count_anzhi_js_jh += Convert.ToDouble(pRow.get_Value(pRow.Fields.FindFieldByAliasName("安置地块_建设用地_")));
+                pRow = pCursor.NextRow();
+            }
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(pCursor);
+            
+            return (count_anzhi_js_jh*15).ToString();
+        }
+        private string get_anzhi_gd_jh(String xmbh)
+        {
+            Double count_anzhi_gd_jh = 0;
+            string table_name = "建新实施计划汇总表";
+            TreeNode tnRet = getTextinTree(table_name);
+            if (tnRet == null) { MessageBox.Show(table_name + "不存在"); }
+            // 打开personGeodatabase,并添加图层 
+            IWorkspaceFactory pAccessWorkspaceFactory = new AccessWorkspaceFactoryClass();
+            // 打开工作空间并遍历数据集 
+            IWorkspace pWorkspace = pAccessWorkspaceFactory.OpenFromFile(tnRet.Parent.Text, 0);
+            ITable ptable = ((IFeatureWorkspace)pWorkspace).OpenTable(tnRet.Text);
+            ICursor pCursor;
+            IRow pRow;
+            IQueryFilter pQueryFilter = new QueryFilter();
+            pQueryFilter.WhereClause = "项目编号 = '" + xmbh + "'";
+            pCursor = ptable.Search(pQueryFilter, false);
+            pRow = pCursor.NextRow();
+            while (pRow != null)
+            {
+                if (pRow.get_Value(pRow.Fields.FindFieldByAliasName("安置地块_耕地_")) == DBNull.Value)
+                {
+                    pRow = pCursor.NextRow();
+                    continue;
+                }
+                count_anzhi_gd_jh += Convert.ToDouble(pRow.get_Value(pRow.Fields.FindFieldByAliasName("安置地块_耕地_")));
+                pRow = pCursor.NextRow();
+            }
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(pCursor);
+            return (count_anzhi_gd_jh*15).ToString();
+        }
+        private bool dateProcess_tab3_2(string str)
+        {
+            string[] strs = str.Split('-', '—');
+            if (strs.Length < 1) { return true; }
+           // string yyyy1 = yyyymmddprocess(strs[0]);
+            string yyyy2 = yyyymmddprocess(strs[0]);
+            //DateTime dt1 = Convert.ToDateTime(yyyy1);
+            DateTime dt2 = Convert.ToDateTime(yyyy2);
+            DateTime nowDt = DateTime.Now;
+
+            TimeSpan workStartDT = DateTime.Parse("10:00").TimeOfDay;
+            TimeSpan workEndDT = DateTime.Parse("15:00").TimeOfDay;
+            //int afterstart = DateTime.Compare(nowDt, dt1);
+            int beforeend = DateTime.Compare(dt2, nowDt);
+            if (beforeend > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        //11
+        private string getcr_js_jh(String xmbh)
+        {
+            Double count_cr_js_jh = 0;
+            string table_name = "建新实施计划汇总表";
+            TreeNode tnRet = getTextinTree(table_name);
+            if (tnRet == null) { MessageBox.Show(table_name + "不存在"); }
+            // 打开personGeodatabase,并添加图层 
+            IWorkspaceFactory pAccessWorkspaceFactory = new AccessWorkspaceFactoryClass();
+            // 打开工作空间并遍历数据集 
+            IWorkspace pWorkspace = pAccessWorkspaceFactory.OpenFromFile(tnRet.Parent.Text, 0);
+            ITable ptable = ((IFeatureWorkspace)pWorkspace).OpenTable(tnRet.Text);
+            ICursor pCursor;
+            IRow pRow;
+            IQueryFilter pQueryFilter = new QueryFilter();
+            pQueryFilter.WhereClause = "项目编号 = '" + xmbh + "'";
+            pCursor = ptable.Search(pQueryFilter, false);
+            pRow = pCursor.NextRow();
+            while (pRow != null)
+            {
+                //jihua shishishijian   zai dang qian shi jian zhi qian ke yi jia
+                if (pRow.get_Value(pRow.Fields.FindFieldByAliasName("出让地块_建设用地_")) == DBNull.Value || dateProcess_tab3_2(pRow.get_Value(pRow.Fields.FindFieldByAliasName("计划实施时间")).ToString()))
+                {
+                    pRow = pCursor.NextRow();
+                    continue;
+                }
+                count_cr_js_jh += Convert.ToDouble(pRow.get_Value(pRow.Fields.FindFieldByAliasName("出让地块_建设用地_")));
+                pRow = pCursor.NextRow();
+            }
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(pCursor);
+            return (count_cr_js_jh*15).ToString();
+        }
+        //12
+        private string getcr_gd_jh(String xmbh)
+        {
+            Double count_cr_gd_jh = 0;
+            string table_name = "建新实施计划汇总表";
+            TreeNode tnRet = getTextinTree(table_name);
+            if (tnRet == null) { MessageBox.Show(table_name + "不存在"); }
+            // 打开personGeodatabase,并添加图层 
+            IWorkspaceFactory pAccessWorkspaceFactory = new AccessWorkspaceFactoryClass();
+            // 打开工作空间并遍历数据集 
+            IWorkspace pWorkspace = pAccessWorkspaceFactory.OpenFromFile(tnRet.Parent.Text, 0);
+            ITable ptable = ((IFeatureWorkspace)pWorkspace).OpenTable(tnRet.Text);
+            ICursor pCursor;
+            IRow pRow;
+            IQueryFilter pQueryFilter = new QueryFilter();
+            pQueryFilter.WhereClause = "项目编号 = '" + xmbh + "'";
+            pCursor = ptable.Search(pQueryFilter, false);
+            pRow = pCursor.NextRow();
+            while (pRow != null)
+            {
+                if (pRow.get_Value(pRow.Fields.FindFieldByAliasName("出让地块_耕地_")) == DBNull.Value || dateProcess_tab3_2(pRow.get_Value(pRow.Fields.FindFieldByAliasName("计划实施时间")).ToString()))
+                {
+                    pRow = pCursor.NextRow();
+                    continue;
+                }
+                count_cr_gd_jh += Convert.ToDouble(pRow.get_Value(pRow.Fields.FindFieldByAliasName("出让地块_耕地_")));
+                pRow = pCursor.NextRow();
+            }
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(pCursor);
+            return (count_cr_gd_jh*15).ToString();
+        }
+
+        private bool dateProcess_tab3(string str)
+        {
+
+            string yyyy1 = yyyymmddprocess_tab3(str);
+
+            DateTime dt1 = Convert.ToDateTime(yyyy1);
+
+            DateTime nowDt = DateTime.Now;
+
+            TimeSpan workStartDT = DateTime.Parse("10:00").TimeOfDay;
+            TimeSpan workEndDT = DateTime.Parse("15:00").TimeOfDay;
+            int afterstart = DateTime.Compare(nowDt, dt1);
+  
+            if (afterstart < 0 )
+            {
+                return true;
+            }
+            return false;
+        }
+        private string yyyymmddprocess_tab3(string str)
+        {
+
+            string[] strs = str.Split('.');
+            if (strs[1].Length == 1)
+            {
+                strs[1] = "0" + strs[1];
+            }
+            //if (strs[2].Length == 1)
+            //{
+            //    strs[2] = "0" + strs[2];
+            //}
+            return strs[0] + "/" + strs[1] + "/" + "01" + " 00:00:00";
+        }
+        //15
+        private string get_jhgh_js(String xmbh)
+        {
+            Double count_jhgh_js = 0;
+            string table_name = "拆旧实施计划汇总表";
+            TreeNode tnRet = getTextinTree(table_name);
+            if (tnRet == null) { MessageBox.Show(table_name + "不存在"); }
+            // 打开personGeodatabase,并添加图层 
+            IWorkspaceFactory pAccessWorkspaceFactory = new AccessWorkspaceFactoryClass();
+            // 打开工作空间并遍历数据集 
+            IWorkspace pWorkspace = pAccessWorkspaceFactory.OpenFromFile(tnRet.Parent.Text, 0);
+            ITable ptable = ((IFeatureWorkspace)pWorkspace).OpenTable(tnRet.Text);
+            ICursor pCursor;
+            IRow pRow;
+            IQueryFilter pQueryFilter = new QueryFilter();
+            pQueryFilter.WhereClause = "项目编号 = '" + xmbh + "'";
+            pCursor = ptable.Search(pQueryFilter, false);
+            pRow = pCursor.NextRow();
+            while (pRow != null)
+            {
+                if (pRow.get_Value(pRow.Fields.FindFieldByAliasName("F_指标归还_建设用地")) == DBNull.Value || dateProcess_tab3(pRow.get_Value(pRow.Fields.FindFieldByAliasName("计划实施时间")).ToString()))
+                {
+                    pRow = pCursor.NextRow();
+                    continue;
+                }
+                count_jhgh_js += Convert.ToDouble(pRow.get_Value(pRow.Fields.FindFieldByAliasName("F_指标归还_建设用地")));
+                pRow = pCursor.NextRow();
+            }
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(pCursor);
+            return (count_jhgh_js*15).ToString();
+        }
+        //16
+        private string get_jhgh_gd(String xmbh)
+        {
+            Double count_jhgh_gd = 0;
+            string table_name = "拆旧实施计划汇总表";
+            TreeNode tnRet = getTextinTree(table_name);
+            if (tnRet == null) { MessageBox.Show(table_name + "不存在"); }
+            // 打开personGeodatabase,并添加图层 
+            IWorkspaceFactory pAccessWorkspaceFactory = new AccessWorkspaceFactoryClass();
+            // 打开工作空间并遍历数据集 
+            IWorkspace pWorkspace = pAccessWorkspaceFactory.OpenFromFile(tnRet.Parent.Text, 0);
+            ITable ptable = ((IFeatureWorkspace)pWorkspace).OpenTable(tnRet.Text);
+            ICursor pCursor;
+            IRow pRow;
+            IQueryFilter pQueryFilter = new QueryFilter();
+            pQueryFilter.WhereClause = "项目编号 = '" + xmbh + "'";
+            pCursor = ptable.Search(pQueryFilter, false);
+            pRow = pCursor.NextRow();
+            while (pRow != null)
+            {
+                if (pRow.get_Value(pRow.Fields.FindFieldByAliasName("F_指标归还_耕地")) == DBNull.Value || dateProcess_tab3(pRow.get_Value(pRow.Fields.FindFieldByAliasName("计划实施时间")).ToString()))
+                {
+                    pRow = pCursor.NextRow();
+                    continue;
+                }
+                count_jhgh_gd += Convert.ToDouble(pRow.get_Value(pRow.Fields.FindFieldByAliasName("F_指标归还_耕地")));
+                pRow = pCursor.NextRow();
+            }
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(pCursor);
+            return (count_jhgh_gd*15).ToString();
+        }
+        //17
+
+        private string get_sjgh_js(String xmbh)
+        {
+            Double count_sjgh_js = 0;
+            string table_name = "增减挂钩验收台账";
+            TreeNode tnRet = getTextinTree(table_name);
+            if (tnRet == null) { MessageBox.Show(table_name + "不存在"); }
+            // 打开personGeodatabase,并添加图层 
+            IWorkspaceFactory pAccessWorkspaceFactory = new AccessWorkspaceFactoryClass();
+            // 打开工作空间并遍历数据集 
+            IWorkspace pWorkspace = pAccessWorkspaceFactory.OpenFromFile(tnRet.Parent.Text, 0);
+            ITable ptable = ((IFeatureWorkspace)pWorkspace).OpenTable(tnRet.Text);
+            ICursor pCursor;
+            IRow pRow;
+            IQueryFilter pQueryFilter = new QueryFilter();
+            pQueryFilter.WhereClause = "挂钩项目区编号 = '" + xmbh + "'";
+            pCursor = ptable.Search(pQueryFilter, false);
+            pRow = pCursor.NextRow();
+            while (pRow != null)
+            {
+                if (pRow.get_Value(pRow.Fields.FindFieldByAliasName("挂钩置换建设用地指标_可归还面积公顷）")) == DBNull.Value)
+                {
+                    pRow = pCursor.NextRow();
+                    continue;
+                }
+                count_sjgh_js += Convert.ToDouble(pRow.get_Value(pRow.Fields.FindFieldByAliasName("挂钩置换建设用地指标_可归还面积公顷）")));
+                pRow = pCursor.NextRow();
+            }
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(pCursor);
+            return (count_sjgh_js*15).ToString();
+        }
+        //18
+        private string get_sjgh_gd(String xmbh)
+        {
+            Double count_sjgh_gd = 0;
+            string table_name = "增减挂钩验收台账";
+            TreeNode tnRet = getTextinTree(table_name);
+            if (tnRet == null) { MessageBox.Show(table_name + "不存在"); }
+            // 打开personGeodatabase,并添加图层 
+            IWorkspaceFactory pAccessWorkspaceFactory = new AccessWorkspaceFactoryClass();
+            // 打开工作空间并遍历数据集 
+            IWorkspace pWorkspace = pAccessWorkspaceFactory.OpenFromFile(tnRet.Parent.Text, 0);
+            ITable ptable = ((IFeatureWorkspace)pWorkspace).OpenTable(tnRet.Text);
+            ICursor pCursor;
+            IRow pRow;
+            IQueryFilter pQueryFilter = new QueryFilter();
+            pQueryFilter.WhereClause = "挂钩项目区编号 = '" + xmbh + "'";
+            pCursor = ptable.Search(pQueryFilter, false);
+            pRow = pCursor.NextRow();
+            while (pRow != null)
+            {
+                if (pRow.get_Value(pRow.Fields.FindFieldByAliasName("挂钩周转耕地指标_可归还面积公顷_")) == DBNull.Value)
+                {
+                    pRow = pCursor.NextRow();
+                    continue;
+                }
+                count_sjgh_gd += Convert.ToDouble(pRow.get_Value(pRow.Fields.FindFieldByAliasName("挂钩周转耕地指标_可归还面积公顷_")));
+                pRow = pCursor.NextRow();
+            }
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(pCursor);
+            return (count_sjgh_gd*15).ToString();
+        }
+
+        private string getanzhi_js(ITable dt, String xmbh)
+        {
+            Double count_anzhi = 0;
+            ICursor pCursor;
+            IRow pRow;
+            IQueryFilter pQueryFilter = new QueryFilter();
+            pQueryFilter.WhereClause = " 建新地块编号 LIKE '*AZ*' AND 增减挂钩项目编号 = '" + xmbh + "' ";
+            pCursor = dt.Search(pQueryFilter, false);
+            pRow = pCursor.NextRow();
+            while (pRow != null)
+            {
+                //if (pRow.get_Value(pRow.Fields.FindFieldByAliasName("挂钩项目区编号")).ToString() == xmbh)
+                //{
+                if (pRow.get_Value(pRow.Fields.FindFieldByAliasName("挂钩置换建设用地指标使用量")) == DBNull.Value)
+                {
+                    pRow = pCursor.NextRow();
+                    continue;
+                }
+                count_anzhi += Convert.ToDouble(pRow.get_Value(pRow.Fields.FindFieldByAliasName("挂钩置换建设用地指标使用量")));
+                pRow = pCursor.NextRow();
+            }
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(pCursor);
+            return (count_anzhi*15).ToString();
+        }
+
+        private string getanzhi_gd(ITable dt, String xmbh)
+        {
+            Double count_anzhi_gd = 0;
+            ICursor pCursor;
+            IRow pRow;
+            IQueryFilter pQueryFilter = new QueryFilter();
+            pQueryFilter.WhereClause = "增减挂钩项目编号 = '" + xmbh + "'AND 建新地块编号 LIKE  '*AZ*'";
+            pCursor = dt.Search(pQueryFilter, false);
+            pRow = pCursor.NextRow();
+            while (pRow != null)
+            {
+                if (pRow.get_Value(pRow.Fields.FindFieldByAliasName("挂钩周转耕地指标使用量")) == DBNull.Value)
+                {
+                    pRow = pCursor.NextRow();
+                    continue;
+                }
+                count_anzhi_gd += Convert.ToDouble(pRow.get_Value(pRow.Fields.FindFieldByAliasName("挂钩周转耕地指标使用量")));
+                pRow = pCursor.NextRow();
+            }
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(pCursor);
+            return (count_anzhi_gd*15).ToString();
+        }
+
+
+        private string getcr_js(ITable dt, String xmbh)
+        {
+            Double count_anzhi_gd = 0;
+            ICursor pCursor;
+            IRow pRow;
+            IQueryFilter pQueryFilter = new QueryFilter();
+            pQueryFilter.WhereClause = "增减挂钩项目编号 = '" + xmbh + "'AND 建新地块编号 LIKE  '*CR*'";
+            pCursor = dt.Search(pQueryFilter, false);
+            pRow = pCursor.NextRow();
+            while (pRow != null)
+            {
+                if (pRow.get_Value(pRow.Fields.FindFieldByAliasName("挂钩置换建设用地指标使用量")) == DBNull.Value)
+                {
+                    pRow = pCursor.NextRow();
+                    continue;
+                }
+                count_anzhi_gd += Convert.ToDouble(pRow.get_Value(pRow.Fields.FindFieldByAliasName("挂钩置换建设用地指标使用量")));
+                pRow = pCursor.NextRow();
+            }
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(pCursor);
+            return (count_anzhi_gd*15).ToString();
+        }
+
+
+        private string getcr_gd(ITable dt, String xmbh)
+        {
+            Double count_anzhi_gd = 0;
+            ICursor pCursor;
+            IRow pRow;
+            IQueryFilter pQueryFilter = new QueryFilter();
+            pQueryFilter.WhereClause = "增减挂钩项目编号 = '" + xmbh + "'AND 建新地块编号 LIKE  '*CR*'";
+            pCursor = dt.Search(pQueryFilter, false);
+            pRow = pCursor.NextRow();
+            while (pRow != null)
+            {
+                if (pRow.get_Value(pRow.Fields.FindFieldByAliasName("挂钩周转耕地指标使用量")) == DBNull.Value)
+                {
+                    pRow = pCursor.NextRow();
+                    continue;
+                }
+                count_anzhi_gd += Convert.ToDouble(pRow.get_Value(pRow.Fields.FindFieldByAliasName("挂钩周转耕地指标使用量")));
+                pRow = pCursor.NextRow();
+            }
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(pCursor);
+            return (count_anzhi_gd*15).ToString();
+        }
+
+        private DataTable ITable2Datatable_for_btn4(ITable ptable)
+        {
+            DataTable pDataTable1 = new DataTable();//建立一个table
+            for (int i = 0; i < ptable.Fields.FieldCount; i++)
+            {
+                pDataTable1.Columns.Add(ptable.Fields.get_Field(i).Name);
+            }
+            //pDataTable1.Columns["总面积"].DataType = typeof(double);
+            pDataTable1.Columns["新增建设用地面积"].DataType = typeof(double);
+            pDataTable1.Columns["农用地"].DataType = typeof(double);
+            pDataTable1.Columns["耕地"].DataType = typeof(double);
+            pDataTable1.Columns["未利用地"].DataType = typeof(double);
+            pDataTable1.Columns["农用地"].DataType = typeof(double);
+            pDataTable1.Columns["分地块面积"].DataType = typeof(double);
+            
+            ICursor pCursor;
+            IRow pRow;
+            pCursor = ptable.Search(null, false);
+            pRow = pCursor.NextRow();
+            while (pRow != null)
+            {
+                DataRow pDataRow = pDataTable1.NewRow();
+                for (int i = 0;i<ptable.Fields.FieldCount; i++)
+                {
+                    pDataRow[i] = pRow.get_Value(i);
+                }
+                pRow = pCursor.NextRow();
+                pDataTable1.Rows.Add(pDataRow);
+            }
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(pCursor);
+
+            return pDataTable1;
+
+ 
+        }
+        private int calcount_tab4(DataTable ptable)
+        {
+            int count = 0;
+            for (int i = 0; i < ptable.Rows.Count; i++)
+            {
+                if (ptable.Rows[i]["建新地块编号"] != null)
+                {
+                    string[] getAry = (ptable.Rows[i]["建新地块编号"].ToString()).Split('、');
+                    count += getAry.Length;
+                }
+
+            }
+
+            return count;
         }
         private void btnPreview4_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
         {
-            pDT.DefaultView.Sort = "区名 desc";
-            DataTable pDataTable1 = new DataTable();//建立一个table
-            string[] FieldName = new string[] { "RegionName4", "ProjectregionName", "Counts", "Area_new4", "NewBuildingArea", "Farmland", "Plough4", "Unuseland", "TargetBuildingArea4", "TargetPlough", "RealUseBuildingArea", "RealUsePlough" };
-
-            //表格3 string[] FieldName = new string[] { "RegionName3", "RegionIndex3", "InvolvedTown", "PlanuseBuilding_all", "PlanusePlough_all", "RealuseBuilding_all", "RealusePlough_all", "PlanuseBuilding_setup", "PlanusePlough_setup", "RealuseBuilding_setup", "RealusePlough_setup", "PlanuseBuilding_out", "PlanusePlough_out", "RealuseBuilding_out", "RealusePlough_out","Planreturnbuildingarea","Planreturnplough","Realreturnbuildingarea","Realreturnplough" };
-            //string[] FieldName = new string[] { "Index", "District", "RegionName", "RegionIndex", "AdmitedTime", "ImplementSpan", "ProcessState" };
-            //string[] FieldName = new string[] { "Index", "District", "RegionName", "RegionIndex", "AdmitedTime", "ImplementSpan", "ProcessState" };
-
-            for (int i = 0; i < FieldName.Length; i++)
+            try
             {
-                pDataTable1.Columns.Add(FieldName[i]);
-            }
-            DataTable dtResult = pDT.Clone();
-            DataTable dtName = pDT.DefaultView.ToTable(true, "XMBH");
-            for (int i = 0; i < dtName.Rows.Count; i++)
-            {
-                DataRow[] rows = pDT.Select("XMBH='" + dtName.Rows[i][0] + "'");
-
-                //temp用来存储筛选出来的数据
-                DataTable temp = dtResult.Clone();
-                foreach (DataRow row in rows)
+                pDT.DefaultView.Sort = "区名 desc";
+                DataTable pDataTable1 = new DataTable();
+      
+                string[] FieldName = new string[] { "RegionName4", "ProjectregionName", "Counts", "Area_new4", "NewBuildingArea", "Farmland", "Plough4", "Unuseland", "TargetBuildingArea4", "TargetPlough", "RealUseBuildingArea", "RealUsePlough" };
+                for (int i = 0; i < FieldName.Length; i++)
                 {
-                    temp.Rows.Add(row.ItemArray);
+                    pDataTable1.Columns.Add(FieldName[i]);
                 }
-               
-                DataRow[] jianxin_rows = temp.Select("DKLX='建新地块'");
 
+                //打开"挂钩建新区农转用及占补平衡管理台帐"表
+                string table_name = "挂钩建新区农转用及占补平衡管理台帐";
+                TreeNode tnRet = getTextinTree(table_name);
+                if (tnRet == null) { MessageBox.Show(table_name + "不存在"); return; }
+                IWorkspaceFactory pAccessWorkspaceFactory = new AccessWorkspaceFactoryClass();
+                IWorkspace pWorkspace = pAccessWorkspaceFactory.OpenFromFile(tnRet.Parent.Text, 0);
+                ITable ptable = ((IFeatureWorkspace)pWorkspace).OpenTable(tnRet.Text);
 
-                DataRow pRow = pDataTable1.NewRow();
-                string[] StrRow = new string[12];
-                StrRow[0] = rows[0]["区名"].ToString();
-                StrRow[1] = rows[0]["XMMC"].ToString();
-                StrRow[2] = jianxin_rows.Count().ToString();
-                StrRow[3] = calcu_sum(jianxin_rows).ToString();
+                //读取地理数据库
+                DataTable dtName = pDT.DefaultView.ToTable(true, "XMBH");
+                //
+                DataTable pDatatable = ITable2Datatable_for_btn4(ptable);
+                DataTable dtName_gg = pDatatable.DefaultView.ToTable(true, "增减挂钩项目编号");
 
-                pRow.ItemArray = StrRow;
-                pDataTable1.Rows.Add(pRow);
+                for (int i = 0; i < dtName.Rows.Count; i++)
+                {
+                    DataRow[] rows_tc = pDT.Select("XMBH='" + dtName.Rows[i][0] + "'");
+                    DataRow[] rows = pDatatable.Select("增减挂钩项目编号='" + dtName.Rows[i][0] + "'");
+                    DataTable temp = pDatatable.Clone();
+                    foreach (DataRow row in rows)
+                    {
+                        temp.Rows.Add(row.ItemArray);
+                    }
+                    //temp用来存储筛选出来的数据
+                    DataRow StrRow = pDataTable1.NewRow();
+
+                    StrRow[0] = rows_tc[0]["区名"].ToString();
+                    StrRow[1] = rows_tc[0]["XMMC"].ToString();
+                    StrRow[2] = calcount_tab4(temp);//compute 是一个函数用于计算，只有两个参数
+                    StrRow[3] = temp.Compute("Sum(分地块面积)*15", "");
+                    StrRow[4] = temp.Compute("Sum(新增建设用地面积)*15", "");
+                    StrRow[5] = temp.Compute("Sum(农用地)*15", "");
+                    StrRow[6] = temp.Compute("Sum(耕地)*15", "");
+                    StrRow[7] = temp.Compute("Sum(未利用地)*15", "");
+                    //StrRow[8] = temp.Compute("Sum(农用地)*15", "");
+
+                    StrRow[10] = temp.Compute("Sum(农用地)*15", "");
+                    StrRow[11] = temp.Compute("Sum(耕地)*15", "");
+
+                    pDataTable1.Rows.Add(StrRow);
+                    dgv_Table4.DataSource = pDataTable1;
+                    this.TableList.SelectedTab = TableList.TabPages[3];
+                }
             }
-            dgv_Table4.DataSource = pDataTable1;
+            catch (Exception error){
+                MessageBox.Show(error.Message);
+            }
+        }
+        //private void btnPreview4_Click_before(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
+        //{
+        //    try
+        //    {
+        //        string table_name = "挂钩建新区农转用及占补平衡管理台帐";
+        //        TreeNode tnRet = getTextinTree(table_name);
+        //        if (tnRet == null) { MessageBox.Show(table_name + "不存在"); return; }
+        //        // 打开personGeodatabase,并添加图层 
+        //        IWorkspaceFactory pAccessWorkspaceFactory = new AccessWorkspaceFactoryClass();
+        //        // 打开工作空间并遍历数据集 
+        //        IWorkspace pWorkspace = pAccessWorkspaceFactory.OpenFromFile(tnRet.Parent.Text, 0);
+        //        ITable ptable = ((IFeatureWorkspace)pWorkspace).OpenTable(tnRet.Text);
+        //        DataTable pDatatable = ITable2Datatable_for_btn4(ptable);
+                
+        //        string[] FieldName = new string[] { "RegionName4", "ProjectregionName", "Counts", "Area_new4", "NewBuildingArea", "Farmland", "Plough4", "Unuseland", "TargetBuildingArea4", "TargetPlough", "RealUseBuildingArea", "RealUsePlough" };
+        //        DataTable dtResult = new DataTable();
+        //        for (int i = 0; i < FieldName.Length; i++)
+        //        {
+        //            dtResult.Columns.Add(FieldName[i]);
+        //        }
+        //        DataTable dtName = pDatatable.DefaultView.ToTable(true, "增减挂钩项目编号");
+        //        for (int i = 0; i < dtName.Rows.Count; i++)
+        //        {
+        //            DataRow[] rows = pDatatable.Select("增减挂钩项目编号='" + dtName.Rows[i][0] + "'");//注意这里多一对单引号，在等号后面有一个单引号这点一定不能忘记，否则运行的时候会出错，提示找不到列
+        //            DataTable temp = pDatatable.Clone();
+        //            foreach(DataRow row in rows)
+        //            {
+        //                temp.Rows.Add(row.ItemArray);
+        //            }
+        //            DataRow dr = dtResult.NewRow();
+        //            dr[1] = dtName.Rows[i][0].ToString();
+        //            dr[2] = temp.Compute("Count(增减挂钩项目编号)", "");//compute 是一个函数用于计算，只有两个参数
+        //            //dr[3] = temp.Compute("Sum(总面积)", "");
+        //            dr[4] = temp.Compute("Sum(新增建设用地面积)", "");
+        //            dr[5] = temp.Compute("Sum(农用地)", "");
+        //            dr[6] = temp.Compute("Sum(耕地)", "");
+        //            dr[7] = temp.Compute("Sum(未利用地)", "");
+        //            dr[8] = temp.Compute("Sum(农用地)", "");
+
+        //            dr[10] = temp.Compute("Sum(未利用地)", "");
+        //            dr[11] = temp.Compute("Sum(农用地)", "");
+        //            dtResult.Rows.Add(dr);
+        //        }
+
+        //        dgv_Table4.DataSource = dtResult;
+        //        this.TableList.SelectedTab = TableList.TabPages[3];
+        //    }
+        //    catch (Exception error)
+        //    {
+        //        MessageBox.Show(error.Message);
+        //    }
+        //}
+
+        private DataTable ITable2Datatable_for_btn5(ITable ptable)
+        {
+            DataTable pDataTable1 = new DataTable();//建立一个table
+            for (int i = 0; i < ptable.Fields.FieldCount; i++)
+            {
+                pDataTable1.Columns.Add(ptable.Fields.get_Field(i).Name);
+            }
+            pDataTable1.Columns["整理复垦总面积_公顷_"].DataType = typeof(double);
+            pDataTable1.Columns["新增耕地总面积_公顷_"].DataType = typeof(double);
+            ICursor pCursor;
+            IRow pRow;
+            pCursor = ptable.Search(null, false);
+            pRow = pCursor.NextRow();
+            while (pRow != null)
+            {
+                DataRow pDataRow = pDataTable1.NewRow();
+                for (int i = 0; i < ptable.Fields.FieldCount; i++)
+                {
+                    pDataRow[i] = pRow.get_Value(i);
+                }
+                pRow = pCursor.NextRow();
+                pDataTable1.Rows.Add(pDataRow);
+            }
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(pCursor);
+
+            return pDataTable1;
+        }
+
+        private DataTable ITable2Datatable_for_btn5_2(ITable ptable)
+        {
+            DataTable pDataTable1 = new DataTable();//建立一个table
+            for (int i = 0; i < ptable.Fields.FieldCount; i++)
+            {
+                pDataTable1.Columns.Add(ptable.Fields.get_Field(i).Name);
+            }
+            
+            pDataTable1.Columns["实施总面积__公顷_"].DataType = typeof(double);
+            pDataTable1.Columns["新增耕地面积_公顷_"].DataType = typeof(double);
+            pDataTable1.Columns["挂钩置换建设用地指标_可归还面积公顷）"].DataType = typeof(double);
+            pDataTable1.Columns["挂钩周转耕地指标_可归还面积公顷_"].DataType = typeof(double);
+            ICursor pCursor;
+            IRow pRow;
+            pCursor = ptable.Search(null, false);
+            pRow = pCursor.NextRow();
+            while (pRow != null)
+            {
+                DataRow pDataRow = pDataTable1.NewRow();
+                for (int i = 0; i < ptable.Fields.FieldCount; i++)
+                {
+                    pDataRow[i] = pRow.get_Value(i);
+                }
+                pRow = pCursor.NextRow();
+                pDataTable1.Rows.Add(pDataRow);
+            }
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(pCursor);
+
+            return pDataTable1;
         }
         private void btnPreview5_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
         {
-            pDT.DefaultView.Sort = "区名 desc";
-            DataTable pDataTable1 = new DataTable();//建立一个table
-            string[] FieldName = new string[] { "Index5", "ProjectName", "ReclamationProjectsNumber", "ApprovedPlotsNumber", "Area5", "AcceptanceItemsNumber", "AcceptancePlotsNumber", "ImplementationArea", "ReturnBuildingArea", "NewPloughArea", "ReturnPloughArea"};
+            try {
+                pDT.DefaultView.Sort = "区名 desc";
+                DataTable pDataTable1 = new DataTable();
 
-            for (int i = 0; i < FieldName.Length; i++)
-            {
-                pDataTable1.Columns.Add(FieldName[i]);
+                string[] FieldName = new string[] { "Index5", "ProjectName", "ReclamationProjectsNumber", "ApprovedPlotsNumber", "Area5", "AcceptanceItemsNumber", "AcceptancePlotsNumber", "ImplementationArea", "ReturnBuildingArea", "NewPloughArea", "ReturnPloughArea" };
+                for (int i = 0; i < FieldName.Length; i++)
+                {
+                    pDataTable1.Columns.Add(FieldName[i]);
+                }
+
+                //打开"增减挂钩拆旧地块立项台帐"表
+                string table_name = "增减挂钩拆旧地块立项台帐";
+                TreeNode tnRet = getTextinTree(table_name);
+                if (tnRet == null) { MessageBox.Show(table_name + "不存在"); return; }
+                IWorkspaceFactory pAccessWorkspaceFactory = new AccessWorkspaceFactoryClass();
+                IWorkspace pWorkspace = pAccessWorkspaceFactory.OpenFromFile(tnRet.Parent.Text, 0);
+                ITable ptable = ((IFeatureWorkspace)pWorkspace).OpenTable(tnRet.Text);
+                DataTable pDatatable = ITable2Datatable_for_btn5(ptable);
+                //第二个表：验收
+                string table_name2 = "增减挂钩验收台账";
+                TreeNode tnRet2 = getTextinTree(table_name2);
+                if (tnRet2 == null) { MessageBox.Show(table_name2 + "不存在"); return; }
+                IWorkspaceFactory pAccessWorkspaceFactory2 = new AccessWorkspaceFactoryClass();
+                IWorkspace pWorkspace2 = pAccessWorkspaceFactory2.OpenFromFile(tnRet2.Parent.Text, 0);
+                ITable ptable2 = ((IFeatureWorkspace)pWorkspace).OpenTable(tnRet2.Text);
+                DataTable pDatatable2 = ITable2Datatable_for_btn5_2(ptable2);
+                //DataTable dtName2 = pDatatable2.DefaultView.ToTable(true, "挂钩项目区编号");
+
+                //读取地理数据库
+                DataTable dtName = pDT.DefaultView.ToTable(true, "XMBH");
+                for (int i = 0; i < dtName.Rows.Count; i++)
+                {
+                    DataRow[] rows_tc = pDT.Select("XMBH='" + dtName.Rows[i][0] + "'");
+                    DataRow[] rows = pDatatable.Select("挂钩项目区编号='" + dtName.Rows[i][0] + "'");
+                    DataRow[] rows2 = pDatatable2.Select("挂钩项目区编号='" + dtName.Rows[i][0] + "'");
+                    DataTable temp = pDatatable.Clone();
+                    DataTable temp2 = pDatatable2.Clone();
+                    foreach (DataRow row in rows)
+                    {
+                        temp.Rows.Add(row.ItemArray);
+                    }
+                    foreach (DataRow row2 in rows2)
+                    {
+                        temp2.Rows.Add(row2.ItemArray);
+                    }
+                    //temp用来存储筛选出来的数据
+                    DataRow StrRow = pDataTable1.NewRow();
+
+                    StrRow[0] = rows_tc[0]["区名"].ToString();
+                    StrRow[1] = rows_tc[0]["XMMC"].ToString();
+                    StrRow[2] = temp.Compute("Count(项目号)", "");//"整理复垦立项数"
+                    StrRow[3] = calcount(temp);//"立项地块数
+                    StrRow[4] = temp.Compute("Sum(整理复垦总面积_公顷_)*15", "");//"面积/亩
+                    StrRow[5] = temp2.Compute("Count(批文号)", "");//"验收项目数"
+                    StrRow[6] = calcount2(temp2);//验收地块数
+                    StrRow[7] = temp2.Compute("Sum(实施总面积__公顷_)*15", "");//"实施总面积"
+                    StrRow[8] = temp2.Compute("Sum(挂钩置换建设用地指标_可归还面积公顷）)*15", "");
+                    StrRow[9] = temp2.Compute("Sum(新增耕地面积_公顷_)*15", "");
+                   StrRow[10] = temp2.Compute("Sum(挂钩周转耕地指标_可归还面积公顷_)*15", "");
+                    pDataTable1.Rows.Add(StrRow);
+                    dgv_Table5.DataSource = pDataTable1;
+                    this.TableList.SelectedTab = TableList.TabPages[4];
+                }
             }
-            DataTable dtResult = pDT.Clone();
-            DataTable dtName = pDT.DefaultView.ToTable(true, "XMBH");
-            for (int i = 0; i < dtName.Rows.Count; i++)
-            {
-                DataRow[] rows = pDT.Select("XMBH='" + dtName.Rows[i][0] + "'");
-
-                //temp用来存储筛选出来的数据
-                //DataTable temp = dtResult.Clone();
-                //foreach (DataRow row in rows)
-                //{
-                //    temp.Rows.Add(row.ItemArray);
-                //}
-
-                //DataRow[] jianxin_rows = temp.Select("DKLX='建新地块'");
-
-
-                DataRow pRow = pDataTable1.NewRow();
-                string[] StrRow = new string[11];
-                StrRow[0] = (i + 1).ToString();
-                StrRow[1] = rows[0]["XMMC"].ToString();
-
-
-                pRow.ItemArray = StrRow;
-                pDataTable1.Rows.Add(pRow);
+            catch(Exception error){
+            MessageBox.Show(error.Message);
             }
-            dgv_Table5.DataSource = pDataTable1;
+
         }
+        
+        private int calcount(DataTable ptable)
+        {
+            int count = 0;
+            for (int i = 0; i < ptable.Rows.Count; i++)
+                {
+                    if (ptable.Rows[i]["拆旧地块编号"]!=null)
+                    {
+                        string[] getAry = (ptable.Rows[i]["拆旧地块编号"].ToString()).Split('、');
+                        count += getAry.Length;
+                }
+                
+            }
+
+            return count;
+        }
+        
+        private int calcount2(DataTable ptable)
+        {
+            int count = 0;
+            for (int i = 0; i < ptable.Rows.Count; i++)
+                {
+                    if (ptable.Rows[i]["所涉拆旧地块编号"] != null)
+                    {
+                        string[] getAry = (ptable.Rows[i]["所涉拆旧地块编号"].ToString()).Split('、');
+                        count += getAry.Length;
+                }
+                
+            }
+
+            return count;
+        }
+        private void btnPreview5_Click_old(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
+        {
+            try
+            {
+                string table_name = "增减挂钩拆旧地块立项台帐";
+                TreeNode tnRet = getTextinTree(table_name);
+                if (tnRet == null) { MessageBox.Show(table_name + "不存在"); return; }
+                // 打开personGeodatabase,并添加图层 
+                IWorkspaceFactory pAccessWorkspaceFactory = new AccessWorkspaceFactoryClass();
+                // 打开工作空间并遍历数据集 
+                IWorkspace pWorkspace = pAccessWorkspaceFactory.OpenFromFile(tnRet.Parent.Text, 0);
+                ITable ptable = ((IFeatureWorkspace)pWorkspace).OpenTable(tnRet.Text);//ptable:"增减挂钩拆旧地块立项台帐"
+                DataTable pDatatable = ITable2Datatable_for_btn5(ptable);//pDatatable:"增减挂钩拆旧地块立项台帐"
+
+                DataTable dtResult = new DataTable();
+                string[] FieldName = new string[] { "Index5", "ProjectName", "ReclamationProjectsNumber", "ApprovedPlotsNumber", "Area5", "AcceptanceItemsNumber", "AcceptancePlotsNumber", "ImplementationArea", "ReturnBuildingArea", "NewPloughArea", "ReturnPloughArea" };
+
+                for (int i = 0; i < FieldName.Length; i++)
+                {
+                    dtResult.Columns.Add(FieldName[i]);
+                }
+                //dtResult:增减挂钩拆旧地块立项台帐
+                
+
+
+
+                ///第二个表：验收
+                ///
+                string table_name2 = "增减挂钩验收台账";
+                TreeNode tnRet2 = getTextinTree(table_name2);
+                if (tnRet2 == null) { MessageBox.Show(table_name2 + "不存在"); return; }
+                // 打开personGeodatabase,并添加图层 
+                IWorkspaceFactory pAccessWorkspaceFactory2 = new AccessWorkspaceFactoryClass();
+                // 打开工作空间并遍历数据集 
+                IWorkspace pWorkspace2 = pAccessWorkspaceFactory2.OpenFromFile(tnRet2.Parent.Text, 0);
+                ITable ptable2 = ((IFeatureWorkspace)pWorkspace).OpenTable(tnRet2.Text);
+                DataTable pDatatable2 = ITable2Datatable_for_btn5_2(ptable2);
+                //DataTable dtName2 = pDatatable2.DefaultView.ToTable(true, "挂钩项目区编号");
+
+                //DataTable dtResult2 = new DataTable();
+                //string[] FieldName2 = new string[] { "挂钩项目区编号", "验收项目数", "验收地块数", "实施总面积", "归还建设用地面积", "总新增耕地面积" };
+
+                //for (int i = 0; i < FieldName2.Length; i++)
+                //{
+                //    dtResult2.Columns.Add(FieldName2[i]);
+                //}
+                
+
+                //for (int i = 0; i < dtName2.Rows.Count; i++)
+                //{
+                //    DataRow[] rows2 = pDatatable2.Select("挂钩项目区编号='" + dtName2.Rows[i][0] + "'");
+                //    DataTable temp2 = pDatatable2.Clone();
+                //    foreach (DataRow row in rows2)
+                //    {
+                //        temp2.Rows.Add(row.ItemArray);
+                //    }
+                //    DataRow dr2 = dtResult2.NewRow();
+                //    dr2[0] = dtName2.Rows[i][0].ToString();//"挂钩项目区编号"
+                //    dr2[1] = temp2.Compute("Count(挂钩项目区编号)", "");//"验收项目数"
+                //    dr2[2] = temp2.Compute("Count(挂钩项目区编号)", "");//"验收地块数"
+                //    dr2[3] = temp2.Compute("Sum(实施总面积__公顷_)", "");//"实施总面积"
+                //    dr2[4] = temp2.Compute("Count(挂钩项目区编号)", "");//"归还建设用地面积"
+                //    dr2[5] = temp2.Compute("Sum(新增耕地面积_公顷_)", "");//"总新增耕地面积"
+                //    dr2[6] = temp2.Compute("Count(新增耕地总面积_公顷_)", "");//归还耕地面积
+                //    dtResult2.Rows.Add(dr2);
+                //}
+                /////
+
+                DataTable dtName = pDatatable.DefaultView.ToTable(true, "挂钩项目区编号");
+                for (int i = 0; i < dtName.Rows.Count; i++)
+                {
+                    DataRow[] rows = pDatatable.Select("挂钩项目区编号='" + dtName.Rows[i][0] + "'");
+                    DataRow[] rows2 = pDatatable2.Select("挂钩项目区编号='" + dtName.Rows[i][0] + "'");
+                    DataTable temp = pDatatable.Clone();
+                    DataTable temp2 = pDatatable2.Clone();
+                    foreach (DataRow row in rows)
+                    {
+                        temp.Rows.Add(row.ItemArray);
+                    }
+                    foreach (DataRow row in rows2)
+                    {
+                        temp2.Rows.Add(row.ItemArray);
+                    }
+                    DataRow dr = dtResult.NewRow();
+                    /***
+                        /temp1:"增减挂钩拆旧地块立项台帐" temp2:"增减挂钩拆旧地块立项台帐"
+                     * 
+                     
+                     * 
+                     * 
+                     * 
+                     * ***/
+                    
+                    dr[0] = i+1;
+                    dr[1] = dtName.Rows[i][0].ToString();//项目名称
+                    dr[2] = temp.Compute("Count(项目名称)", "");//整理复垦立项数
+                    dr[3] = temp.Compute("Count(项目名称)", "");//立项地块数
+                    dr[4] = temp.Compute("Sum(整理复垦总面积_公顷_)", "");//面积
+                    dr[5] = temp2.Compute("Count(挂钩项目区编号)", "");//"验收项目数"
+                    dr[6] = temp2.Compute("Count(挂钩项目区编号)", "");//"验收地块数"
+                    dr[7] = temp2.Compute("Sum(实施总面积__公顷_)", "");//"实施总面积"
+                    dr[8] = temp2.Compute("Count(挂钩项目区编号)", "");//"归还建设用地面积"
+                    dr[9] = temp2.Compute("Sum(新增耕地面积_公顷_)", "");//"总新增耕地面积"
+                    dr[10] = temp2.Compute("Count(新增耕地面积_公顷_)", "");//归还耕地面积
+                    dtResult.Rows.Add(dr);
+                }
+                dgv_Table5.DataSource = dtResult;
+                this.TableList.SelectedTab = TableList.TabPages[4];
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
+        }
+
         private void btnExport1_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
         {
             Janus.Windows.Ribbon.ButtonCommand btn = (Janus.Windows.Ribbon.ButtonCommand)sender;
@@ -1683,6 +2696,337 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             export(btn);
         }
 
+        private void btn_combine_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
+        {
+            AddSHP addshp = new AddSHP(this);
+            addshp.Show();
+            //try
+            //{
+            //    System.Windows.Forms.OpenFileDialog openShipFileDlg = new System.Windows.Forms.OpenFileDialog();
+            //    openShipFileDlg.Filter = "MDB或SHP文件(*.mdb,*.shp)|*.mdb;*.shp";
+            //    openShipFileDlg.Multiselect = false;
+            //    openShipFileDlg.Title = "选择MDB/SHP文件";
+            //    openShipFileDlg.RestoreDirectory = true;
+            //    DialogResult dr = openShipFileDlg.ShowDialog();
+            //    if (dr == DialogResult.OK)
+            //    {
+            //        string strFullPath = openShipFileDlg.FileName;
+            //        if (strFullPath == "") return;
+            //        string extension = System.IO.Path.GetExtension(strFullPath);
+            //        string pFolder;
+            //        string pFileName;
+            //        if (extension == ".shp")
+            //        {
+            //            pFolder = System.IO.Path.GetDirectoryName(strFullPath);
+            //            pFileName = System.IO.Path.GetFileName(strFullPath);
+            //            axMapControl1.AddShapeFile(pFolder, pFileName);
+            //        }
+            //        else
+            //        {
+            //            OpenMDB(strFullPath);
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //}
+        }
+
+        private void Add_shp_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
+        {
+            OpenFileDialog opfd1 = new OpenFileDialog();
+            opfd1.Filter = "shapefile(*.shp)|*.shp|allfile(*.*)|*.*";
+            opfd1.Multiselect = false;
+            DialogResult diaLres = opfd1.ShowDialog();
+            if (diaLres != DialogResult.OK)
+                return;
+            string path1 = opfd1.FileName;
+            //openfiledialog 常规使用
+            string pFolder = System.IO.Path.GetDirectoryName(path1);
+            string pFileName = System.IO.Path.GetFileName(path1);
+            axMapControl1.AddShapeFile(pFolder, pFileName);
+        }
+
+        private void buttonCommand1_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
+        {
+            IQueryFilter queryFilter = new QueryFilterClass();
+            string whereclause = getWhereClauseFromDGV();
+            if (whereclause == "")
+            {
+                return;
+            }
+            queryFilter.WhereClause = whereclause;
+            DeleteAllFeatures(GetLayerByName(editLayer.ComboBox.SelectedItem.Text) as IFeatureLayer, queryFilter);
+        }
+
+        private string getWhereClauseFromDGV()
+        {
+            string ret_str = "";
+            if (dgvSearch.SelectedRows.Count > 0)
+            {
+                ret_str += "OBJECTID LIKE '" + dgvSearch.SelectedRows[0].Cells[0].Value.ToString()+"'";
+
+            }
+            for (int i = 1; i < this.dgvSearch.SelectedRows.Count; i++)
+            {
+                ret_str +=" OR OBJECTID LIKE '" +dgvSearch.SelectedRows[i].Cells[0].Value.ToString()+"'";
+            }
+            return ret_str;
+        }
+
+
+        private void DeleteAllFeatures(IFeatureLayer pLayer, IQueryFilter queryFilter)  
+        {  
+            int deletecount = dgvSearch.SelectedRows.Count; 
+　　        ITable pTable = pLayer.FeatureClass as ITable;  
+　　        pTable.DeleteSearchedRows(queryFilter);
+            this.axMapControl1.ActiveView.Refresh();
+            for (int i = dgvSearch.SelectedRows.Count; i >0; i--)
+            {
+                dgvSearch.Rows.RemoveAt(dgvSearch.SelectedRows[i - 1].Index);
+            }
+            pDT = LD.ShowTableInDataGridView_zenjian((ITable)GetLayerByName(editLayer.ComboBox.SelectedItem.Text), dgvTable, out FieldName);
+            MessageBox.Show("成功删除"+deletecount+"条记录");
+        }
+
+        private void editLayer_CheckedChanged(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
+        {
+            pDT = LD.ShowTableInDataGridView_zenjian((ITable)GetLayerByName(editLayer.ComboBox.SelectedItem.Text), dgvTable, out FieldName);
+            tableMode = false;
+        }
+
+        private void comboBoxCommand1_ComboBox_SelectedItemChanged(object sender, EventArgs e)
+        {
+            pDT = LD.ShowTableInDataGridView_zenjian((ITable)GetLayerByName(editLayer.ComboBox.SelectedItem.Text), dgvTable, out FieldName);
+            tableMode = false;
+        }
+
+        private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                System.Drawing.Point ClickPoint = new System.Drawing.Point(e.X, e.Y);             
+                TreeNode CurrentNode = treeView1.GetNodeAt(ClickPoint);
+                if (CurrentNode != null)//判断你点的是不是一个节点                
+                {
+                    treeView1.SelectedNode = CurrentNode;
+                    contextMenuStrip2.Show(treeView1, e.X, e.Y);
+                }
+            }
+        }
+
+        private void DeNodeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.treeView1.SelectedNode.Remove();
+        }
+
+        private void btnSave_spatial_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
+        {
+            dgvSearch.CurrentCell = null;
+            for (int i = 0; i < this.dgvSearch.RowCount; i++)
+            {
+                string oid = dgvSearch.Rows[i].Cells[0].Value.ToString();
+
+                IFeatureLayer pfeaturelayer = GetLayerByName(editLayer.ComboBox.SelectedItem.Text) as IFeatureLayer;
+
+                //找到要素
+                IQueryFilter pQueryFilter = new QueryFilter();
+                pQueryFilter.WhereClause = "OBJECTID = " + oid;
+
+                IFeatureCursor pFeatureCur = pfeaturelayer.Search(pQueryFilter, false);
+                IFeature pFeature = null;
+                pFeature = pFeatureCur.NextFeature();
+
+                if (null == pFeature) { }
+                else
+                {
+                    IFields pFields = pFeature.Fields;
+                    IFeatureClass pFeatureClass = pfeaturelayer.FeatureClass;
+                    for (int j = 0; j < pFeature.Fields.FieldCount; j++)
+                    {
+                        if (pFeature.Fields.get_Field(j).Type != esriFieldType.esriFieldTypeString) { continue; }
+                        pFeature.set_Value(j, dgvSearch[j, i].Value);
+                    }
+                    pFeature.Store();
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(pFeatureCur);
+                }
+            }
+            pDT = LD.ShowTableInDataGridView_zenjian(GetLayerByName(editLayer.ComboBox.SelectedItem.Text) as ITable, dgvTable, out FieldName);
+        }
+
+        private void btnDeleteSpatial_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
+        {
+            IQueryFilter queryFilter = new QueryFilterClass();
+            string whereclause = getWhereClauseFromDGV();
+            if (whereclause == "")
+            {
+                return;
+            }
+            queryFilter.WhereClause = whereclause;
+            DeleteAllFeatures(GetLayerByName(editLayer.ComboBox.SelectedItem.Text) as IFeatureLayer, queryFilter);
+        }
+
+        private void btnSearchSpatial_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
+        {
+            SearchForm _SelectbyAttributeFrm = new SearchForm();
+            _SelectbyAttributeFrm.SqlOK += _SelectbyAttributeFrm_SqlOK;
+            List<ILayer> _layerInfo = new List<ILayer>();
+            for (int layerIndex = 0; layerIndex < this.axMapControl1.LayerCount; layerIndex++)
+            {
+                _layerInfo.Add(this.axMapControl1.get_Layer(layerIndex));
+            }
+
+            _SelectbyAttributeFrm.ShowInfo(_layerInfo);
+        }
+
+        private void dgvTable_DataSourceChanged(object sender, EventArgs e)
+        {
+            this.dgvTable.AllowUserToAddRows = tableMode;
+        }
+
+        private void btn_saveView_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
+        {
+
+        }
+
+        private void alter(ITable table)
+        {
+            IQueryFilter queryFilter = new QueryFilterClass();
+            int result = -1;
+            ICursor cursor;
+            if (int.TryParse(dgvTable.CurrentRow.Cells[0].Value.ToString(), out result) == false)
+            {
+                cursor = table.Insert(true);
+                IRowBuffer pRowBuffer = table.CreateRowBuffer();
+                for (int i = 1; i < pRowBuffer.Fields.FieldCount; i++)
+                {
+                    try
+                    {
+                        pRowBuffer.set_Value(i, dgvTable.CurrentRow.Cells[i].Value);//2
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                        continue;
+                    }
+                }
+                cursor.InsertRow(pRowBuffer);
+                cursor.Flush();
+                pDT = LD.ShowTableInDataGridView_zenjian(table, dgvTable, out FieldName);
+                return;
+            }
+            queryFilter.WhereClause = "OBJECTID=" + dgvTable.CurrentRow.Cells[0].Value;//"LAYERNAME=" + strLayerName
+            cursor = table.Update(queryFilter, false);//true
+            IRow row = cursor.NextRow();
+            if (row != null)
+            {
+                for (int i = 1; i < row.Fields.FieldCount; i++)
+                {
+                    try
+                    {
+                        row.set_Value(i, dgvTable.CurrentRow.Cells[i].Value);//2
+                        cursor.UpdateRow(row);
+                    }
+                    catch (Exception ex)
+                    {
+                       // MessageBox.Show(ex.Message);
+                        continue;
+                    }
+                }
+            }
+            else
+            {
+                cursor = table.Insert(true);
+                IRowBuffer pRowBuffer = table.CreateRowBuffer();
+                for (int i = 1; i < pRowBuffer.Fields.FieldCount; i++)
+                {
+                    try
+                    {
+                        pRowBuffer.set_Value(i, dgvTable.CurrentRow.Cells[i].Value);//2
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                        continue;
+                    }
+                }
+                cursor.InsertRow(pRowBuffer);
+                cursor.Flush();
+                pDT = LD.ShowTableInDataGridView_zenjian(table, dgvTable, out FieldName);
+                return;
+            }
+        }
+
+        private void buttonCommand1_Click_2(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
+        {
+            SearchForm _SelectbyAttributeFrm = new SearchForm();
+            _SelectbyAttributeFrm.SqlOK += _SelectbyAttributeFrm_SqlOK;
+            List<ILayer> _layerInfo = new List<ILayer>();
+            for (int layerIndex = 0; layerIndex < this.axMapControl1.LayerCount; layerIndex++)
+            {
+                _layerInfo.Add(this.axMapControl1.get_Layer(layerIndex));
+            }
+
+            _SelectbyAttributeFrm.ShowInfo(_layerInfo);
+        }
+
+        private void dgvTable_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (LD.allow_alter == true && tableMode == true && currentTable != null)
+            {
+                ITable ptable = currentTable;
+                alter(ptable);
+            }
+        }
+
+        private void btnDeleteAttr_Click(object sender, Janus.Windows.Ribbon.CommandEventArgs e)
+        {
+            if (LD.allow_alter == true && tableMode == true && currentTable != null)
+            {
+                ITable ptable = currentTable;
+                delete(ptable);
+            }
+        }
+
+        private void delete(ITable ptable)
+        {
+            IQueryFilter queryFilter = new QueryFilterClass();
+            string whereclause = getWhereClauseFromDGV_Table();
+            if (whereclause == "")
+            {
+                return;
+            }
+            queryFilter.WhereClause = whereclause;
+            DeleteAllFeatures(ptable, queryFilter);
+        }
+
+        private string getWhereClauseFromDGV_Table()
+        {
+            string ret_str = "";
+            if (dgvTable.SelectedRows.Count > 0)
+            {
+                ret_str += "OBJECTID LIKE '" + dgvTable.SelectedRows[0].Cells[0].Value.ToString() + "'";
+
+            }
+            for (int i = 1; i < this.dgvTable.SelectedRows.Count; i++)
+            {
+                ret_str += " OR OBJECTID LIKE '" + dgvTable.SelectedRows[i].Cells[0].Value.ToString() + "'";
+            }
+            return ret_str;
+        }
+
+        private void DeleteAllFeatures(ITable pTable, IQueryFilter queryFilter)
+        {
+            int deletecount = dgvTable.SelectedRows.Count;
+            pTable.DeleteSearchedRows(queryFilter);
+            for (int i = dgvTable.SelectedRows.Count; i > 0; i--)
+            {
+                dgvTable.Rows.RemoveAt(dgvTable.SelectedRows[i - 1].Index);
+            }
+            pDT = LD.ShowTableInDataGridView_zenjian(pTable, dgvTable, out FieldName);
+            MessageBox.Show("成功删除" + deletecount + "条记录");
+        }
  
 
 

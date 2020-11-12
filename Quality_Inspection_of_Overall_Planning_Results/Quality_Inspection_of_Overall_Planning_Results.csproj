@@ -176,6 +176,12 @@
     <Compile Include="Addname.Designer.cs">
       <DependentUpon>Addname.cs</DependentUpon>
     </Compile>
+    <Compile Include="AddSHP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddSHP.designer.cs">
+      <DependentUpon>AddSHP.cs</DependentUpon>
+    </Compile>
     <Compile Include="Change.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -232,6 +238,9 @@
     </Compile>
     <EmbeddedResource Include="Addname.resx">
       <DependentUpon>Addname.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddSHP.resx">
+      <DependentUpon>AddSHP.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Change.resx">
       <DependentUpon>Change.cs</DependentUpon>

@@ -95,8 +95,10 @@ namespace QI_ClassLibrary
             return dt;//返回
         }
 
-        public DataTable ShowTableInDataGridView_zenjian(ITable ptable, DataGridView DGV,out List<String> FieldName)
+        public bool allow_alter = true;
+        public DataTable ShowTableInDataGridView_zenjian(ITable ptable, DataGridView DGV, out List<String> FieldName)
         {
+            allow_alter = false;
             DGV.DataSource = null;
             DataTable pDataTable = new DataTable();//建立一个table
             FieldName = new List<string>();
@@ -107,29 +109,53 @@ namespace QI_ClassLibrary
                 string FieldTrueName = ptable.Fields.get_Field(i).Name;
                 pDataTable.Columns.Add(FieldTrueName);
             }
+
             int index = 0;
             ICursor pCursor = ptable.Search(null, false);
             IRow pRrow = pCursor.NextRow();
-            while (pRrow != null)
+            int columnindex = 0;
+            try
             {
-                DataRow pRow = pDataTable.NewRow();
-                string[] StrRow = new string[pRrow.Fields.FieldCount];
-                for (int i = 0; i < pRrow.Fields.FieldCount; i++)
+                while (pRrow != null)
                 {
-                    StrRow[i] = pRrow.get_Value(i).ToString();
+                    DataRow pRow = pDataTable.NewRow();
+                    string[] StrRow = new string[pRrow.Fields.FieldCount];
+                    for (columnindex = 0; columnindex < pRrow.Fields.FieldCount; columnindex++)
+                    {
+                        StrRow[columnindex] = pRrow.get_Value(columnindex).ToString();
+                    }
+                    pRow.ItemArray = StrRow;
+                    pDataTable.Rows.Add(pRow);
+                    pRrow = pCursor.NextRow();
+                    index++;
                 }
-                pRow.ItemArray = StrRow;
-                pDataTable.Rows.Add(pRow);
-                pRrow = pCursor.NextRow();
-                index++;
+                DGV.DataSource = pDataTable;
+                for (int i = 0; i < FieldName.Count; i++)
+                {
+                    //if (ptable.Fields.get_Field(i).Type == esriFieldType.esriFieldTypeDate) { DGV.Columns[i].ValueType = typeof.};
+                    DGV.Columns[i].HeaderText = FieldName[i];
+                }
+                pDataTable.Columns.Add("SORT", typeof(int), "len(OBJECTID)");
+                DataTable dtCopy = pDataTable.Copy();
+                DataView dv = pDataTable.DefaultView;
+                dv.Sort = "SORT,OBJECTID";
+                dtCopy = dv.ToTable();
+                return dtCopy;
+
+  
+                
+
+               //return pDataTable;
             }
-            DGV.DataSource = pDataTable;
-            for (int i = 0; i < FieldName.Count; i++)
+            catch (Exception error)
             {
-                //if (ptable.Fields.get_Field(i).Type == esriFieldType.esriFieldTypeDate) { DGV.Columns[i].ValueType = typeof.};
-                DGV.Columns[i].HeaderText = FieldName[i];
+                //MessageBox.Show("OID为"+pRrow.OID+"的要素"+"的第"+columnindex+"列"+error.Message);
+                return null;
             }
-            return pDataTable;
+            finally
+            {
+                allow_alter = true;
+            }
         }
 
     }

@@ -24,17 +24,22 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             CTLink.Add(ListFieldsName, textBox1);
         }
 
+        ITable ptable;
+        bool tableMode = false;
+        public SearchForm(ITable ptable)
+        {
+            InitializeComponent();
+            this.ptable = ptable;
+            tableMode = true;
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
-
-
-
             if (this.comLayerName.SelectedItem == null) {return;}
             IFeatureLayer pFeatureLayer = GetLayerbyName(this.comLayerName.SelectedItem.ToString()) as IFeatureLayer;
             string ret_sql = "";
             string ret_sql2 = "";
-            if (this.ListFieldsName.SelectedItem != null)
+            if (this.ListFieldsName.Text != null && this.ListFieldsName.Text != "")
             {
                 string Fname = (pFeatureLayer as ITable).Fields.get_Field((pFeatureLayer as ITable).Fields.FindFieldByAliasName(this.ListFieldsName.SelectedItem.ToString())).Name;
                 if (Fname != "ZBGHSYSJ")
@@ -72,39 +77,8 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             }
             else 
             {
-                //测试取值
-                int len = 0;
-                int is1 = 0;
-                //string combotext = this.panel1.Controls.Find("ComboBox1", false)[len].Text;
-                foreach (Control c in this.panel1.Controls)
-                {
-
-                    if (c.Name == "text1")
-                    {
-                        string combotext = this.panel1.Controls.Find("ComboBox1", false)[len].Text;
-                        len += 1;
-                        if (combotext != "")
-                        {
-                            if (is1 == 0)
-                            {
-                                string Fcombotext = (pFeatureLayer as ITable).Fields.get_Field((pFeatureLayer as ITable).Fields.FindFieldByAliasName(combotext)).Name;
-                                string text = ((TextBox)c).Text;
-                                ret_sql += Fcombotext + " LIKE '*" + text + "*'";
-                                ret_sql2 += Fcombotext + " LIKE '*" + text + "*'";
-                                is1 += 1;
-                            }
-                            else 
-                            {
-                                string Fcombotext = (pFeatureLayer as ITable).Fields.get_Field((pFeatureLayer as ITable).Fields.FindFieldByAliasName(combotext)).Name;
-                                string text = ((TextBox)c).Text;
-                                ret_sql += " And " + Fcombotext + " LIKE '*" + text + "*'";
-                                ret_sql2 += " And " + Fcombotext + " LIKE '*" + text + "*'";
-                            }
-                            
-                        }
-                    }
-                }
- 
+                ret_sql = null;
+                ret_sql2 = null;
             }
 
 
@@ -114,7 +88,8 @@ namespace Quality_Inspection_of_Overall_Planning_Results
                 {
                     SQL = ret_sql,
                     LayerIndex = this.comLayerName.SelectedIndex,
-                    SQL_2 = ret_sql2
+                    SQL_2 = ret_sql2,
+                    editLayer = this.comLayerName.SelectedItem.ToString()
                 });
         }
 

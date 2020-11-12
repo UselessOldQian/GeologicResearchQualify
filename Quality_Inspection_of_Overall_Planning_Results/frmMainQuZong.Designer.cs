@@ -30,49 +30,49 @@ namespace Quality_Inspection_of_Overall_Planning_Results
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMainQuZong));
-            Janus.Windows.EditControls.UIComboBoxItem uiComboBoxItem19 = new Janus.Windows.EditControls.UIComboBoxItem();
-            Janus.Windows.EditControls.UIComboBoxItem uiComboBoxItem20 = new Janus.Windows.EditControls.UIComboBoxItem();
-            Janus.Windows.EditControls.UIComboBoxItem uiComboBoxItem21 = new Janus.Windows.EditControls.UIComboBoxItem();
-            Janus.Windows.EditControls.UIComboBoxItem uiComboBoxItem22 = new Janus.Windows.EditControls.UIComboBoxItem();
-            Janus.Windows.EditControls.UIComboBoxItem uiComboBoxItem23 = new Janus.Windows.EditControls.UIComboBoxItem();
-            Janus.Windows.EditControls.UIComboBoxItem uiComboBoxItem24 = new Janus.Windows.EditControls.UIComboBoxItem();
-            Janus.Windows.EditControls.UIComboBoxItem uiComboBoxItem25 = new Janus.Windows.EditControls.UIComboBoxItem();
-            Janus.Windows.EditControls.UIComboBoxItem uiComboBoxItem26 = new Janus.Windows.EditControls.UIComboBoxItem();
-            Janus.Windows.EditControls.UIComboBoxItem uiComboBoxItem27 = new Janus.Windows.EditControls.UIComboBoxItem();
-            Janus.Windows.UI.StatusBar.UIStatusBarPanel uiStatusBarPanel3 = new Janus.Windows.UI.StatusBar.UIStatusBarPanel();
-            System.Windows.Forms.TreeNode treeNode35 = new System.Windows.Forms.TreeNode("1101");
-            System.Windows.Forms.TreeNode treeNode36 = new System.Windows.Forms.TreeNode("2201");
-            System.Windows.Forms.TreeNode treeNode37 = new System.Windows.Forms.TreeNode("3201");
-            System.Windows.Forms.TreeNode treeNode38 = new System.Windows.Forms.TreeNode("3301");
-            System.Windows.Forms.TreeNode treeNode39 = new System.Windows.Forms.TreeNode("3401");
-            System.Windows.Forms.TreeNode treeNode40 = new System.Windows.Forms.TreeNode("3601");
-            System.Windows.Forms.TreeNode treeNode41 = new System.Windows.Forms.TreeNode("4301");
-            System.Windows.Forms.TreeNode treeNode42 = new System.Windows.Forms.TreeNode("4101");
-            System.Windows.Forms.TreeNode treeNode43 = new System.Windows.Forms.TreeNode("6401");
-            System.Windows.Forms.TreeNode treeNode44 = new System.Windows.Forms.TreeNode("6402");
-            System.Windows.Forms.TreeNode treeNode45 = new System.Windows.Forms.TreeNode("6403");
-            System.Windows.Forms.TreeNode treeNode46 = new System.Windows.Forms.TreeNode("6501");
-            System.Windows.Forms.TreeNode treeNode47 = new System.Windows.Forms.TreeNode("6502");
-            System.Windows.Forms.TreeNode treeNode48 = new System.Windows.Forms.TreeNode("6503");
-            System.Windows.Forms.TreeNode treeNode49 = new System.Windows.Forms.TreeNode("6504");
-            System.Windows.Forms.TreeNode treeNode50 = new System.Windows.Forms.TreeNode("6505");
-            System.Windows.Forms.TreeNode treeNode51 = new System.Windows.Forms.TreeNode("所有错误", new System.Windows.Forms.TreeNode[] {
-            treeNode35,
-            treeNode36,
-            treeNode37,
-            treeNode38,
-            treeNode39,
-            treeNode40,
-            treeNode41,
-            treeNode42,
-            treeNode43,
-            treeNode44,
-            treeNode45,
-            treeNode46,
-            treeNode47,
-            treeNode48,
-            treeNode49,
-            treeNode50});
+            Janus.Windows.EditControls.UIComboBoxItem uiComboBoxItem1 = new Janus.Windows.EditControls.UIComboBoxItem();
+            Janus.Windows.EditControls.UIComboBoxItem uiComboBoxItem2 = new Janus.Windows.EditControls.UIComboBoxItem();
+            Janus.Windows.EditControls.UIComboBoxItem uiComboBoxItem3 = new Janus.Windows.EditControls.UIComboBoxItem();
+            Janus.Windows.EditControls.UIComboBoxItem uiComboBoxItem4 = new Janus.Windows.EditControls.UIComboBoxItem();
+            Janus.Windows.EditControls.UIComboBoxItem uiComboBoxItem5 = new Janus.Windows.EditControls.UIComboBoxItem();
+            Janus.Windows.EditControls.UIComboBoxItem uiComboBoxItem6 = new Janus.Windows.EditControls.UIComboBoxItem();
+            Janus.Windows.EditControls.UIComboBoxItem uiComboBoxItem7 = new Janus.Windows.EditControls.UIComboBoxItem();
+            Janus.Windows.EditControls.UIComboBoxItem uiComboBoxItem8 = new Janus.Windows.EditControls.UIComboBoxItem();
+            Janus.Windows.EditControls.UIComboBoxItem uiComboBoxItem9 = new Janus.Windows.EditControls.UIComboBoxItem();
+            Janus.Windows.UI.StatusBar.UIStatusBarPanel uiStatusBarPanel1 = new Janus.Windows.UI.StatusBar.UIStatusBarPanel();
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("1101");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("2201");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("3201");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("3301");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("3401");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("3601");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("4301");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("4101");
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("6401");
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("6402");
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("6403");
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("6501");
+            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("6502");
+            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("6503");
+            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("6504");
+            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("6505");
+            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("所有错误", new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode2,
+            treeNode3,
+            treeNode4,
+            treeNode5,
+            treeNode6,
+            treeNode7,
+            treeNode8,
+            treeNode9,
+            treeNode10,
+            treeNode11,
+            treeNode12,
+            treeNode13,
+            treeNode14,
+            treeNode15,
+            treeNode16});
             this.ribbon1 = new Janus.Windows.Ribbon.Ribbon();
             this.ribbonTab1 = new Janus.Windows.Ribbon.RibbonTab();
             this.ribbonGroup1 = new Janus.Windows.Ribbon.RibbonGroup();
@@ -396,52 +396,52 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // 
             // 
             this.AreaCode.ComboBox.AllowDrop = true;
-            uiComboBoxItem19.FormatStyle.Alpha = 0;
-            uiComboBoxItem19.IsSeparator = false;
-            uiComboBoxItem19.Text = "奉贤区";
-            uiComboBoxItem19.Value = "奉贤区";
-            uiComboBoxItem20.FormatStyle.Alpha = 0;
-            uiComboBoxItem20.IsSeparator = false;
-            uiComboBoxItem20.Text = "宝山区";
-            uiComboBoxItem20.Value = "宝山区";
-            uiComboBoxItem21.FormatStyle.Alpha = 0;
-            uiComboBoxItem21.IsSeparator = false;
-            uiComboBoxItem21.Text = "青浦区";
-            uiComboBoxItem21.Value = "青浦区";
-            uiComboBoxItem22.FormatStyle.Alpha = 0;
-            uiComboBoxItem22.IsSeparator = false;
-            uiComboBoxItem22.Text = "松江区";
-            uiComboBoxItem22.Value = "松江区";
-            uiComboBoxItem23.FormatStyle.Alpha = 0;
-            uiComboBoxItem23.IsSeparator = false;
-            uiComboBoxItem23.Text = "崇明区";
-            uiComboBoxItem23.Value = "崇明区";
-            uiComboBoxItem24.FormatStyle.Alpha = 0;
-            uiComboBoxItem24.IsSeparator = false;
-            uiComboBoxItem24.Text = "嘉定区";
-            uiComboBoxItem24.Value = "嘉定区";
-            uiComboBoxItem25.FormatStyle.Alpha = 0;
-            uiComboBoxItem25.IsSeparator = false;
-            uiComboBoxItem25.Text = "浦东新区";
-            uiComboBoxItem25.Value = "浦东新区";
-            uiComboBoxItem26.FormatStyle.Alpha = 0;
-            uiComboBoxItem26.IsSeparator = false;
-            uiComboBoxItem26.Text = "金山区";
-            uiComboBoxItem26.Value = "金山区";
-            uiComboBoxItem27.FormatStyle.Alpha = 0;
-            uiComboBoxItem27.IsSeparator = false;
-            uiComboBoxItem27.Text = "闵行区";
-            uiComboBoxItem27.Value = "闵行区";
+            uiComboBoxItem1.FormatStyle.Alpha = 0;
+            uiComboBoxItem1.IsSeparator = false;
+            uiComboBoxItem1.Text = "奉贤区";
+            uiComboBoxItem1.Value = "奉贤区";
+            uiComboBoxItem2.FormatStyle.Alpha = 0;
+            uiComboBoxItem2.IsSeparator = false;
+            uiComboBoxItem2.Text = "宝山区";
+            uiComboBoxItem2.Value = "宝山区";
+            uiComboBoxItem3.FormatStyle.Alpha = 0;
+            uiComboBoxItem3.IsSeparator = false;
+            uiComboBoxItem3.Text = "青浦区";
+            uiComboBoxItem3.Value = "青浦区";
+            uiComboBoxItem4.FormatStyle.Alpha = 0;
+            uiComboBoxItem4.IsSeparator = false;
+            uiComboBoxItem4.Text = "松江区";
+            uiComboBoxItem4.Value = "松江区";
+            uiComboBoxItem5.FormatStyle.Alpha = 0;
+            uiComboBoxItem5.IsSeparator = false;
+            uiComboBoxItem5.Text = "崇明区";
+            uiComboBoxItem5.Value = "崇明区";
+            uiComboBoxItem6.FormatStyle.Alpha = 0;
+            uiComboBoxItem6.IsSeparator = false;
+            uiComboBoxItem6.Text = "嘉定区";
+            uiComboBoxItem6.Value = "嘉定区";
+            uiComboBoxItem7.FormatStyle.Alpha = 0;
+            uiComboBoxItem7.IsSeparator = false;
+            uiComboBoxItem7.Text = "浦东新区";
+            uiComboBoxItem7.Value = "浦东新区";
+            uiComboBoxItem8.FormatStyle.Alpha = 0;
+            uiComboBoxItem8.IsSeparator = false;
+            uiComboBoxItem8.Text = "金山区";
+            uiComboBoxItem8.Value = "金山区";
+            uiComboBoxItem9.FormatStyle.Alpha = 0;
+            uiComboBoxItem9.IsSeparator = false;
+            uiComboBoxItem9.Text = "闵行区";
+            uiComboBoxItem9.Value = "闵行区";
             this.AreaCode.ComboBox.Items.AddRange(new Janus.Windows.EditControls.UIComboBoxItem[] {
-            uiComboBoxItem19,
-            uiComboBoxItem20,
-            uiComboBoxItem21,
-            uiComboBoxItem22,
-            uiComboBoxItem23,
-            uiComboBoxItem24,
-            uiComboBoxItem25,
-            uiComboBoxItem26,
-            uiComboBoxItem27});
+            uiComboBoxItem1,
+            uiComboBoxItem2,
+            uiComboBoxItem3,
+            uiComboBoxItem4,
+            uiComboBoxItem5,
+            uiComboBoxItem6,
+            uiComboBoxItem7,
+            uiComboBoxItem8,
+            uiComboBoxItem9});
             this.AreaCode.ComboBox.Location = new System.Drawing.Point(786, 61);
             this.AreaCode.ComboBox.Name = "";
             this.AreaCode.ComboBox.Size = new System.Drawing.Size(100, 21);
@@ -685,13 +685,13 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             // 
             this.uiStatusBar1.Location = new System.Drawing.Point(0, 1037);
             this.uiStatusBar1.Name = "uiStatusBar1";
-            uiStatusBarPanel3.BorderColor = System.Drawing.Color.Black;
-            uiStatusBarPanel3.Key = "";
-            uiStatusBarPanel3.MinWidth = 100;
-            uiStatusBarPanel3.ProgressBarValue = 0;
-            uiStatusBarPanel3.Width = 500;
+            uiStatusBarPanel1.BorderColor = System.Drawing.Color.Black;
+            uiStatusBarPanel1.Key = "";
+            uiStatusBarPanel1.MinWidth = 100;
+            uiStatusBarPanel1.ProgressBarValue = 0;
+            uiStatusBarPanel1.Width = 500;
             this.uiStatusBar1.Panels.AddRange(new Janus.Windows.UI.StatusBar.UIStatusBarPanel[] {
-            uiStatusBarPanel3});
+            uiStatusBarPanel1});
             this.uiStatusBar1.Size = new System.Drawing.Size(1507, 25);
             this.uiStatusBar1.TabIndex = 6;
             this.uiStatusBar1.VisualStyle = Janus.Windows.UI.VisualStyle.Office2007;
@@ -765,42 +765,42 @@ namespace Quality_Inspection_of_Overall_Planning_Results
             this.treeView2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView2.Location = new System.Drawing.Point(0, 0);
             this.treeView2.Name = "treeView2";
-            treeNode35.Name = "1101";
-            treeNode35.Text = "1101";
-            treeNode36.Name = "2201";
-            treeNode36.Text = "2201";
-            treeNode37.Name = "3201";
-            treeNode37.Text = "3201";
-            treeNode38.Name = "3301";
-            treeNode38.Text = "3301";
-            treeNode39.Name = "3401";
-            treeNode39.Text = "3401";
-            treeNode40.Name = "3601";
-            treeNode40.Text = "3601";
-            treeNode41.Name = "4301";
-            treeNode41.Text = "4301";
-            treeNode42.Name = "4101";
-            treeNode42.Text = "4101";
-            treeNode43.Name = "6401";
-            treeNode43.Text = "6401";
-            treeNode44.Name = "6402";
-            treeNode44.Text = "6402";
-            treeNode45.Name = "6403";
-            treeNode45.Text = "6403";
-            treeNode46.Name = "6501";
-            treeNode46.Text = "6501";
-            treeNode47.Name = "6502";
-            treeNode47.Text = "6502";
-            treeNode48.Name = "6503";
-            treeNode48.Text = "6503";
-            treeNode49.Name = "6504";
-            treeNode49.Text = "6504";
-            treeNode50.Name = "6505";
-            treeNode50.Text = "6505";
-            treeNode51.Name = "All";
-            treeNode51.Text = "所有错误";
+            treeNode1.Name = "1101";
+            treeNode1.Text = "1101";
+            treeNode2.Name = "2201";
+            treeNode2.Text = "2201";
+            treeNode3.Name = "3201";
+            treeNode3.Text = "3201";
+            treeNode4.Name = "3301";
+            treeNode4.Text = "3301";
+            treeNode5.Name = "3401";
+            treeNode5.Text = "3401";
+            treeNode6.Name = "3601";
+            treeNode6.Text = "3601";
+            treeNode7.Name = "4301";
+            treeNode7.Text = "4301";
+            treeNode8.Name = "4101";
+            treeNode8.Text = "4101";
+            treeNode9.Name = "6401";
+            treeNode9.Text = "6401";
+            treeNode10.Name = "6402";
+            treeNode10.Text = "6402";
+            treeNode11.Name = "6403";
+            treeNode11.Text = "6403";
+            treeNode12.Name = "6501";
+            treeNode12.Text = "6501";
+            treeNode13.Name = "6502";
+            treeNode13.Text = "6502";
+            treeNode14.Name = "6503";
+            treeNode14.Text = "6503";
+            treeNode15.Name = "6504";
+            treeNode15.Text = "6504";
+            treeNode16.Name = "6505";
+            treeNode16.Text = "6505";
+            treeNode17.Name = "All";
+            treeNode17.Text = "所有错误";
             this.treeView2.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode51});
+            treeNode17});
             this.treeView2.Size = new System.Drawing.Size(133, 292);
             this.treeView2.TabIndex = 0;
             this.treeView2.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView2_BeforeCollapse);
